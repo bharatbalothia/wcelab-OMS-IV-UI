@@ -1,0 +1,13 @@
+{
+    "/ivproxy": {
+       "target":  {
+         "host": "eu-api.watsoncommerce.ibm.com",
+         "protocol": "https:",
+         "port": 443
+       },
+       "secure": false,
+       "changeOrigin": true,
+       "pathRewrite": {"^/ivproxy" : ""},
+       "logLevel": "info"
+    }
+  }
