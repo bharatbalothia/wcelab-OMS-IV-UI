@@ -9,11 +9,6 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
-// import {ShipNode} from '../datatype/ShipNode';
-
-// import {RestapiService} from '../restapi.service';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -21,23 +16,15 @@ import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 export abstract class IvServiceBase {
 
-  
-
 //   private shipnodeUrl = '/ivproxy/inventory/42dd13f4/v1' + "/configuration/shipNodes";
   
   private handleError: HandleError;
 
+  // subclass provides the entity url like "configuration/shipNodes" or "supplies"
   abstract getEntityUrl() : string;
 
+  // subclass provides the bearerToken
   abstract getBearerToken() : string;
-
-  // private httpOptions = {
-  //   headers: new HttpHeaders({
-  //     'Content-Type':  'application/json',
-  //     'cache-control': 'no-cache',
-  //     'Authorization': `Bearer $getBearerToken()`
-  //   })
-  // };
 
   protected getBaseUrl = () => { return '/ivproxy/inventory/42dd13f4/v1'; }
 
@@ -46,9 +33,10 @@ export abstract class IvServiceBase {
     this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
-  
-  getList<T>(additionalUrl:string) : Observable<T[]>{
-    let url = `${this.getBaseUrl()}/${this.getEntityUrl()}`;
+  // get a list by REST GET. Caller specify the return type
+  getList<T>(additionalUrl:string = '') : Observable<T[]>{
+
+    let url = `${this.getBaseUrl()}/${this.getEntityUrl()}${additionalUrl}`;
 
     let httpOptions = {
       headers: new HttpHeaders({
@@ -63,36 +51,6 @@ export abstract class IvServiceBase {
       catchError(this.handleError('getList', []))
     );
   }
-
-  // // GET shipnodes from the IV server
-  // getShipNodeFromIV (): Observable<ShipNode[]> {
-  //   return this.http.get<ShipNode[]>(this.shipnodeUrl, this.httpOptions)
-  //     .pipe(
-  //       catchError(this.handleError('getShipNodeFromIV', []))
-  //     );
-  // }
-  
-  // // private data: ShipNode[];
-  // private observable: Observable<ShipNode[]>;
-
-
-  // getData() : Observable<ShipNode[]> {
-  //   // if(this.data) {
-  //   //   // if `data` is available just return it as `Observable`
-  //   //   return of(this.data); 
-  //   // } else 
-  //   if(this.observable) {
-  //     // if `this.observable` is set then the request is in progress
-  //     // return the `Observable` for the ongoing request
-  //     return this.observable;
-  //   } else {
-    
-  //     this.observable = this.getShipNodeFromIV();
-
-  //     return this.observable;
-
-  //   }
-  // }
 
   // addShipnode(data) {
   //   this.ELEMENT_DATA.push(data);

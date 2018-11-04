@@ -13,49 +13,25 @@ import {ShipNode} from '../datatype/ShipNode';
 
 import {IvServiceBase} from "../iv-service-base.service";
 
-// import {RestapiService} from '../restapi.service';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 
+
+// TODO: Need to check if this is a singular service for all ShipNodeData needs. 
+// single ShipnodeDataService instance avoids additional REST calls. Typescript has shared service. 
 export class ShipnodeDataService extends IvServiceBase {
 
   constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler) {
     super(http, httpErrorHandler);
   }
 
-  public getEntityUrl = () => { return "/configuration/shipNodes"; }
+  public getEntityUrl = () => { return "configuration/shipNodes"; }
 
   public getBearerToken = ()  => { return 'K5UFv2CvlTGgdrFNnoaUfYM4ps37kb5z'; }
 
-
-  // private shipnodeUrl = '/ivproxy/inventory/42dd13f4/v1' + "/configuration/shipNodes";
-  // private handleError: HandleError;
-
-  // private httpOptions = {
-  //   headers: new HttpHeaders({
-  //     'Content-Type':  'application/json',
-  //     'Authorization': 'Bearer K5UFv2CvlTGgdrFNnoaUfYM4ps37kb5z'
-  //   })
-  // };
-
-  // // need the http client to do CRUD operation
-  // constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
-  //   this.handleError = httpErrorHandler.createHandleError('HeroesService');
-  // }
-
-  // // GET shipnodes from the IV server
-  // getShipNodeFromIV (): Observable<ShipNode[]> {
-  //   return this.http.get<ShipNode[]>(this.shipnodeUrl, this.httpOptions)
-  //     .pipe(
-  //       catchError(this.handleError('getShipNodeFromIV', []))
-  //     );
-  // }
-  
-  // // private data: ShipNode[];
+  // private data: ShipNode[];
   private observable: Observable<ShipNode[]>;
 
 
