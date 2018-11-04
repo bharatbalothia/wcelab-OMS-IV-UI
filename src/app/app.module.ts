@@ -18,6 +18,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ShipnodeComponent } from './shipnode/shipnode.component';
 
 import {AppRouters} from './app.routes';
+import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-editor.component';
 
 
 // import { AuthInterceptor } from './auth.interceptor';
@@ -28,7 +29,8 @@ import {AppRouters} from './app.routes';
   declarations: [
     AppComponent,
     WelcomeComponent,
-    ShipnodeComponent
+    ShipnodeComponent,
+    ShipnodeEditorComponent,
   ],
   imports: [
     BrowserModule,
