@@ -92,7 +92,7 @@ export abstract class IvServiceBase {
   //     return this.observable;
 
   //   }
-  }
+  // }
 
   // addShipnode(data) {
   //   this.ELEMENT_DATA.push(data);
