@@ -33,23 +33,48 @@ export abstract class IvServiceBase {
     this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
-  // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl:string = '') : Observable<T[]>{
+  private getUrl = (additionalUrl:string) => {
+    return `${this.getBaseUrl()}/${this.getEntityUrl()}${additionalUrl}`;
+  };
 
-    let url = `${this.getBaseUrl()}/${this.getEntityUrl()}${additionalUrl}`;
-
-    let httpOptions = {
+  private getHttpOptions = () => {
+    return {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'cache-control': 'no-cache',
         'Authorization': `Bearer ${this.getBearerToken()}`
       })
-    };
+    }
+  };
+
+  // get a list by REST GET. Caller specify the return type
+  getList<T>(additionalUrl:string = '') : Observable<T[]>{
+
+    let url = this.getUrl(additionalUrl);
+
+    let httpOptions = this.getHttpOptions() ;
 
     return this.http.get<T[]>( url, httpOptions)
     .pipe(
       catchError(this.handleError('getList', []))
     );
+  }
+
+  putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
+
+    let url = this.getUrl(additionalUrl);
+
+    let httpOptions = this.getHttpOptions();
+
+    console.log(`About to put object to ${url}`);
+
+    this.http.put(url, objectToPut, httpOptions).pipe(
+      catchError(this.handleError('putObject', []))
+    );
+
+    let newlist = this.getList<T>();
+
+    return newlist;
   }
 
   // addShipnode(data) {

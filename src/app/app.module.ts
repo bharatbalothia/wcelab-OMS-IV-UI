@@ -9,6 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {MaterialModule} from './material.module';
+import {FormsModule} from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -41,6 +42,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     FlexLayoutModule,
     AppRouters,
     HttpClientModule,
+    FormsModule,
     
   ],
   
@@ -50,7 +52,11 @@ import { WelcomeComponent } from './welcome/welcome.component';
   //   useClass: AuthInterceptor,
   //   multi   : true,
   // },
-],
+  ],
+
+  entryComponents: [
+    ShipnodeEditorComponent,
+  ],
 
   bootstrap: [AppComponent]
 })

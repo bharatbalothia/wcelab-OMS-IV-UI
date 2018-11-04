@@ -53,10 +53,12 @@ export class ShipnodeDataService extends IvServiceBase {
     }
   }
 
-  addShipnode(data) {
+  addShipnode(data: ShipNode) {
 
-    console.log (`try to add shipndoe: ${data}`);
+    console.log (`try to add shipndoe: ${data.shipNode} [${data.latitude}, ${data.longitude}]`);
     
+    this.putObject<ShipNode>(data, '/' + data.shipNode);
+
   }
 
   // // deleteShipnode(shipNode) {

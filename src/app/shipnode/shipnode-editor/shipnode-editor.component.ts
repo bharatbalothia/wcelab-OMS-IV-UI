@@ -10,7 +10,11 @@ import {ShipNode} from "../../datatype/ShipNode";
 })
 export class ShipnodeEditorComponent {
 
-  private shipnodeEditing : ShipNode;
+  private shipnodeEditing : ShipNode = {
+    shipNode: "ShipNode Name",
+    latitude: 0,
+    longitude: 0,
+  };
 
   public event: EventEmitter<any> = new EventEmitter();
 

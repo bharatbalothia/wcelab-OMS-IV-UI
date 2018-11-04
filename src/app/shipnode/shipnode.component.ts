@@ -31,7 +31,7 @@ export class ShipnodeComponent{
   openAddShipnodeDialog() : void {
     let dialogRef = this.dialog.open(ShipnodeEditorComponent, {
       width: '600px',
-      data: 'Add Post'
+      data: 'Create ShipNode'
     });
 
     dialogRef.componentInstance.event.subscribe((result) => {
