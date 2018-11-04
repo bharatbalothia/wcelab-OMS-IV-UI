@@ -4,7 +4,12 @@ import {ShipNode} from '../datatype/ShipNode';
 import {DataSource} from '@angular/cdk/table';
 import {Observable} from 'rxjs/Observable';
 
+
+import {MatDialog} from '@angular/material';
+
 import {ShipnodeDataService} from './shipnode-data.service';
+
+import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.component';
 
 // import {RestapiService} from '../restapi.service';
 
@@ -15,28 +20,24 @@ import {ShipnodeDataService} from './shipnode-data.service';
 })
 
 export class ShipnodeComponent{
-
-  // private  shipnodes:  Array<object> = [];
-
-  // constructor(private  restapiService:  RestapiService) { }
-
-  // ngOnInit() {
-  //     this.getShipnodes();
-  // }
-
-  // public  getShipnodes(){
-  //     this.restapiService.getShipnodes().subscribe((data:  Array<object>) => {
-  //         this.shipnodes  =  data;
-  //         console.log(data);
-  //     });
-  // }
   
-  constructor(private dataService: ShipnodeDataService) {
+  constructor(public dialog: MatDialog, private dataService: ShipnodeDataService) {
   }
 
   displayedColumns = ['shipNode', 'longitude', 'latitude', 'delete'];
   
   dataSource = new ShipnodeDataSource(this.dataService);
+
+  openAddShipnodeDialog() : void {
+    let dialogRef = this.dialog.open(ShipnodeEditorComponent, {
+      width: '600px',
+      data: 'Add Post'
+    });
+
+    dialogRef.componentInstance.event.subscribe((result) => {
+      this.dataService.addShipnode(result.data);
+    });
+  }
 
   // deleteShipnode(shipNode) {
     

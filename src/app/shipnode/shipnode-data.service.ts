@@ -53,9 +53,11 @@ export class ShipnodeDataService extends IvServiceBase {
     }
   }
 
-  // // addShipnode(data) {
-  // //   this.ELEMENT_DATA.push(data);
-  // // }
+  addShipnode(data) {
+
+    console.log (`try to add shipndoe: ${data}`);
+    
+  }
 
   // // deleteShipnode(shipNode) {
 
