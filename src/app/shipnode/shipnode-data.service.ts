@@ -23,8 +23,8 @@ import {IvServiceBase} from "../iv-service-base.service";
 
 export class ShipnodeDataService extends IvServiceBase {
 
-  constructor(httpErrorHandler: HttpErrorHandler) {
-    super(httpErrorHandler);
+  constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler) {
+    super(http, httpErrorHandler);
   }
 
   public getEntityUrl = () => { return "/configuration/shipNodes"; }

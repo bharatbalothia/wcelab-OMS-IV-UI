@@ -21,7 +21,7 @@ import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 export abstract class IvServiceBase {
 
-  private http: HttpClient;
+  
 
 //   private shipnodeUrl = '/ivproxy/inventory/42dd13f4/v1' + "/configuration/shipNodes";
   
@@ -42,19 +42,19 @@ export abstract class IvServiceBase {
   protected getBaseUrl = () => { return '/ivproxy/inventory/42dd13f4/v1'; }
 
   // need the http client to do CRUD operation
-  constructor(httpErrorHandler: HttpErrorHandler) {
+  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
     this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
   
   getList<T>(additionalUrl:string) : Observable<T[]>{
-    let url = `$(this.getBaseUrl())/$this.getEntityUrl()`;
+    let url = `${this.getBaseUrl()}/${this.getEntityUrl()}`;
 
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'cache-control': 'no-cache',
-        'Authorization': `Bearer $(getBearerToken())`
+        'Authorization': `Bearer ${this.getBearerToken()}`
       })
     };
 
