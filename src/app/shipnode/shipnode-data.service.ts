@@ -70,7 +70,7 @@ export class ShipnodeDataService extends IvServiceBase {
       return this.observable;
     } else {
     
-      this.observable = this.getList('');
+      this.observable = this.getList<ShipNode>('');
 
       return this.observable;
 
