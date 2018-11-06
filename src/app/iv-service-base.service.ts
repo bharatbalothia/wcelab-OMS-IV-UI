@@ -11,8 +11,6 @@ import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 
 export abstract class IvServiceBase {
-
-//   private shipnodeUrl = '/ivproxy/inventory/42dd13f4/v1' + "/configuration/shipNodes";
   
   private handleError: HandleError;
 
