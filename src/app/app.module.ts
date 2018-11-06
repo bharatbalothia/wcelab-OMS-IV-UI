@@ -21,6 +21,8 @@ import { ShipnodeComponent } from './shipnode/shipnode.component';
 import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-editor.component';
 
 import { WelcomeComponent } from './welcome/welcome.component';
+import { CredentialComponent } from './credential/credential.component';
+
 
 // import { AuthInterceptor } from './auth.interceptor';
 
@@ -32,6 +34,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
     WelcomeComponent,
     ShipnodeComponent,
     ShipnodeEditorComponent,
+    CredentialComponent,
+    
+    
   ],
   imports: [
     BrowserModule,
@@ -56,6 +61,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 
   entryComponents: [
     ShipnodeEditorComponent,
+    CredentialComponent,
   ],
 
   bootstrap: [AppComponent]
