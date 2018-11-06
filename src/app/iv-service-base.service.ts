@@ -10,10 +10,6 @@ import { catchError } from 'rxjs/operators';
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
 
-@Injectable({
-  providedIn: 'root'
-})
-
 export abstract class IvServiceBase {
 
 //   private shipnodeUrl = '/ivproxy/inventory/42dd13f4/v1' + "/configuration/shipNodes";
@@ -68,13 +64,43 @@ export abstract class IvServiceBase {
 
     console.log(`About to put object to ${url}`);
 
-    this.http.put(url, objectToPut, httpOptions).pipe(
+    let putResult = this.http.put(url, objectToPut, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
-    );
+    ); 
 
-    let newlist = this.getList<T>();
+    console.log(`finished calling put object to ${url}`);
+    
+    // Put an empty subscriber here to avoid angular not executing put without
+    // a subscriber.
+    putResult.subscribe();
+    
+    // putResult.subscribe(
+    //   data => {console.log(data), error => {console.error(error)}}
+    // );
+    
+    return putResult;
+  }
 
-    return newlist;
+  deleteObject(additionalUrl:string) : Observable<any> {
+    let url = this.getUrl(additionalUrl);
+
+    let httpOptions = this.getHttpOptions();
+
+    console.log(`About to delete object on ${url}`);
+
+    let deleteResult = this.http.delete(url, httpOptions).pipe(
+      catchError(this.handleError('deleteObject', []))
+    ); 
+    
+    // Put an empty subscriber here to avoid angular not executing put without
+    // a subscriber.
+    deleteResult.subscribe();
+    
+    // putResult.subscribe(
+    //   data => {console.log(data), error => {console.error(error)}}
+    // );
+    
+    return deleteResult;
   }
 
   // addShipnode(data) {

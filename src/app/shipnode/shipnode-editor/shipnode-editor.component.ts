@@ -11,7 +11,7 @@ import {ShipNode} from "../../datatype/ShipNode";
 export class ShipnodeEditorComponent {
 
   private shipnodeEditing : ShipNode = {
-    shipNode: "ShipNode Name",
+    shipNode: "",
     latitude: 0,
     longitude: 0,
   };
@@ -20,9 +20,10 @@ export class ShipnodeEditorComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ShipnodeEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: ShipNode,
     public dataService: ShipnodeDataService
   ) {
+    console.log(`data for ShipnodeEditorComponent is: ${data}`);
   }
 
   onNoClick(): void {

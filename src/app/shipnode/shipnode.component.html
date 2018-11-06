@@ -22,27 +22,27 @@
                   <mat-table #table [dataSource]="dataSource">
                   <ng-container matColumnDef="shipNode">
                     <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.shipNode}} </mat-cell>
+                    <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.shipNode}} </mat-cell>
                   </ng-container>
                     <ng-container matColumnDef="latitude">
                       <mat-header-cell *matHeaderCellDef> Latitude </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.latitude}} </mat-cell>
+                      <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.latitude}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="longitude">
                       <mat-header-cell *matHeaderCellDef> Longitude </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.longitude}} </mat-cell>
+                      <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.longitude}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="delete">
                       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <a (click)="deleteShipnode(element.shipNode)"
+                      <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"> 
+                        <a (click)="deleteShipnode(element)"
                             type="button">
                           <mat-icon class="icon">delete</mat-icon>
                         </a> 
                       </mat-cell>
                     </ng-container>   
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    <mat-header-row *matHeaderRowDef="displayedColumns" ></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
                   </mat-table>
                 </div> 
           </mat-card-content>

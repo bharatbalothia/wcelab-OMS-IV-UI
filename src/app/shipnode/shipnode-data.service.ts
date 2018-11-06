@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
@@ -29,11 +29,15 @@ export class ShipnodeDataService extends IvServiceBase {
 
   public getEntityUrl = () => { return "configuration/shipNodes"; }
 
-  public getBearerToken = ()  => { return 'K5UFv2CvlTGgdrFNnoaUfYM4ps37kb5z'; }
+  public getBearerToken = ()  => { return 'YvAuIqChPIQfL4SVNScSXCAWBMCgBCJD'; }
 
   // private data: ShipNode[];
   private observable: Observable<ShipNode[]>;
 
+
+  // private fackeShipnodes : ShipNode[] = [{    shipNode: 'junk_shipnode',
+  //     latitude: 100,
+  //     longitude: 100}];
 
   getData() : Observable<ShipNode[]> {
     // if(this.data) {
@@ -46,7 +50,10 @@ export class ShipnodeDataService extends IvServiceBase {
       return this.observable;
     } else {
     
-      this.observable = this.getList<ShipNode>('');
+      
+      this.observable = this.getList<ShipNode>();
+
+      // this.observable = of(this.fackeShipnodes);
 
       return this.observable;
 
@@ -57,17 +64,16 @@ export class ShipnodeDataService extends IvServiceBase {
 
     console.log (`try to add shipndoe: ${data.shipNode} [${data.latitude}, ${data.longitude}]`);
     
-    this.putObject<ShipNode>(data, '/' + data.shipNode);
+    this.putObject<ShipNode>(data, '/' + encodeURIComponent(data.shipNode));
 
   }
 
-  // // deleteShipnode(shipNode) {
+  deleteShipnode(data: ShipNode) {
 
-  // //   const index = this.ELEMENT_DATA.indexOf(shipNode, 0);
+    console.log (`try to delete shipndoe: ${data.shipNode} [${data.latitude}, ${data.longitude}]`);
+    
+    this.deleteObject('/' + encodeURIComponent(data.shipNode));
 
-  // //   if (index > -1) {
-  // //     this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index + 1)];
-  // //   }
-  // // }
+  }
 
 }

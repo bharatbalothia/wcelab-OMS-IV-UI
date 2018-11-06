@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 // import {DataService} from '../data/data.service';
 import {ShipNode} from '../datatype/ShipNode';
 import {DataSource} from '@angular/cdk/table';
@@ -21,7 +21,7 @@ import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.compone
 
 export class ShipnodeComponent{
   
-  constructor(public dialog: MatDialog, private dataService: ShipnodeDataService) {
+  constructor(public dialog: MatDialog, private dataService: ShipnodeDataService, private changeDetectorRefs: ChangeDetectorRef) {
   }
 
   displayedColumns = ['shipNode', 'longitude', 'latitude', 'delete'];
@@ -36,17 +36,25 @@ export class ShipnodeComponent{
 
     dialogRef.componentInstance.event.subscribe((result) => {
       this.dataService.addShipnode(result.data);
+      // this.dataService.getData();
+      this.dataSource = new ShipnodeDataSource(this.dataService);
+      this.changeDetectorRefs.detectChanges();
     });
   }
 
-  // deleteShipnode(shipNode) {
+  deleteShipnode(shipNode: ShipNode) {
     
-  //   this.dataService.deleteShipnode(shipNode);
+    this.dataService.deleteShipnode(shipNode);
 
+    this.dataSource = new ShipnodeDataSource(this.dataService);
+    this.changeDetectorRefs.detectChanges();
 
-  //   this.dataService = new ShipnodeDataSource(this.dataService);
+  }
 
-  // }
+  editShipnode(shipnode: ShipNode) {
+    
+    console.log(`about to edit: ${shipnode.shipNode}`);
+  }
 }
 
 export class ShipnodeDataSource extends DataSource<any> {
