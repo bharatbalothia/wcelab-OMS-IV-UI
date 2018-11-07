@@ -9,20 +9,20 @@ import {ShipNode, ShipnodeDataService} from '../shipnode-data.service';
 })
 export class ShipnodeEditorComponent {
 
-  private shipnodeEditing : ShipNode = {
-    shipNode: "",
-    latitude: 0,
-    longitude: 0,
-  };
+  // private shipnodeEditing : ShipNode = {
+  //   shipNode: "",
+  //   latitude: 0,
+  //   longitude: 0,
+  // };
 
   public event: EventEmitter<any> = new EventEmitter();
 
   constructor(
     public dialogRef: MatDialogRef<ShipnodeEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ShipNode,
+    @Inject(MAT_DIALOG_DATA) public shipnodeEditing: ShipNode,
     public dataService: ShipnodeDataService
   ) {
-    console.log(`data for ShipnodeEditorComponent is: ${data}`);
+    console.log(`data for ShipnodeEditorComponent is: ${shipnodeEditing}`);
   }
 
   onNoClick(): void {

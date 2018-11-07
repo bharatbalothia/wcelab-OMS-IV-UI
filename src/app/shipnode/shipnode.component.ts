@@ -28,9 +28,16 @@ export class ShipnodeComponent{
   dataSource = new ShipnodeDataSource(this.dataService);
 
   openAddShipnodeDialog(shipnodeToEdit?: ShipNode) : void {
+
+    if (shipnodeToEdit == null) {
+      shipnodeToEdit = { shipNode: null,
+        latitude: null,
+        longitude: null,};
+    }
+
     let dialogRef = this.dialog.open(ShipnodeEditorComponent, {
       width: '600px',
-      data: 'Create ShipNode'
+      data: shipnodeToEdit
     });
 
     dialogRef.componentInstance.event.subscribe((result) => {
