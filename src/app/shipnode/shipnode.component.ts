@@ -1,13 +1,12 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-// import {DataService} from '../data/data.service';
-import {ShipNode} from '../datatype/ShipNode';
+
 import {DataSource} from '@angular/cdk/table';
 import {Observable} from 'rxjs/Observable';
 
 
 import {MatDialog} from '@angular/material';
 
-import {ShipnodeDataService} from './shipnode-data.service';
+import {ShipNode, ShipnodeDataService} from './shipnode-data.service';
 
 import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.component';
 
@@ -28,7 +27,7 @@ export class ShipnodeComponent{
   
   dataSource = new ShipnodeDataSource(this.dataService);
 
-  openAddShipnodeDialog() : void {
+  openAddShipnodeDialog(shipnodeToEdit?: ShipNode) : void {
     let dialogRef = this.dialog.open(ShipnodeEditorComponent, {
       width: '600px',
       data: 'Create ShipNode'

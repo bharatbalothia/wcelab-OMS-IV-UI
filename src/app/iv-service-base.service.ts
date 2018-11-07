@@ -9,6 +9,8 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
+import {IVCredent, CredentialDataService} from './credential/credential-data.service';
+
 
 export abstract class IvServiceBase {
   
@@ -18,25 +20,29 @@ export abstract class IvServiceBase {
   abstract getEntityUrl() : string;
 
   // subclass provides the bearerToken
-  abstract getBearerToken() : string;
+  abstract getBearerToken(credential: IVCredent) : string;
 
-  protected getBaseUrl = () => { return '/ivproxy/inventory/42dd13f4/v1'; }
+  // protected getBaseUrl = () => { return '/ivproxy/inventory/42dd13f4/v1'; }
 
   // need the http client to do CRUD operation
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
+  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler, private credentialData: CredentialDataService) {
     this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
   private getUrl = (additionalUrl:string) => {
-    return `${this.getBaseUrl()}/${this.getEntityUrl()}${additionalUrl}`;
+    let baseUrl = this.credentialData.getIvBaseUrl();
+    return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
   };
 
   private getHttpOptions = () => {
-    return {
+
+    let bearerToken = this.getBearerToken(this.credentialData.getCredential()); 
+
+    return bearerToken == null ? null : {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'cache-control': 'no-cache',
-        'Authorization': `Bearer ${this.getBearerToken()}`
+        'Authorization': `Bearer ${bearerToken}`
       })
     }
   };
@@ -48,10 +54,14 @@ export abstract class IvServiceBase {
 
     let httpOptions = this.getHttpOptions() ;
 
-    return this.http.get<T[]>( url, httpOptions)
-    .pipe(
-      catchError(this.handleError('getList', []))
-    );
+    if (url == null || httpOptions == null) {
+      return null; 
+    } else {
+      return this.http.get<T[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError('getList', []))
+      );
+   }
   }
 
   putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {

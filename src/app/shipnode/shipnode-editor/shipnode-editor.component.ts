@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {ShipnodeDataService} from '../shipnode-data.service';
-import {ShipNode} from "../../datatype/ShipNode";
+import {ShipNode, ShipnodeDataService} from '../shipnode-data.service';
 
 @Component({
   selector: 'app-shipnode-editor',

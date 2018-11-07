@@ -20,13 +20,13 @@ export class AppComponent {
   doLogin() : void {
     
     let credentialCopy = Object.assign({}, this.credentialDataService.getCredential());
-    let tokenCopy = Object.assign({}, this.credentialDataService.getTokens());
+    // let tokenCopy = Object.assign({}, this.credentialDataService.getTokens());
 
-    let editingData = {credential: credentialCopy, tokens: tokenCopy};
+    // let editingData = {credential: credentialCopy, tokens: tokenCopy};
 
     let dialogRef = this.dialog.open(CredentialComponent, {
       width: '600px',
-      data: editingData,
+      data: credentialCopy,
     });
 
     // dialogRef.componentInstance.event.subscribe((result) => {

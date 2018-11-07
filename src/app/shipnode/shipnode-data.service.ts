@@ -9,27 +9,34 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 
-import {ShipNode} from '../datatype/ShipNode';
-
 import {IvServiceBase} from "../iv-service-base.service";
 
+import {EntityUrl} from "../entity-url";
+
+import {IVCredent, CredentialDataService} from "../credential/credential-data.service";
+
+export interface ShipNode {
+  shipNode: string;
+  latitude: number;
+  longitude: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 
-
-// TODO: Need to check if this is a singular service for all ShipNodeData needs. 
-// single ShipnodeDataService instance avoids additional REST calls. Typescript has shared service. 
 export class ShipnodeDataService extends IvServiceBase {
 
-  constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler) {
-    super(http, httpErrorHandler);
+  constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
+    super(http, httpErrorHandler, credentialData);
   }
 
-  public getEntityUrl = () => { return "configuration/shipNodes"; }
+  public getEntityUrl = () => { return EntityUrl.CONFIGURATION_SHIPNODES; }
 
-  public getBearerToken = ()  => { return 'YvAuIqChPIQfL4SVNScSXCAWBMCgBCJD'; }
+  public getBearerToken = (credential: IVCredent)  => {
+    console.log(`credential to use: ${JSON.stringify(credential)}`);
+    return credential == null ? null : credential.tokens.configurationShipNodes; 
+  }
 
   // private data: ShipNode[];
   private observable: Observable<ShipNode[]>;
@@ -40,24 +47,12 @@ export class ShipnodeDataService extends IvServiceBase {
   //     longitude: 100}];
 
   getData() : Observable<ShipNode[]> {
-    // if(this.data) {
-    //   // if `data` is available just return it as `Observable`
-    //   return of(this.data); 
-    // } else 
-    if(this.observable) {
-      // if `this.observable` is set then the request is in progress
-      // return the `Observable` for the ongoing request
-      return this.observable;
-    } else {
-    
-      
+
+    if (this.observable == null) {
       this.observable = this.getList<ShipNode>();
-
-      // this.observable = of(this.fackeShipnodes);
-
-      return this.observable;
-
     }
+
+    return this.observable;
   }
 
   addShipnode(data: ShipNode) {

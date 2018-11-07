@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject,ChangeDetectorRef } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Credent, CredentialDataService} from "./credential-data.service";
+import {IVCredent, CredentialDataService} from "./credential-data.service";
 
 
 @Component({
@@ -14,7 +14,7 @@ export class CredentialComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CredentialComponent>,
-    @Inject(MAT_DIALOG_DATA) public cloneOfCredAndTokens: any,
+    @Inject(MAT_DIALOG_DATA) public cloneOfCredential: IVCredent,
     public dataService: CredentialDataService, 
     private changeDetectorRefs: ChangeDetectorRef) { }
 
@@ -36,25 +36,58 @@ export class CredentialComponent implements OnInit {
   }
 
   onSaveClick(): void {
-    // this.shipnodeEditing. = this.dataService.dataLength();
-    // this.event.emit({data: this.cloneOfCredAndTokens});
 
+    // Save the credential to the data service
+    Object.assign(this.dataService.getCredential(), this.cloneOfCredential);
+
+    // If user actually changed the credentials
+    //   instead of update tokens or didn't change anything
     if (this.credentialDirty) {
-      // Save the credential to the data service
-      Object.assign(this.dataService.getCredential(), this.cloneOfCredAndTokens.credential);
-
       this.reloadTokens();
     }
 
     this.credentialDirty = false;
+
     this.dialogRef.close();
   }
 
+  renewAllTokens(): void {
+    this.reloadTokens();
+  }
+
   private reloadTokens():void {
-    this.dataService.getNetWorkAvailabilityToken(this.cloneOfCredAndTokens.credential).subscribe(
-      data => {console.log(data.access_token); this.cloneOfCredAndTokens.tokens.availabilityNetwork = data.access_token}
+
+    this.dataService.requestNetWorkAvailabilityToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.availabilityNetwork = data.access_token}
     );
 
+    this.dataService.requestDistributionGroupsToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.configurationDistributionGroups = data.access_token}
+    );
+
+    this.dataService.requestSettingsToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.configurationSettings = data.access_token}
+    );
+
+    this.dataService.requestShipnodesToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.configurationShipNodes = data.access_token}
+    );
+
+    this.dataService.requestThresholdsToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.configurationThresholds = data.access_token}
+    );
+
+    this.dataService.requestDemandsToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.demands = data.access_token}
+    );
+
+    this.dataService.requestReservationsToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.reservations = data.access_token}
+    );
+
+    this.dataService.requestSuppliesToken(this.cloneOfCredential).subscribe(
+      data => {this.cloneOfCredential.tokens.supplies = data.access_token}
+    );
 
     this.changeDetectorRefs.detectChanges();
   }

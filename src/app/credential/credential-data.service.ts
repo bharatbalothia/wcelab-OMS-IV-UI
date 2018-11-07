@@ -7,25 +7,43 @@ import { Observable } from 'rxjs';
 
 import {EntityUrl} from "../entity-url";
 
-// Credential 
-export interface Credent {
+// // Credential 
+// export interface Credent {
+//   baseUrl?: string;
+//   tenantID?: string;
+//   appVersion: string;
+//   clientID?: string;
+//   clientSecret?: string;
+// };
+
+// export interface IVToken {
+//   availabilityNetwork?: string;
+//   configurationDistributionGroups?: string;
+//   configurationSettings?: string;
+//   configurationShipNodes?: string;
+//   configurationThresholds?: string;
+//   demands?: string;
+//   reservations?: string;
+//   supplies?: string;
+// };
+
+export interface IVCredent {
   baseUrl?: string;
   tenantID?: string;
   appVersion: string;
   clientID?: string;
   clientSecret?: string;
-};
-
-export interface IVToken {
-  availabilityNetwork?: string;
-  configurationDistributionGroups?: string;
-  configurationSettings?: string;
-  configurationShipNodes?: string;
-  configurationThresholds?: string;
-  demands?: string;
-  reservations?: string;
-  supplies?: string;
-};
+  tokens: {
+    availabilityNetwork?: string;
+    configurationDistributionGroups?: string;
+    configurationSettings?: string;
+    configurationShipNodes?: string;
+    configurationThresholds?: string;
+    demands?: string;
+    reservations?: string;
+    supplies?: string;
+  };
+}
 
 
 @Injectable({
@@ -34,8 +52,8 @@ export interface IVToken {
 export class CredentialDataService  {
 
 
-  private credential: Credent = {baseUrl: "https://eu-api.watsoncommerce.ibm.com/inventory", appVersion: "v1"};
-  private tokens: IVToken = {availabilityNetwork: 'NONE'};
+  private credential: IVCredent = {baseUrl: EntityUrl.DEFAULT_URL_BASE, appVersion: "v1", tokens: {}};
+  // private tokens: IVToken = {availabilityNetwork: 'NONE'};
 
   private handleError: HandleError;
 
@@ -46,29 +64,79 @@ export class CredentialDataService  {
 
   public getCredential = () => { return this.credential; }
 
-  public getTokens = () => { return this.tokens; }
+  // public getTokens = () => { return this.tokens; }
 
-  private getHttpOptions = (credential: Credent) => {
+  private getHttpOptions = () => {
     return {
       headers: new HttpHeaders({
         'Content-Type':  'application/x-www-form-urlencoded',
         'cache-control': 'no-cache',
-        'Authorization': `Basic ${btoa(credential.clientID + ":" + credential.clientSecret)}`
+        'Authorization': `Basic ${btoa(this.credential.clientID + ":" + this.credential.clientSecret)}`
       })
     }
   };
 
-  public getNetWorkAvailabilityToken(credential: Credent) : Observable<any>{
-    
-  
-    let url = `${credential.baseUrl}/${credential.tenantID}/${credential.appVersion}/${EntityUrl.AVAILABILITY_NETWORK}/${EntityUrl.OATH_URL_SUFFIX}`;
+  public getIvBaseUrl(): string {
 
-    let httpOptions = this.getHttpOptions(credential) ;
+    if (this.credential == null || this.credential.baseUrl == null || this.credential.tenantID == null || 
+      this.credential.appVersion == null || this.credential.clientID == null || this.credential.clientSecret == null) {
+        return null;
+      } else {
+        return `${this.credential.baseUrl}/${this.credential.tenantID}/${this.credential.appVersion}`;
+      }
+   
+  }
 
-    return this.http.post( url, EntityUrl.OATH_REQUEST_BODY, httpOptions)
-    .pipe(
-      catchError(this.handleError('getNetWorkAvailabilityToken', []))
-    );
+  public requestNetWorkAvailabilityToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.AVAILABILITY_NETWORK);
+  }
+
+  public requestDistributionGroupsToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS);
+  }
+
+  public requestSettingsToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.CONFIGURATION_SETTINGS);
+  }
+
+  public requestShipnodesToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.CONFIGURATION_SHIPNODES);
+  }
+
+  public requestThresholdsToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.CONFIGURATION_THRESHOLDS);
+  }
+
+  public requestDemandsToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.DEMANDS);
+  }
+
+  public requestReservationsToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.RESERVATIONS);
+  }
+
+  public requestSuppliesToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.SUPPLIES);
+  }
+
+
+  private getToken(operationType: string) : Observable<any> {
+
+    let baseUrl = this.getIvBaseUrl();
+
+    if (baseUrl == null) {
+      console.log("Credential is not set. can't get tokens");
+      return null;
+    } else {
+      let url = `${baseUrl}/${operationType}/${EntityUrl.OATH_URL_SUFFIX}`;
+
+      let httpOptions = this.getHttpOptions() ;
+
+      return this.http.post( url, EntityUrl.OATH_REQUEST_BODY, httpOptions)
+      .pipe(
+        catchError(this.handleError(`get_${operationType}`, []))
+      );
+    }
   }
   
 }
