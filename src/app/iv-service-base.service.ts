@@ -88,6 +88,19 @@ export abstract class IvServiceBase {
     
     return putResult;
   }
+  
+  getObject<T>(additionalUrl:string = '') : Observable<any> {
+
+    let url = this.getUrl(additionalUrl);
+
+    let httpOptions = this.getHttpOptions();
+
+    console.log(`About to get object from ${url}`);
+
+    return this.http.get(url, httpOptions).pipe(
+      catchError(this.handleError('putObject', []))
+    );
+  }
 
   deleteObject(additionalUrl:string) : Observable<any> {
     let url = this.getUrl(additionalUrl);

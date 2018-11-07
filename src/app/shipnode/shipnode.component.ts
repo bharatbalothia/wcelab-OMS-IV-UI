@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {DataSource} from '@angular/cdk/table';
 import {Observable} from 'rxjs/Observable';
@@ -20,7 +20,7 @@ import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.compone
 
 export class ShipnodeComponent{
   
-  constructor(public dialog: MatDialog, private dataService: ShipnodeDataService, private changeDetectorRefs: ChangeDetectorRef) {
+  constructor(public dialog: MatDialog, private dataService: ShipnodeDataService) {
   }
 
   // @ViewChild(MatPaginator) paginator: MatPaginator;

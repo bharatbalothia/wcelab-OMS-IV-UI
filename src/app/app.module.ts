@@ -22,6 +22,7 @@ import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-edi
 
 import { WelcomeComponent } from './welcome/welcome.component';
 import { CredentialComponent } from './credential/credential.component';
+import { DistgroupComponent } from './distgroup/distgroup.component';
 
 
 // import { AuthInterceptor } from './auth.interceptor';
@@ -35,6 +36,7 @@ import { CredentialComponent } from './credential/credential.component';
     ShipnodeComponent,
     ShipnodeEditorComponent,
     CredentialComponent,
+    DistgroupComponent,
     
     
   ],
