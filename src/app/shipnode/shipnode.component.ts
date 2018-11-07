@@ -1,10 +1,10 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 
 import {DataSource} from '@angular/cdk/table';
 import {Observable} from 'rxjs/Observable';
 
 
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatPaginator} from '@angular/material';
 
 import {ShipNode, ShipnodeDataService} from './shipnode-data.service';
 
@@ -23,16 +23,21 @@ export class ShipnodeComponent{
   constructor(public dialog: MatDialog, private dataService: ShipnodeDataService, private changeDetectorRefs: ChangeDetectorRef) {
   }
 
-  displayedColumns = ['shipNode', 'longitude', 'latitude', 'delete'];
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  displayedColumns = ['shipNode', 'latitude', 'longitude', 'delete'];
   
   dataSource = new ShipnodeDataSource(this.dataService);
 
   openAddShipnodeDialog(shipnodeToEdit?: ShipNode) : void {
 
+    let createNewShipNode = false;
+
     if (shipnodeToEdit == null) {
       shipnodeToEdit = { shipNode: null,
         latitude: null,
         longitude: null,};
+      createNewShipNode = true;
     }
 
     let dialogRef = this.dialog.open(ShipnodeEditorComponent, {
@@ -41,10 +46,20 @@ export class ShipnodeComponent{
     });
 
     dialogRef.componentInstance.event.subscribe((result) => {
-      this.dataService.addShipnode(result.data);
-      // this.dataService.getData();
-      this.dataSource = new ShipnodeDataSource(this.dataService);
-      this.changeDetectorRefs.detectChanges();
+      let shipNodeEdited = result.data;
+
+      this.dataService.putShipnode(shipNodeEdited);
+
+      if (createNewShipNode) {
+
+        let shipnodeList = this.dataSource.getShipnodeSubject().value;
+
+        shipnodeList.push(result.data);
+
+        this.dataSource.getShipnodeSubject().next(shipnodeList);
+        
+        // console.log(`shipnodeSubject is now: ${JSON.stringify(this.dataSource.getShipnodeSubject().value})}`);
+      }
     });
   }
 
@@ -52,24 +67,45 @@ export class ShipnodeComponent{
     
     this.dataService.deleteShipnode(shipNode);
 
-    this.dataSource = new ShipnodeDataSource(this.dataService);
-    this.changeDetectorRefs.detectChanges();
+    let shipnodeList = this.dataSource.getShipnodeSubject().value;
+
+    let index = shipnodeList.indexOf(shipNode, 0);
+    if (index > -1) {
+      shipnodeList.splice(index, 1);
+    }
+
+    this.dataSource.getShipnodeSubject().next(shipnodeList);
+
+    // this.dataSource = new ShipnodeDataSource(this.dataService);
+    
+    // this.changeDetectorRefs.detectChanges();
 
   }
 
-  editShipnode(shipnode: ShipNode) {
+  editShipnode(shipnodeToEdit: ShipNode) {
     
-    console.log(`about to edit: ${shipnode.shipNode}`);
+    console.log(`about to edit: ${shipnodeToEdit.shipNode}`);
+
+    this.openAddShipnodeDialog(shipnodeToEdit);
   }
 }
 
-export class ShipnodeDataSource extends DataSource<any> {
+export class ShipnodeDataSource extends DataSource<ShipNode> {
+  
+
   constructor(private dataService: ShipnodeDataService) {
     super();
+    
   }
 
+  getShipnodeSubject = () => {return this.dataService.shipnodeSubject};
+
+
   connect(): Observable<ShipNode[]> {
-    return this.dataService.getData();
+    
+    this.dataService.getAllShipnodes();
+    
+    return this.dataService.getShipnodeList();
   }
 
   disconnect() {

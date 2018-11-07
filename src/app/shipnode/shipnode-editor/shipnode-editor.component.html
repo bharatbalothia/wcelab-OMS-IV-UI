@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <form class="example-form" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input matInput placeholder="ShipNode Name" type="text" required [(ngModel)]="shipnodeEditing.shipNode" name="Name">
+      <input matInput placeholder="ShipNode Name" type="text" required [(ngModel)]="shipnodeToEdit.shipNode" name="Name" [disabled]="!createNewShipnode" >
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="ShipNode latitude" type="number" required [(ngModel)]="shipnodeEditing.latitude" name="latitude up and down">
+      <input matInput placeholder="ShipNode latitude" type="number" required [(ngModel)]="shipnodeToEdit.latitude" name="latitude up and down">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="ShipNode longitude" type="number" required [(ngModel)]="shipnodeEditing.longitude" name="longitude left and right">
+      <input matInput placeholder="ShipNode longitude" type="number" required [(ngModel)]="shipnodeToEdit.longitude" name="longitude left and right">
     </mat-form-field>
     <button mat-raised-button type="submit" color="primary">Save</button>
   </form>

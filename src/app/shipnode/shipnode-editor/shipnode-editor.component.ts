@@ -9,7 +9,7 @@ import {ShipNode, ShipnodeDataService} from '../shipnode-data.service';
 })
 export class ShipnodeEditorComponent {
 
-  // private shipnodeEditing : ShipNode = {
+  // private shipnodeToEdit : ShipNode = {
   //   shipNode: "",
   //   latitude: 0,
   //   longitude: 0,
@@ -17,12 +17,16 @@ export class ShipnodeEditorComponent {
 
   public event: EventEmitter<any> = new EventEmitter();
 
+  public createNewShipnode : boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<ShipnodeEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public shipnodeEditing: ShipNode,
+    @Inject(MAT_DIALOG_DATA) public shipnodeToEdit: ShipNode,
     public dataService: ShipnodeDataService
   ) {
-    console.log(`data for ShipnodeEditorComponent is: ${shipnodeEditing}`);
+    // console.log(`data for ShipnodeEditorComponent is: ${shipnodeToEdit}`);
+    this.createNewShipnode = (shipnodeToEdit.shipNode == null);
+    
   }
 
   onNoClick(): void {
@@ -30,8 +34,8 @@ export class ShipnodeEditorComponent {
   }
 
   onSubmit(): void {
-    // this.shipnodeEditing. = this.dataService.dataLength();
-    this.event.emit({data: this.shipnodeEditing});
+    // this.shipnodeToEdit. = this.dataService.dataLength();
+    this.event.emit({data: this.shipnodeToEdit});
     this.dialogRef.close();
   }
 }
