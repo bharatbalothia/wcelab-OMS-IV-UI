@@ -49,7 +49,7 @@ export abstract class IvServiceBase {
   };
 
   // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl:string = '', params: HttpParams = null) : Observable<T[]>{
+  getList<T>(additionalUrl:string = '', params = null) : Observable<T[]>{
 
   //   let url = this.getUrl(additionalUrl);
 
@@ -90,11 +90,13 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
-  getObject<T>(additionalUrl:string = '', params: HttpParams = null) : Observable<any> {
+  getObject<T>(additionalUrl:string = '', params = null) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
-    let httpOptions = this.getHttpOptions(params);
+    let httpParams: HttpParams = new HttpParams(params);
+
+    let httpOptions = this.getHttpOptions(httpParams);
 
     console.debug(`Requesting object from ${url}`);
 
