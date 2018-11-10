@@ -34,7 +34,7 @@ export abstract class IvServiceBase {
     return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
   };
 
-  private getHttpOptions = (): {headers: HttpHeaders} => {
+  private getHttpOptions = (httpParams: HttpParams = null): {headers: HttpHeaders, params: HttpParams} => {
 
     let bearerToken = this.getBearerToken(this.credentialData.getCredential()); 
 
@@ -43,25 +43,28 @@ export abstract class IvServiceBase {
         'Content-Type':  'application/json',
         'cache-control': 'no-cache',
         'Authorization': `Bearer ${bearerToken}`
-      })
-    }
+      }),
+      params: httpParams
+    };
   };
 
   // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl:string = '') : Observable<T[]>{
+  getList<T>(additionalUrl:string = '', params: HttpParams = null) : Observable<T[]>{
 
-    let url = this.getUrl(additionalUrl);
+  //   let url = this.getUrl(additionalUrl);
 
-    let httpOptions = this.getHttpOptions() ;
+  //   let httpOptions = this.getHttpOptions() ;
 
-    if (url == null || httpOptions == null) {
-      return null; 
-    } else {
-      return this.http.get<T[]>(url, httpOptions)
-      .pipe(
-        catchError(this.handleError('getList', []))
-      );
-   }
+  //   if (url == null || httpOptions == null) {
+  //     return null; 
+  //   } else {
+  //     return this.http.get<T[]>(url, httpOptions)
+  //     .pipe(
+  //       catchError(this.handleError('getList', []))
+  //     );
+  //  }
+
+    return this.getObject<T[]>(additionalUrl, params);
   }
 
   putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
@@ -87,11 +90,11 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
-  getObject<T>(additionalUrl:string = '') : Observable<any> {
+  getObject<T>(additionalUrl:string = '', params: HttpParams = null) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
-    let httpOptions = this.getHttpOptions();
+    let httpOptions = this.getHttpOptions(params);
 
     console.debug(`Requesting object from ${url}`);
 
