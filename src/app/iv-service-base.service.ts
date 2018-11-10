@@ -29,12 +29,12 @@ export abstract class IvServiceBase {
     this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
-  private getUrl = (additionalUrl:string) => {
+  private getUrl = (additionalUrl:string): string => {
     let baseUrl = this.credentialData.getIvBaseUrl();
     return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
   };
 
-  private getHttpOptions = () => {
+  private getHttpOptions = (): {headers: HttpHeaders} => {
 
     let bearerToken = this.getBearerToken(this.credentialData.getCredential()); 
 
@@ -70,20 +70,18 @@ export abstract class IvServiceBase {
 
     let httpOptions = this.getHttpOptions();
 
-    console.log(`About to put object to ${url}`);
+    console.debug('Put object to %s', url, objectToPut);
 
     let putResult = this.http.put(url, objectToPut, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
     ); 
-
-    console.log(`finished calling put object to ${url}`);
     
     // Put an empty subscriber here to avoid angular not executing put without
     // a subscriber.
     putResult.subscribe();
     
     // putResult.subscribe(
-    //   data => {console.log(data), error => {console.error(error)}}
+    //   data => {console.debug(data), error => {console.error(error)}}
     // );
     
     return putResult;
@@ -95,7 +93,7 @@ export abstract class IvServiceBase {
 
     let httpOptions = this.getHttpOptions();
 
-    console.log(`About to get object from ${url}`);
+    console.debug(`Requesting object from ${url}`);
 
     return this.http.get(url, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
@@ -107,34 +105,21 @@ export abstract class IvServiceBase {
 
     let httpOptions = this.getHttpOptions();
 
-    console.log(`About to delete object on ${url}`);
+    console.debug(`Deleting object on ${url}`);
 
     let deleteResult = this.http.delete(url, httpOptions).pipe(
       catchError(this.handleError('deleteObject', []))
     ); 
     
-    // Put an empty subscriber here to avoid angular not executing put without
-    // a subscriber.
+    // Put an empty subscriber here to avoid angular not executing deletion
+    // without a subscriber.
     deleteResult.subscribe();
     
     // putResult.subscribe(
-    //   data => {console.log(data), error => {console.error(error)}}
+    //   data => {console.debug(data), error => {console.error(error)}}
     // );
     
     return deleteResult;
   }
-
-  // addShipnode(data) {
-  //   this.ELEMENT_DATA.push(data);
-  // }
-
-  // deleteShipnode(shipNode) {
-
-  //   const index = this.ELEMENT_DATA.indexOf(shipNode, 0);
-
-  //   if (index > -1) {
-  //     this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index + 1)];
-  //   }
-  // }
 
 }

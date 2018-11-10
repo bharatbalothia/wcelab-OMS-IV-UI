@@ -4,7 +4,7 @@
     <div class="container">
       <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
         <div class="blocks">
-          <button button="submit" mat-raised-button color="primary">
+          <button button="button" mat-raised-button color="primary" (click)="onAddnewDistgroup()">
             <mat-icon>add</mat-icon> Add Dist.Group
           </button>
         </div>
@@ -22,7 +22,12 @@
               <mat-table #table [dataSource]="dataSource">
                 <ng-container matColumnDef="distributionGroupId">
                   <mat-header-cell *matHeaderCellDef> Distribution Group </mat-header-cell>
-                  <mat-cell *matCellDef="let element" > {{element.distributionGroupId}} {{stringifyShipnodes(element.shipNodes)}}</mat-cell>
+                  <mat-cell *matCellDef="let element" (dblclick)="editDistgroup(element)" > {{element.distributionGroupId}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dgShipnodeList">
+                  <mat-header-cell *matHeaderCellDef> Ship Nodes </mat-header-cell>
+                  <!-- <mat-cell *matCellDef="let element" >{{stringifyShipnodes(element.shipNodes)}}</mat-cell> -->
+                  <mat-cell *matCellDef="let element" (dblclick)="editDistgroup(element)">{{element.shipNodes | arrayList: 'shipNode' : ', '}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>

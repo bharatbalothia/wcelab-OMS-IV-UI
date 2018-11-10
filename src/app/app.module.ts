@@ -23,6 +23,9 @@ import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-edi
 import { WelcomeComponent } from './welcome/welcome.component';
 import { CredentialComponent } from './credential/credential.component';
 import { DistgroupComponent } from './distgroup/distgroup.component';
+import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup-editor.component';
+import { ArrayListPipe } from './util/array-list.pipe';
+
 
 
 // import { AuthInterceptor } from './auth.interceptor';
@@ -37,7 +40,9 @@ import { DistgroupComponent } from './distgroup/distgroup.component';
     ShipnodeEditorComponent,
     CredentialComponent,
     DistgroupComponent,
-    
+    DistgroupEditorComponent,
+    ArrayListPipe,
+        
     
   ],
   imports: [
@@ -64,6 +69,7 @@ import { DistgroupComponent } from './distgroup/distgroup.component';
   entryComponents: [
     ShipnodeEditorComponent,
     CredentialComponent,
+    DistgroupEditorComponent,
   ],
 
   bootstrap: [AppComponent]

@@ -27,15 +27,17 @@ export interface ShipNode {
 
 export class ShipnodeDataService extends IvServiceBase {
 
-  shipnodeSubject: BehaviorSubject<ShipNode[]> = new BehaviorSubject<ShipNode[]>([]);
+  private shipnodeSubject: BehaviorSubject<ShipNode[]> = new BehaviorSubject<ShipNode[]>([]);
+
+  private retriveNeeded: boolean = true;
 
   constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
     super(http, httpErrorHandler, credentialData);
   }
 
-  public getEntityUrl = () => { return EntityUrl.CONFIGURATION_SHIPNODES; }
+  public getEntityUrl = (): string => { return EntityUrl.CONFIGURATION_SHIPNODES; }
 
-  public getBearerToken = (credential: IVCredent)  => {
+  public getBearerToken = (credential: IVCredent): string  => {
     // console.log(`credential to use: ${JSON.stringify(credential)}`);
     return credential == null ? null : credential.tokens.configurationShipNodes; 
   }
@@ -48,7 +50,18 @@ export class ShipnodeDataService extends IvServiceBase {
   //     latitude: 100,
   //     longitude: 100}];
 
-  getShipnodeList() : Observable<ShipNode[]> {
+  getShipnodeList(reloadShipnode=false) : BehaviorSubject<ShipNode[]> {
+
+    if (reloadShipnode) {
+      this.retriveNeeded = true;
+      console.debug('User requested to reload shipnodes');
+    }
+    
+    if (this.retriveNeeded) {
+      this.retriveNeeded = false;
+      console.debug('Requesting shipnodes from server. Current shipnodes: ', this.shipnodeSubject.value);
+      this.retrieveAllShipnodes();
+    }
 
     return this.shipnodeSubject;
 
@@ -69,8 +82,9 @@ export class ShipnodeDataService extends IvServiceBase {
     // return this.observable;
   }
 
-  getAllShipnodes(): void{
+  retrieveAllShipnodes(): void{
     this.getList<ShipNode>().subscribe(data => {
+      console.debug('Received shipnodes from server.', data);
       this.shipnodeSubject.next(data);
     });
   }

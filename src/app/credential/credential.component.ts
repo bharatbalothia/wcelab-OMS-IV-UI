@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject,ChangeDetectorRef } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {IVCredent, CredentialDataService} from "./credential-data.service";
+// import { Observable, forkJoin  } from 'rxjs';
+// import { EntityUrl } from '../entity-url'
 
 
 @Component({
@@ -21,7 +23,9 @@ export class CredentialComponent implements OnInit {
   // public event: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
+
   }
+
 
   setCredentialDirty(): void {
 
@@ -43,51 +47,20 @@ export class CredentialComponent implements OnInit {
     // If user actually changed the credentials
     //   instead of update tokens or didn't change anything
     if (this.credentialDirty) {
-      this.reloadTokens();
+      this.renewAllTokens();
     }
 
     this.credentialDirty = false;
 
+    // localStorage.setItem(EntityUrl.STORE_KEY_TOKENS, JSON.stringify(this.cloneOfCredential.tokens));
+
     this.dialogRef.close();
   }
+  
 
   renewAllTokens(): void {
-    this.reloadTokens();
-  }
 
-  private reloadTokens():void {
-
-    this.dataService.requestNetWorkAvailabilityToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.availabilityNetwork = data.access_token}
-    );
-
-    this.dataService.requestDistributionGroupsToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.configurationDistributionGroups = data.access_token}
-    );
-
-    this.dataService.requestSettingsToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.configurationSettings = data.access_token}
-    );
-
-    this.dataService.requestShipnodesToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.configurationShipNodes = data.access_token}
-    );
-
-    this.dataService.requestThresholdsToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.configurationThresholds = data.access_token}
-    );
-
-    this.dataService.requestDemandsToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.demands = data.access_token}
-    );
-
-    this.dataService.requestReservationsToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.reservations = data.access_token}
-    );
-
-    this.dataService.requestSuppliesToken(this.cloneOfCredential).subscribe(
-      data => {this.cloneOfCredential.tokens.supplies = data.access_token}
-    );
+    this.dataService.reloadTokens();
 
     this.changeDetectorRefs.detectChanges();
   }

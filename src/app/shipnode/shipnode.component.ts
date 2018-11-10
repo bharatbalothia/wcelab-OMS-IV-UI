@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {DataSource} from '@angular/cdk/table';
+import {BehaviorSubject} from 'rxjs';
 import {Observable} from 'rxjs/Observable';
 
 
@@ -63,7 +64,7 @@ export class ShipnodeComponent{
     });
   }
 
-  deleteShipnode(shipNode: ShipNode) {
+  deleteShipnode(shipNode: ShipNode) : void {
     
     this.dataService.deleteShipnode(shipNode);
 
@@ -82,7 +83,7 @@ export class ShipnodeComponent{
 
   }
 
-  editShipnode(shipnodeToEdit: ShipNode) {
+  editShipnode(shipnodeToEdit: ShipNode): void {
     
     console.log(`about to edit: ${shipnodeToEdit.shipNode}`);
 
@@ -98,12 +99,12 @@ export class ShipnodeDataSource extends DataSource<ShipNode> {
     
   }
 
-  getShipnodeSubject = () => {return this.dataService.shipnodeSubject};
+  getShipnodeSubject = (): BehaviorSubject<ShipNode[]> => {return this.dataService.getShipnodeList()};
 
 
   connect(): Observable<ShipNode[]> {
     
-    this.dataService.getAllShipnodes();
+    // this.dataService.retrieveAllShipnodes();
     
     return this.dataService.getShipnodeList();
   }

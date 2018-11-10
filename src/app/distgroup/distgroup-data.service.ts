@@ -20,7 +20,7 @@ export interface DGShipNode {
 
 export interface DistributionGroup {
   distributionGroupId: string;
-  description: string;
+  // description: string;
   shipNodes: DGShipNode[];
 }
 
@@ -46,22 +46,22 @@ export class DistgroupDataService extends IvServiceBase {
     return this.distgroupSubject;
   }
 
-  getAllDistgroups(): void {
+  retrieveAllDistgroups(): void {
     this.getList<DistributionGroup>().subscribe(data =>{
       this.populateDistgroupDetail(data);
       this.distgroupSubject.next(data);
     });
   }
 
-  putDistgroup(distgroupToPut: DistributionGroup){
+  putDistgroup(distgroupToPut: DistributionGroup): void {
     this.putObject<DistributionGroup>(distgroupToPut, '/' + encodeURIComponent(distgroupToPut.distributionGroupId));
   }
 
-  deleteShipnode(distgroupToDelete: DistributionGroup) {
+  deleteDistgroup(distgroupToDelete: DistributionGroup): void {
     this.deleteObject('/' + encodeURIComponent(distgroupToDelete.distributionGroupId));
   }
 
-  private populateDistgroupDetail(distgroups: DistributionGroup[]){
+  private populateDistgroupDetail(distgroups: DistributionGroup[]): void {
     for (let dg of distgroups){
       this.getObject('/' + encodeURIComponent(dg.distributionGroupId)).subscribe(data => {
         dg.shipNodes = [] as DGShipNode[];

@@ -1,20 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { CredentialComponent } from './credential/credential.component';
 import { CredentialDataService } from './credential/credential-data.service';
 
 import {MatDialog} from '@angular/material';
 
+import {EntityUrl} from "./entity-url";
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'sterling-iv-poc';
 
   constructor (public dialog: MatDialog, private credentialDataService : CredentialDataService) {
 
+  }
+
+  ngOnInit() {
+    let ivInfoString: string = localStorage.getItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    if (ivInfoString != null && ivInfoString.length > 0) {
+      let credentFromStore = JSON.parse(ivInfoString);
+      this.credentialDataService.setCredential(credentFromStore);
+    }
   }
 
   doLogin() : void {

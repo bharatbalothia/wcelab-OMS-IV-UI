@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Distribution Group Editor</h1>
+<div mat-dialog-content>
+  <form class="example-form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Distribution Group ID" type="text" required [(ngModel)]="distgroupToEdit.distributionGroupId"
+        name="Dist. Group ID" [disabled]="!createNewDistgroup">
+    </mat-form-field>
+    <mat-list>
+      <mat-list-item *ngFor="let dgshipnode of distgroupToEdit.shipNodes; let index = index">
+
+          <mat-form-field>
+              <mat-select placeholder="Ship Node ID" [(ngModel)]="dgshipnode.shipNode" name="dgshipnode{{index}}">
+                <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
+                  {{shipnode.shipNode}}
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+
+        <!-- <mat-form-field class="dgshipnode-listitem" appearance="fill">
+          <input type="text" placeholder="Ship Node ID"  matInput [(ngModel)]="dgshipnode.shipNode"
+            name="dgshipnode{{index}}" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of shipnodeFilterOption | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+        
+        <button type="button" (click)="deleteShipNodeFromDg(distgroupToEdit.shipNodes, index)" mat-button>
+            <mat-icon class="icon">delete</mat-icon>
+        </button>
+
+      </mat-list-item>
+    </mat-list>
+    <button mat-raised-button type="button" color="primary" class="dgshipnode-add-new" (click)="onAddClick(distgroupToEdit)"><mat-icon>add</mat-icon>Add</button>
+    <div><br></div>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button type="button" class="close" (click)="onNoClick()" color="warn">Cancel</button>
+</div>
