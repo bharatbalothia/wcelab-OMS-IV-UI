@@ -25,6 +25,7 @@ import { CredentialComponent } from './credential/credential.component';
 import { DistgroupComponent } from './distgroup/distgroup.component';
 import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup-editor.component';
 import { ArrayListPipe } from './util/array-list.pipe';
+import { SupplyComponent } from './supply/supply.component';
 
 
 
@@ -42,6 +43,7 @@ import { ArrayListPipe } from './util/array-list.pipe';
     DistgroupComponent,
     DistgroupEditorComponent,
     ArrayListPipe,
+    SupplyComponent,
         
     
   ],
