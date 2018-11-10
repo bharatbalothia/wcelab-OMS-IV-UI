@@ -6,7 +6,7 @@ export class MessageService {
   messages: string[] = [];
 
   add(message: string) {
-    console.log('message service received: ' + message);
+    console.info('message service received: ' + message);
     this.messages.push(message);
   }
 

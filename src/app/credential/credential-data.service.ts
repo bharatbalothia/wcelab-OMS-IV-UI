@@ -65,6 +65,7 @@ export class CredentialDataService {
 
     if (this.credential == null || this.credential.baseUrl == null || this.credential.tenantID == null || 
       this.credential.appVersion == null) {
+        console.error('Missing credential information.', this.credential);
         return null;
       } else {
         return `${this.credential.baseUrl}/${this.credential.tenantID}/${this.credential.appVersion}`;
@@ -187,7 +188,7 @@ export class CredentialDataService {
     let baseUrl = this.getIvBaseUrl();
 
     if (baseUrl == null) {
-      console.log("Credential is not set. can't get tokens");
+      console.warn("Credential is not set. can't get tokens");
       return null;
     } else {
       let url = `${baseUrl}/${operationType}/${EntityUrl.OATH_URL_SUFFIX}`;
@@ -200,5 +201,4 @@ export class CredentialDataService {
       );
     }
   }
-  
 }

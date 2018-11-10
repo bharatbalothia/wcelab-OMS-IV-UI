@@ -30,7 +30,7 @@ export class CredentialComponent implements OnInit {
   setCredentialDirty(): void {
 
     this.credentialDirty = true;
-    console.log('setting credentialDirty flag to true');
+    console.debug('setting credentialDirty flag to true');
 
   }
 

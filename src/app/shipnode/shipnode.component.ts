@@ -85,7 +85,7 @@ export class ShipnodeComponent{
 
   editShipnode(shipnodeToEdit: ShipNode): void {
     
-    console.log(`about to edit: ${shipnodeToEdit.shipNode}`);
+    console.debug('Editing Shipnode.', shipnodeToEdit);
 
     this.openAddShipnodeDialog(shipnodeToEdit);
   }
