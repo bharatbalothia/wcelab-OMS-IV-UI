@@ -16,11 +16,13 @@ export class SupplyComponent {
 
   getSupply() {
     let query: SupplyQuery = {
-      itemId: 'myitem',
+      itemId: 'NZT001',
       unitOfMeasure: 'EACH',
       productClass: 'NEW',
-      shipNode: 'nztest_dallas_dc',
+      shipNode: 'nztest_littleton_dc',
     };
+
+    
 
     this.dataService.getSupply(query);
   }

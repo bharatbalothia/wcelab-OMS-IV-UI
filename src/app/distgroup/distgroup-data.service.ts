@@ -66,7 +66,9 @@ export class DistgroupDataService extends IvServiceBase {
       this.getObject('/' + encodeURIComponent(dg.distributionGroupId)).subscribe(data => {
         dg.shipNodes = [] as DGShipNode[];
 
-        Object.assign(dg.shipNodes, data.shipNodes);
+        let response: DistributionGroup = data as DistributionGroup;
+
+        Object.assign(dg.shipNodes, response.shipNodes);
         
       });
     }

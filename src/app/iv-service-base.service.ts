@@ -67,7 +67,7 @@ export abstract class IvServiceBase {
   }
 
   // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl: string = '', params?: any) : Observable<T[]>{
+  getList<T>(additionalUrl: string = '', params?: any) : Observable<any>{
 
   //   let url = this.getUrl(additionalUrl);
 
@@ -111,7 +111,7 @@ export abstract class IvServiceBase {
 
     let url = this.getUrl(additionalUrl);
 
-    let httpParams: HttpParams = (params == null) ? null : new HttpParams(params);
+    let httpParams: HttpParams = (params == null) ? null : new HttpParams({ fromObject: params});
 
     let httpOptions = this.getHttpOptions(httpParams);
 

@@ -56,9 +56,9 @@ export class CredentialDataService {
     if (this.credential.clientID == null || this.credential.clientID.length == 0 ||
       this.credential.clientSecret == null || this.credential.clientSecret.length == 0) {
       console.error("No clientID or clientSecret. Cannot get tokens.");
-      return  headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache'});
+      return  {
+        headers: new HttpHeaders()
+      };
     } else {
       return {
         headers: new HttpHeaders({
