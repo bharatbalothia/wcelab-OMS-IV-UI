@@ -8,6 +8,7 @@ import {map, startWith} from 'rxjs/operators';
 import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
+import { CredentialDataService } from '../credential/credential-data.service';
 
 
 @Component({
@@ -27,7 +28,10 @@ export class SupplyComponent implements OnInit{
   private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPENBOX", "DAMAGED"];
   filteredProdClassOptions: Observable<string[]>;
 
-  constructor(private dataService: SupplyDataService, private shipnodeDataService: ShipnodeDataService) {
+  constructor(
+    private credentDataService: CredentialDataService,
+    private shipnodeDataService: ShipnodeDataService,
+    private dataService: SupplyDataService) {
 
     // this.querySupply();
 
@@ -74,9 +78,18 @@ export class SupplyComponent implements OnInit{
   
   }
 
-  getUomOptions(): string[] {
-
-    return ;
+  addSupplyRow(): void {
+    let inq = this.supplyInquiryForm;
+    this.supplyListSubjectCache.value.put({
+      itemId: inq.controls.itemIdToInquire.value,
+      unitOfMeasure: inq.controls.unitOfMeasureToInquire.value,
+      productClass: inq.controls.productClassToInquire.value,
+      organizationCode: this.credentDataService.getCredential().tenantID,
+      shipNode: inq.controls.shipNodeToInquire.value,
+      type: null,
+      quantity: null,
+      shipByDate: null,
+    });
   }
 
   getShipnodeList() : ShipNode[] {
