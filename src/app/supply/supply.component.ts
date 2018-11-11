@@ -29,7 +29,7 @@ export class SupplyComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.pipe(
+    this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
