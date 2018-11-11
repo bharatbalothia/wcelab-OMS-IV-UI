@@ -1,6 +1,3 @@
-<p>
-  supply works!
-</p>
 <div>
   <br>
   <div class="container">
@@ -21,6 +18,39 @@
             <h3>Supply</h3>
           </mat-card-title>
           <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Supply Inquiry
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Type itemId, UOM, Prod.Class, and Shipnode
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <form [formGroup]="supplyInquiryForm">
+                  <div>
+
+                    <mat-form-field>
+                      <input matInput placeholder="Item ID" formControlName="itemIdToInquire">
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire">
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput placeholder="Product Class" formControlName="productClassToInquire">
+                    </mat-form-field>
+                    <mat-form-field> <input matInput placeholder="Ship Node" formControlName="shipNodeToInquire"></mat-form-field>
+                  </div>
+
+
+                  <button type="button" mat-raised-button color="primary" (click)="querySupply()">
+                    <mat-icon>whatshot</mat-icon> Find Supply
+                  </button>
+                </form>
+              </mat-expansion-panel>
+            </mat-accordion>
             <div class="example-container mat-elevation-z8">
               <mat-table #table [dataSource]="getItemSupplySubject()">
                 <ng-container matColumnDef="organizationCode">

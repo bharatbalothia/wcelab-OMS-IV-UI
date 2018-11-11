@@ -57,7 +57,8 @@ import { SupplyComponent } from './supply/supply.component';
     AppRouters,
     HttpClientModule,
     FormsModule,
-    
+    ReactiveFormsModule,
+
   ],
   
   providers: [  
