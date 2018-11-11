@@ -16,7 +16,7 @@ export class SupplyComponent {
 
   constructor(private dataService: SupplyDataService) {
 
-    this.getItemSupplySubject();
+    this.querySupply();
 
   }
 
@@ -59,6 +59,3 @@ export class SupplyComponent {
 
 }
 
-
-
-j

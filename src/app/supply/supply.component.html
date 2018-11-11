@@ -23,7 +23,7 @@
           <mat-card-content>
             <div class="example-container mat-elevation-z8">
               <mat-table #table [dataSource]="getItemSupplySubject()">
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="organizationCode">
                   <mat-header-cell *matHeaderCellDef> Org. Code </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.organizationCode}} </mat-cell>
                 </ng-container>
@@ -31,27 +31,27 @@
                   <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.itemId}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="latitude">
+                <ng-container matColumnDef="unitOfMeasure">
                   <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.unitOfMeasure}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="productClass">
                   <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.productClass}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="shipNode">
                   <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.shipNode}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="type">
                   <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.shipByDate}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="longitude">
+                <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.quantity}} </mat-cell>
                 </ng-container>
