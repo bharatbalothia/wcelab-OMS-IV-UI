@@ -14,6 +14,7 @@ import {
     MatSelectModule,
     MatTabsModule,
     MatExpansionModule,
+    MatAutocompleteModule,
   } from '@angular/material';
   
   @NgModule({
@@ -30,6 +31,7 @@ import {
       MatSelectModule,
       MatTabsModule,
       MatExpansionModule,
+      MatAutocompleteModule,
     ],
     exports: [
       MatSidenavModule,
@@ -44,6 +46,7 @@ import {
       MatSelectModule,
       MatTabsModule,
       MatExpansionModule,
+      MatAutocompleteModule,
     ]
   })
 
