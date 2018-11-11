@@ -46,6 +46,10 @@ export class SupplyComponent {
   
   }
 
+  getUomOptions(): string[] {
+
+    return ["EACH", "CASE", "PALLET"];
+  }
 
   private createQuery = (): SupplyQuery => {
     let inq = this.supplyInquiryForm;

@@ -36,7 +36,12 @@
                       <input matInput placeholder="Item ID" formControlName="itemIdToInquire">
                     </mat-form-field>
                     <mat-form-field>
-                      <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire">
+                      <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire" [matAutocomplete]="uomAutoComp">
+                      <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
+                        <mat-option *ngFor="let option of getUomOptions() | async" [value]="option">
+                          {{option}}
+                        </mat-option>
+                      </mat-autocomplete>
                     </mat-form-field>
                     <mat-form-field>
                       <input matInput placeholder="Product Class" formControlName="productClassToInquire">
