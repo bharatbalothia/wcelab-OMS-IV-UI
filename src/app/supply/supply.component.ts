@@ -80,7 +80,11 @@ export class SupplyComponent implements OnInit{
 
   addSupplyRow(): void {
     let inq = this.supplyInquiryForm;
-    this.supplyListSubjectCache.value.put({
+    
+    const listOfItemSupply: ItemSupply[] =
+      this.supplyListSubjectCache.value as ItemSupply[];
+
+    listOfItemSupply.push({
       itemId: inq.controls.itemIdToInquire.value,
       unitOfMeasure: inq.controls.unitOfMeasureToInquire.value,
       productClass: inq.controls.productClassToInquire.value,
