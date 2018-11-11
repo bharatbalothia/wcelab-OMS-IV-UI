@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { SupplyDataService, SupplyQuery, ItemSupply } from './supply-data.service';
 
-import {BehaviorSubject} from 'rxjs';
+import {Observable, BehaviorSubject} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -12,16 +13,32 @@ import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } 
   templateUrl: './supply.component.html',
   styleUrls: ['./supply.component.less']
 })
-export class SupplyComponent {
+export class SupplyComponent implements OnInit{
 
   displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
   // displayedColumns = ['itemId', 'unitOfMeasure', 'productClass', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
   
 
+  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
+  filteredUomOptions: Observable<string[]>;
+
   constructor(private dataService: SupplyDataService) {
 
     // this.querySupply();
 
+  }
+
+  ngOnInit() {
+    this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.UOM_OPTIONS.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   supplyInquiryForm : FormGroup = new FormGroup({
@@ -48,7 +65,7 @@ export class SupplyComponent {
 
   getUomOptions(): string[] {
 
-    return ["EACH", "CASE", "PALLET"];
+    return ;
   }
 
   private createQuery = (): SupplyQuery => {
