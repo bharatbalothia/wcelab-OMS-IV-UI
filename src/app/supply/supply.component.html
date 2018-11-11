@@ -1,3 +1,75 @@
 <p>
   supply works!
 </p>
+<div>
+  <br>
+  <div class="container">
+    <div class="container">
+      <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
+        <div class="blocks">
+          <button button="submit" mat-raised-button color="primary" (click)="openAddShipnodeDialog()">
+            <mat-icon>add</mat-icon> Do Something
+          </button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="center center" class="content">
+        <mat-card class="card">
+          <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+            <h3>Supply</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <div class="example-container mat-elevation-z8">
+              <mat-table #table [dataSource]="getItemSupplySubject()">
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Org. Code </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.organizationCode}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="itemId">
+                  <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.itemId}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="latitude">
+                  <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.unitOfMeasure}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.productClass}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.shipNode}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.shipByDate}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.quantity}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                    <a (click)="deleteShipnode(element)" type="button">
+                      <mat-icon class="icon">delete</mat-icon>
+                    </a>
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+              </mat-table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

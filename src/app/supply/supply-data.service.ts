@@ -58,7 +58,7 @@ export class SupplyDataService extends IvServiceBase {
 
   // distgroupSubject: BehaviorSubject<DistributionGroup[]> = new BehaviorSubject<DistributionGroup[]>([]);
 
-  private supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
+  // private supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
 
   constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
     super(http, httpErrorHandler, credentialData);
@@ -70,15 +70,16 @@ export class SupplyDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.supplies; 
   }
 
-  getSupply(query: SupplyQuery): Observable<ItemSupply[]> {
+  getSupply(query: SupplyQuery): BehaviorSubject<ItemSupply[]> {
 
+    let supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
 
     this.getList<ItemSupply>('', query).subscribe(data => {
       console.debug('Received item supply from server.', data);
-      this.supplySubject.next(data);
+      supplySubject.next(data);
     });
 
-    return this.supplySubject;
+    return supplySubject;
   }
 
   putSupplyAdjustment(supplytoAdjust: SupplyAdjustment): void {
