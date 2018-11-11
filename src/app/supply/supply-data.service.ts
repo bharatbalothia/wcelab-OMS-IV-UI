@@ -8,7 +8,7 @@ import { HttpErrorHandler } from '../http-error-handler.service';
 
 import { IvServiceBase } from "../iv-service-base.service";
 
-import { EntityUrl } from "../entity-url";s
+import { EntityUrl } from "../entity-url";
 
 import { IVCredent, CredentialDataService } from "../credential/credential-data.service";
 

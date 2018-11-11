@@ -11,12 +11,15 @@ export class SupplyComponent {
 
   constructor(private dataService: SupplyDataService) {
 
-    dataService.getSupply()
+    this.getSupply()
   }
 
   getSupply() {
     let query: SupplyQuery = {
-
+      itemId: 'myitem',
+      unitOfMeasure: 'EACH',
+      productClass: 'NEW',
+      shipNode: 'nztest_dallas_dc',
     };
 
     this.dataService.getSupply(query);

@@ -34,28 +34,40 @@ export abstract class IvServiceBase {
     return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
   };
 
-  private getHttpOptions = (httpParams? : HttpParams): {headers: HttpHeaders, params: HttpParams} => {
+  private getHttpOptions = (httpParams? : HttpParams): {headers: HttpHeaders, params?: HttpParams} => {
+
+    let option = httpParams ? {
+      headers: this.getHeader(),
+      params: httpParams
+    } : {
+      headers: this.getHeader()
+    };
+
+    return option;
+  };
+
+  private getHeader(): HttpHeaders{
+    
+    let headers = new HttpHeaders({
+        'Content-Type':  'application/json',
+        'cache-control': 'no-cache'
+      });
 
     let bearerToken = this.getBearerToken(this.credentialData.getCredential());
 
     if (bearerToken == null) {
       console.warn('Failed to obtain Bearer Token for %s', this.constructor.name, 
         this.credentialData.getCredential());
-      return null;
     } else {
-      return{
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-          'cache-control': 'no-cache',
-          'Authorization': `Bearer ${bearerToken}`
-        }),
-        params: httpParams
-      };
+      // HttpHeaders.set is not mutable. Need to use the return value.
+      headers = headers.set('Authorization', `Bearer ${bearerToken}`);
     }
-  };
+
+    return headers;
+  }
 
   // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl: string = '', params?: string) : Observable<T[]>{
+  getList<T>(additionalUrl: string = '', params?: any) : Observable<T[]>{
 
   //   let url = this.getUrl(additionalUrl);
 
@@ -95,7 +107,7 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
-  getObject<T>(additionalUrl: string = '', params?: string) : Observable<any> {
+  getObject<T>(additionalUrl: string = '', params?: any) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
@@ -103,7 +115,7 @@ export abstract class IvServiceBase {
 
     let httpOptions = this.getHttpOptions(httpParams);
 
-    console.debug(`Requesting object from ${url}`);
+    console.debug('Requesting object from url: "%s" with options: ', url, httpOptions);
 
     return this.http.get(url, httpOptions).pipe(
       catchError(this.handleError('putObject', []))

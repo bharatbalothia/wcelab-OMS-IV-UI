@@ -51,21 +51,32 @@ export class CredentialDataService {
     this.credential = credent;
   }
 
-  private getHttpOptions = ()  : {headers: HttpHeaders} => {
-    return {
-      headers: new HttpHeaders({
+  private getAuthHeader = ()  : {headers: HttpHeaders} => {
+
+    if (this.credential.clientID == null || this.credential.clientID.length == 0 ||
+      this.credential.clientSecret == null || this.credential.clientSecret.length == 0) {
+      console.error("No clientID or clientSecret. Cannot get tokens.");
+      return  headers: new HttpHeaders({
         'Content-Type':  'application/x-www-form-urlencoded',
-        'cache-control': 'no-cache',
-        'Authorization': `Basic ${btoa(this.credential.clientID + ":" + this.credential.clientSecret)}`
-      })
+        'cache-control': 'no-cache'});
+    } else {
+      return {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/x-www-form-urlencoded',
+          'cache-control': 'no-cache',
+          'Authorization': `Basic ${btoa(this.credential.clientID + ":" + this.credential.clientSecret)}`
+        })
+      };
     }
   };
 
   public getIvBaseUrl(): string {
 
-    if (this.credential == null || this.credential.baseUrl == null || this.credential.tenantID == null || 
-      this.credential.appVersion == null) {
-        console.error('Missing credential information.', this.credential);
+    if (this.credential == null || 
+      this.credential.baseUrl == null || this.credential.baseUrl.length == 0 ||
+      this.credential.tenantID == null || this.credential.tenantID.length == 0 ||
+      this.credential.appVersion == null || this.credential.appVersion.length == 0) {
+        console.error('IV Credential is not complete. Missing baseUrl or tanantID or appVersion', this.credential);
         return null;
       } else {
         return `${this.credential.baseUrl}/${this.credential.tenantID}/${this.credential.appVersion}`;
@@ -73,8 +84,21 @@ export class CredentialDataService {
    
   }
 
+  public loadCredentFromStore(): void {
+    let ivInfoString: string = localStorage.getItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    if (ivInfoString != null && ivInfoString.length > 0) {     
+      let credentFromStore = JSON.parse(ivInfoString);
+      console.info('Updating Credent from localStorage [%s].', EntityUrl.STORE_IV_INFO_AND_TOKEN, credentFromStore);
+      this.setCredential(credentFromStore);
+    } else {
+      console.info('No Credent found from localStorage [%s].', EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    }
+  }
+
   // Retrieve all tokens and store them into credentialStorage
   public reloadTokens():void {
+
+    console.info('Removing store [%s]', EntityUrl.STORE_IV_INFO_AND_TOKEN);
 
     localStorage.removeItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
 
@@ -139,8 +163,9 @@ export class CredentialDataService {
       any => {
         let safeCopyCredent : IVCredent = 
           this.getCopyOfCredentialWithoutClientIdOrSecret();
-        localStorage.setItem(EntityUrl.STORE_IV_INFO_AND_TOKEN, JSON.stringify(
-          safeCopyCredent));
+        let ivInfoToStore: string = JSON.stringify(safeCopyCredent);
+        console.info('Saving to store [%s]', EntityUrl.STORE_IV_INFO_AND_TOKEN, ivInfoToStore)
+        localStorage.setItem(EntityUrl.STORE_IV_INFO_AND_TOKEN, ivInfoToStore);
       }
     );
   }
@@ -195,7 +220,7 @@ export class CredentialDataService {
     } else {
       let url = `${baseUrl}/${operationType}/${EntityUrl.OATH_URL_SUFFIX}`;
 
-      let httpOptions = this.getHttpOptions() ;
+      let httpOptions = this.getAuthHeader() ;
 
       return this.http.post( url, EntityUrl.OATH_REQUEST_BODY, httpOptions)
       .pipe(

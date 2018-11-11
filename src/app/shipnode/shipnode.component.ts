@@ -106,7 +106,7 @@ export class ShipnodeDataSource extends DataSource<ShipNode> {
     
     // this.dataService.retrieveAllShipnodes();
     
-    return this.dataService.getShipnodeList();
+    return this.dataService.getShipnodeList(true);
   }
 
   disconnect() {

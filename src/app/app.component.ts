@@ -21,11 +21,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    let ivInfoString: string = localStorage.getItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
-    if (ivInfoString != null && ivInfoString.length > 0) {
-      let credentFromStore = JSON.parse(ivInfoString);
-      this.credentialDataService.setCredential(credentFromStore);
-    }
+
+    this.credentialDataService.loadCredentFromStore();
+    
   }
 
   doLogin() : void {
