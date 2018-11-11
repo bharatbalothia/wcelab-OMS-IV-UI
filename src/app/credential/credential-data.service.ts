@@ -76,6 +76,8 @@ export class CredentialDataService {
   // Retrieve all tokens and store them into credentialStorage
   public reloadTokens():void {
 
+    localStorage.removeItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
+
     // TODO: check if the logic below is correct. 
     // the code currently subscribe to each Observable twice
     //  once in the code just below to process the data

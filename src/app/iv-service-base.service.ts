@@ -34,22 +34,28 @@ export abstract class IvServiceBase {
     return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
   };
 
-  private getHttpOptions = (httpParams: HttpParams = null): {headers: HttpHeaders, params: HttpParams} => {
+  private getHttpOptions = (httpParams? : HttpParams): {headers: HttpHeaders, params: HttpParams} => {
 
-    let bearerToken = this.getBearerToken(this.credentialData.getCredential()); 
+    let bearerToken = this.getBearerToken(this.credentialData.getCredential());
 
-    return bearerToken == null ? null : {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'cache-control': 'no-cache',
-        'Authorization': `Bearer ${bearerToken}`
-      }),
-      params: httpParams
-    };
+    if (bearerToken == null) {
+      console.warn('Failed to obtain Bearer Token for %s', this.constructor.name, 
+        this.credentialData.getCredential());
+      return null;
+    } else {
+      return{
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          'cache-control': 'no-cache',
+          'Authorization': `Bearer ${bearerToken}`
+        }),
+        params: httpParams
+      };
+    }
   };
 
   // get a list by REST GET. Caller specify the return type
-  getList<T>(additionalUrl:string = '', params = null) : Observable<T[]>{
+  getList<T>(additionalUrl: string = '', params?: string) : Observable<T[]>{
 
   //   let url = this.getUrl(additionalUrl);
 
@@ -63,7 +69,6 @@ export abstract class IvServiceBase {
   //       catchError(this.handleError('getList', []))
   //     );
   //  }
-
     return this.getObject<T[]>(additionalUrl, params);
   }
 
@@ -90,11 +95,11 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
-  getObject<T>(additionalUrl:string = '', params = null) : Observable<any> {
+  getObject<T>(additionalUrl: string = '', params?: string) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
-    let httpParams: HttpParams = new HttpParams(params);
+    let httpParams: HttpParams = (params == null) ? null : new HttpParams(params);
 
     let httpOptions = this.getHttpOptions(httpParams);
 

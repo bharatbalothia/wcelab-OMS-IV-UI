@@ -1,18 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SupplyDataService } from './supply-data.service';
+import { SupplyDataService, SupplyQuery } from './supply-data.service';
 
 @Component({
   selector: 'app-supply',
   templateUrl: './supply.component.html',
   styleUrls: ['./supply.component.less']
 })
-export class SupplyComponent implements OnInit {
+export class SupplyComponent {
 
-  constructor(private dataService: SupplyDataService) { }
+  constructor(private dataService: SupplyDataService) {
 
-  ngOnInit() {
+    dataService.getSupply()
   }
+
+  getSupply() {
+    let query: SupplyQuery = {
+
+    };
+
+    this.dataService.getSupply(query);
+  }
+
 
 }
 

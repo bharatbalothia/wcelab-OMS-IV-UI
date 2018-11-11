@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { HttpErrorHandler } from '../http-error-handler.service';
 
 import { IvServiceBase } from "../iv-service-base.service";
 
-import { EntityUrl } from "../entity-url";
+import { EntityUrl } from "../entity-url";s
 
 import { IVCredent, CredentialDataService } from "../credential/credential-data.service";
 
@@ -58,6 +58,8 @@ export class SupplyDataService extends IvServiceBase {
 
   // distgroupSubject: BehaviorSubject<DistributionGroup[]> = new BehaviorSubject<DistributionGroup[]>([]);
 
+  private supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
+
   constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
     super(http, httpErrorHandler, credentialData);
   }
@@ -70,23 +72,17 @@ export class SupplyDataService extends IvServiceBase {
 
   getSupply(query: SupplyQuery): Observable<ItemSupply[]> {
 
-    // let params: HttpParams = new HttpParams(query);
 
-    return this.getList<ItemSupply>('', query);
+    this.getList<ItemSupply>('', query).subscribe(data => {
+      console.debug('Received item supply from server.', data);
+      this.supplySubject.next(data);
+    });
+
+    return this.supplySubject;
   }
-
-  // retrieveAllDistgroups(): void {
-  //   this.getList<DistributionGroup>().subscribe(data =>{
-  //     this.populateDistgroupDetail(data);
-  //     this.distgroupSubject.next(data);
-  //   });
-  // }
 
   putSupplyAdjustment(supplytoAdjust: SupplyAdjustment): void {
     this.putObject<SupplyAdjustment>(supplytoAdjust);
   }
 
-  // deleteDistgroup(distgroupToDelete: DistributionGroup): void {
-  //   this.deleteObject('/' + encodeURIComponent(distgroupToDelete.distributionGroupId));
-  // }
 }

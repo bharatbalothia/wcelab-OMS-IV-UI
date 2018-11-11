@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {DataSource} from '@angular/cdk/table';
 import {BehaviorSubject} from 'rxjs';
 import {Observable} from 'rxjs/Observable';
 
 
-import {MatDialog, MatPaginator} from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import {ShipNode, ShipnodeDataService} from './shipnode-data.service';
 
