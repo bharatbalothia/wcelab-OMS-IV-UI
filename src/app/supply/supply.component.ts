@@ -7,6 +7,8 @@ import {map, startWith} from 'rxjs/operators';
 
 import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } from '@angular/forms';
 
+import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
+
 
 @Component({
   selector: 'app-supply',
@@ -25,14 +27,14 @@ export class SupplyComponent implements OnInit{
   private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPENBOX", "DAMAGED"];
   filteredProdClassOptions: Observable<string[]>;
 
-  constructor(private dataService: SupplyDataService) {
+  constructor(private dataService: SupplyDataService, private shipnodeDataService: ShipnodeDataService) {
 
     // this.querySupply();
 
   }
 
   ngOnInit() {
-    
+
     this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(this.UOM_OPTIONS, value))
@@ -75,6 +77,17 @@ export class SupplyComponent implements OnInit{
   getUomOptions(): string[] {
 
     return ;
+  }
+
+  getShipnodeList() : ShipNode[] {
+
+
+
+    let shipnodeList : ShipNode[] = this.shipnodeDataService.getShipnodeList().value;
+
+    // console.log(`getShipnodeList: ${JSON.stringify(shipnodeList)}`);
+    return shipnodeList;
+
   }
 
   private createQuery = (): SupplyQuery => {
