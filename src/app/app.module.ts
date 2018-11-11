@@ -9,7 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {MaterialModule} from './material.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -44,7 +44,7 @@ import { SupplyComponent } from './supply/supply.component';
     DistgroupEditorComponent,
     ArrayListPipe,
     SupplyComponent,
-        
+    
     
   ],
   imports: [
@@ -58,7 +58,6 @@ import { SupplyComponent } from './supply/supply.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-
   ],
   
   providers: [  
