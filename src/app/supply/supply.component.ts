@@ -94,6 +94,8 @@ export class SupplyComponent implements OnInit{
       quantity: null,
       shipByDate: null,
     });
+
+    this.supplyListSubjectCache.next(listOfItemSupply);
   }
 
   getShipnodeList() : ShipNode[] {
