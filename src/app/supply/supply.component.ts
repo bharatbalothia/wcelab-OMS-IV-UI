@@ -22,6 +22,9 @@ export class SupplyComponent implements OnInit{
   private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
   filteredUomOptions: Observable<string[]>;
 
+  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPENBOX", "DAMAGED"];
+  filteredProdClassOptions: Observable<string[]>;
+
   constructor(private dataService: SupplyDataService) {
 
     // this.querySupply();
@@ -29,16 +32,22 @@ export class SupplyComponent implements OnInit{
   }
 
   ngOnInit() {
+    
     this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => this._filter(this.UOM_OPTIONS, value))
+    );
+
+    this.filteredProdClassOptions = this.supplyInquiryForm.controls.productClassToInquire.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(this.PROD_CLASS_OPTIONS, value))
     );
   }
 
-  private _filter(value: string): string[] {
+  private _filter(optionList: string[], value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.UOM_OPTIONS.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return optionList.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   supplyInquiryForm : FormGroup = new FormGroup({

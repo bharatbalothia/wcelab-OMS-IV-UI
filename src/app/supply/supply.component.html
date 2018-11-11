@@ -44,7 +44,12 @@
                       </mat-autocomplete>
                     </mat-form-field>
                     <mat-form-field>
-                      <input matInput placeholder="Product Class" formControlName="productClassToInquire">
+                      <input matInput placeholder="Product Class" formControlName="productClassToInquire" [matAutocomplete]="prodClassAutoComp">
+                      <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
+                          <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
+                            {{option}}
+                          </mat-option>
+                        </mat-autocomplete>
                     </mat-form-field>
                     <mat-form-field> <input matInput placeholder="Ship Node" formControlName="shipNodeToInquire"></mat-form-field>
                   </div>
