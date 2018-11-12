@@ -27,6 +27,8 @@ import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup
 import { ArrayListPipe } from './util/array-list.pipe';
 import { SupplyComponent } from './supply/supply.component';
 
+import { DatePipe } from '@angular/common';
+
 
 
 // import { AuthInterceptor } from './auth.interceptor';
@@ -66,6 +68,7 @@ import { SupplyComponent } from './supply/supply.component';
   //   useClass: AuthInterceptor,
   //   multi   : true,
   // },
+    DatePipe,
   ],
 
   entryComponents: [

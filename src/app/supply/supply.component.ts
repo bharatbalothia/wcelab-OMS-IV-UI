@@ -33,16 +33,15 @@ export class SupplyComponent implements OnInit{
 
   filteredSupplyTypeOptions: Observable<string[]>;
 
-  private datePipe: DatePipe;
+ 
 
   constructor(
     private credentDataService: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService,
-    private dataService: SupplyDataService) {
+    private dataService: SupplyDataService,
+    private datePipe: DatePipe) {
 
     // this.querySupply();
-
-    this.datePipe = new DatePipe();
 
   }
 
