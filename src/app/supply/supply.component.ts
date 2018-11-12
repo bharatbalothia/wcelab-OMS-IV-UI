@@ -125,7 +125,8 @@ export class SupplyComponent implements OnInit{
 
   saveSupply(supplyElement: ItemSupply):void {
 
-    const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm:ssZZZ');
+    const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-dd') + 'T'
+    this.datePipe.transform(new Date(),'HH:mm:ssZZZ');
 
     let supplyToSync = {supplies: [{
       "eta": "1900-01-01T00:00:00Z",
