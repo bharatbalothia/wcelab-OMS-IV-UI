@@ -65,7 +65,7 @@
                   <button type="submit" mat-raised-button color="primary" (click)="querySupply()">
                     <mat-icon>whatshot</mat-icon> Find Supply
                   </button>
-                  <div>&nbsp;</div>
+                  &nbsp;&nbsp;
                   <button type="button" mat-raised-button color="primary" (click)="addSupplyRow()">
                       <mat-icon>add</mat-icon> Add New Supply
                   </button>
@@ -96,7 +96,13 @@
                 </ng-container>
                 <ng-container matColumnDef="type">
                   <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+                  <mat-cell *matCellDef="let element">
+                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type" ngReadOnly="true">
+                          <mat-option *ngFor="let supplyTypeOption of SUPPLY_TYPE" [value]="supplyTypeOption">
+                            {{supplyTypeOption}}
+                          </mat-option>
+                        </mat-select>
+                  </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>

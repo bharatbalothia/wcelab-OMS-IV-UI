@@ -19,11 +19,14 @@ import { CredentialDataService } from '../credential/credential-data.service';
 })
 export class SupplyComponent implements OnInit{
 
-  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
-  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];
-  private readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
+  public readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
   'PLANNED_PO', 'PLANNED_TRANSFER', 'WIP', 'WO_PLACED'];
 
+  
+  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
+  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];
+  
+  
   displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','save', 'delete'];
   // displayedColumns = ['itemId', 'unitOfMeasure', 'productClass', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
 
@@ -31,7 +34,7 @@ export class SupplyComponent implements OnInit{
 
   filteredProdClassOptions: Observable<string[]>;
 
-  filteredSupplyTypeOptions: Observable<string[]>;
+  // filteredSupplyTypeOptions: Observable<string[]>;
 
  
 
