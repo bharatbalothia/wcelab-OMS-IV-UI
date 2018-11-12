@@ -110,16 +110,16 @@
                 </ng-container>
                 <ng-container matColumnDef="save">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"  matTooltip="Save/Set Quantity">
-                      <a (click)="save(element)" type="button">
+                    <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                      <button (click)="save(element)" type="button" title="Save/Set Quantity">
                         <mat-icon class="icon" >save</mat-icon>
-                      </a>
+                      </button>
                     </mat-cell>
                   </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()" matTooltip="Set Quntity to 0">
-                    <a (click)="deleteSupply(element)" type="button">
+                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()" >
+                    <button (click)="deleteSupply(element)" type="button" title="Set Quntity to 0">
                       <mat-icon class="icon">delete</mat-icon>
                     </a>
                   </mat-cell>
