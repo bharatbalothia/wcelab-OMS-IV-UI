@@ -106,7 +106,11 @@
                 </ng-container>
                 <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.shipByDate}} </mat-cell>
+                  <mat-cell *matCellDef="let element">
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
