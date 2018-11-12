@@ -27,6 +27,7 @@ The demo currently spport the following use case:
 
 ### TODO:
 
+1. Mobile version of Supply result is not readable.
 1. Get Availability
 1. Reservation
 1. Bunch of UI beautification
