@@ -32,6 +32,20 @@ The demo currently spport the following use case:
 1. Reservation
 1. Bunch of UI beautification
 
+## Start this project in your development
+
+1. git clone this repository
+
+```shell
+git clone git@github.ibm.com:Ned-Zhang/OMS-IV-UI.git
+```
+2. install the package 
+
+```shell
+# cd into the directory of the project
+npm update
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
