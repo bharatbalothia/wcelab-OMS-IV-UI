@@ -97,7 +97,7 @@
                 <ng-container matColumnDef="type">
                   <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type" ngReadOnly="true">
+                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type" disabled="true">
                           <mat-option *ngFor="let supplyTypeOption of SUPPLY_TYPE" [value]="supplyTypeOption">
                             {{supplyTypeOption}}
                           </mat-option>
