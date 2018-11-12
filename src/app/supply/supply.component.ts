@@ -121,6 +121,29 @@ export class SupplyComponent implements OnInit{
     };
   }
 
+  saveSupply(supplyElement: ItemSupply):void {
+
+    let supplyToSync = {
+      "eta": "1900-01-01T00:00:00Z",
+      "itemId": supplyElement.itemId,
+      "lineReference": " ",
+      "productClass": supplyElement.productClass,
+      "quantity": supplyElement.quantity,
+      "reference": " ",
+      "referenceType": " ",
+      "segment": " ",
+      "segmentType": " ",
+      "shipByDate": supplyElement.shipByDate,
+      "shipNode": supplyElement.shipNode,
+      "sourceTs": new Date().toUTCString,
+      "tagNumber": " ",
+      "type": supplyElement.type,
+      "unitOfMeasure": supplyElement.unitOfMeasure,
+    };
+
+    this.dataService.putObject(supplyToSync);
+  }
+
   // getSupply() {
   //   let query: SupplyQuery = {
   //     itemId: 'NZT001',

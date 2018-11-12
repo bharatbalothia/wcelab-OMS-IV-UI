@@ -111,7 +111,7 @@
                 <ng-container matColumnDef="save">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                      <button (click)="save(element)" type="button" title="Save/Set Quantity">
+                      <button (click)="saveSupply(element)" type="button" title="Save/Set Quantity">
                         <mat-icon class="icon" >save</mat-icon>
                       </button>
                     </mat-cell>
