@@ -97,7 +97,7 @@
                 <ng-container matColumnDef="type">
                   <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type" disabled="true">
+                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type"  [readonly]="element.isNew"> <!--disabled="true"-->
                           <mat-option *ngFor="let supplyTypeOption of SUPPLY_TYPE" [value]="supplyTypeOption">
                             {{supplyTypeOption}}
                           </mat-option>
@@ -107,7 +107,7 @@
                 <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate">
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate" [readonly]="element.isNew">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-cell>

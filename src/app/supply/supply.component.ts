@@ -22,7 +22,7 @@ export class SupplyComponent implements OnInit{
   public readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
   'PLANNED_PO', 'PLANNED_TRANSFER', 'WIP', 'WO_PLACED'];
 
-  
+
   private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
   private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];
   
@@ -105,6 +105,7 @@ export class SupplyComponent implements OnInit{
       type: null,
       quantity: null,
       shipByDate: null,
+      isNew: true,
     });
 
     this.supplyListSubjectCache.next(listOfItemSupply);

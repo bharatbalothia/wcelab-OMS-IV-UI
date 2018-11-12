@@ -23,6 +23,7 @@ export interface ItemSupply {
   type: string;
   quantity: number;
   shipByDate: string;
+  isNew?: boolean;
 }
 
 export interface SupplyQuery {
