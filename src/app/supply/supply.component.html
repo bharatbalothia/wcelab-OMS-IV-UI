@@ -103,12 +103,12 @@
                 </ng-container>
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.quantity}} </mat-cell>
+                  <mat-cell *matCellDef="let element" (dblclick)="setSupplyQuantity(element)"> {{element.quantity}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                    <a (click)="deleteShipnode(element)" type="button">
+                    <a (click)="deleteSupply(element)" type="button">
                       <mat-icon class="icon">delete</mat-icon>
                     </a>
                   </mat-cell>

@@ -1,7 +1,7 @@
 export class EntityUrl {
 
     // public static readonly DEFAULT_URL_BASE = "https://eu-api.watsoncommerce.ibm.com/inventory";
-    public static readonly DEFAULT_URL_BASE = "http://jian.scpro.us:24200/ivproxy/inventory";
+    public static readonly DEFAULT_URL_BASE = "/ivproxy/inventory";
 
     public static readonly OATH_URL_SUFFIX: string = "oauth2/token";
 

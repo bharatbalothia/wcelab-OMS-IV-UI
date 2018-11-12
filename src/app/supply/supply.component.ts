@@ -18,15 +18,19 @@ import { CredentialDataService } from '../credential/credential-data.service';
 })
 export class SupplyComponent implements OnInit{
 
+  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
+  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];
+  private readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
+  'PLANNED_PO', 'PLANNED_TRANSFER', 'WIP', 'WO_PLACED'];
+
   displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
   // displayedColumns = ['itemId', 'unitOfMeasure', 'productClass', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
-  
 
-  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
   filteredUomOptions: Observable<string[]>;
 
-  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPENBOX", "DAMAGED"];
   filteredProdClassOptions: Observable<string[]>;
+
+  filteredSupplyTypeOptions: Observable<string[]>;
 
   constructor(
     private credentDataService: CredentialDataService,
@@ -48,6 +52,7 @@ export class SupplyComponent implements OnInit{
       startWith(''),
       map(value => this._filter(this.PROD_CLASS_OPTIONS, value))
     );
+    
   }
 
   private _filter(optionList: string[], value: string): string[] {
@@ -98,15 +103,12 @@ export class SupplyComponent implements OnInit{
     this.supplyListSubjectCache.next(listOfItemSupply);
   }
 
+  // Get the list of shipnode. To populate the dropdown box
   getShipnodeList() : ShipNode[] {
-
-
 
     let shipnodeList : ShipNode[] = this.shipnodeDataService.getShipnodeList().value;
 
-    // console.log(`getShipnodeList: ${JSON.stringify(shipnodeList)}`);
     return shipnodeList;
-
   }
 
   private createQuery = (): SupplyQuery => {
