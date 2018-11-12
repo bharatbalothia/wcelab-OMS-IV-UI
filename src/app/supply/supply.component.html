@@ -1,7 +1,7 @@
 <div>
   <br>
-  <!-- <div class="container">
-    <div class="container">
+  <div class="container">
+    <!-- <div class="container">
       <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
         <div class="blocks">
           <button button="submit" mat-raised-button color="primary" (click)="openAddShipnodeDialog()">
@@ -44,20 +44,21 @@
                       </mat-autocomplete>
                     </mat-form-field>
                     <mat-form-field>
-                      <input matInput placeholder="Product Class" formControlName="productClassToInquire" [matAutocomplete]="prodClassAutoComp">
+                      <input matInput placeholder="Product Class" formControlName="productClassToInquire"
+                        [matAutocomplete]="prodClassAutoComp">
                       <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
-                          <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
-                            {{option}}
-                          </mat-option>
-                        </mat-autocomplete>
+                        <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
+                          {{option}}
+                        </mat-option>
+                      </mat-autocomplete>
                     </mat-form-field>
-                    <mat-form-field> 
+                    <mat-form-field>
                       <!-- <input matInput placeholder="Ship Node" formControlName="shipNodeToInquire"> -->
-                      <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire" >
-                          <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
-                            {{shipnode.shipNode}}
-                          </mat-option>
-                        </mat-select>
+                      <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire">
+                        <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
+                          {{shipnode.shipNode}}
+                        </mat-option>
+                      </mat-select>
                     </mat-form-field>
                   </div>
 
@@ -67,7 +68,7 @@
                   </button>
                   &nbsp;&nbsp;
                   <button type="button" mat-raised-button color="primary" (click)="addSupplyRow()">
-                      <mat-icon>add</mat-icon> Add New Supply
+                    <mat-icon>add</mat-icon> Add New Supply
                   </button>
                 </form>
               </mat-expansion-panel>
@@ -97,38 +98,39 @@
                 <ng-container matColumnDef="type">
                   <mat-header-cell *matHeaderCellDef> Supply Type </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                      <mat-select placeholder="Supply Type" [(ngModel)]="element.type"  [disabled]="!element.isNew">
-                          <mat-option *ngFor="let supplyTypeOption of SUPPLY_TYPE" [value]="supplyTypeOption">
-                            {{supplyTypeOption}}
-                          </mat-option>
-                        </mat-select>
+                    <mat-select placeholder="Supply Type" [(ngModel)]="element.type" [disabled]="!element.isNew">
+                      <mat-option *ngFor="let supplyTypeOption of SUPPLY_TYPE" [value]="supplyTypeOption">
+                        {{supplyTypeOption}}
+                      </mat-option>
+                    </mat-select>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate" [readonly]="!element.isNew">
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate"
+                      [readonly]="!element.isNew">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                  <mat-cell *matCellDef="let element" >
+                  <mat-cell *matCellDef="let element">
                     <input type="number" [(ngModel)]="element.quantity">
-                    </mat-cell>
+                  </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="save">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                      <button (click)="saveSupply(element)" type="button" title="Save/Set Quantity">
-                        <mat-icon class="icon" >save</mat-icon>
-                      </button>
-                    </mat-cell>
-                  </ng-container>
+                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                    <button (click)="saveSupply(element)" type="button" title="Save/Set Quantity">
+                      <mat-icon class="icon">save</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()" >
+                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
                     <button (click)="deleteSupply(element)" type="button" title="Set Quntity to 0">
                       <mat-icon class="icon">delete</mat-icon>
                     </button>
