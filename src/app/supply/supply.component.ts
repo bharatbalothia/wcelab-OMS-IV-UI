@@ -23,7 +23,7 @@ export class SupplyComponent implements OnInit{
   private readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
   'PLANNED_PO', 'PLANNED_TRANSFER', 'WIP', 'WO_PLACED'];
 
-  displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
+  displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','save', 'delete'];
   // displayedColumns = ['itemId', 'unitOfMeasure', 'productClass', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
 
   filteredUomOptions: Observable<string[]>;
@@ -52,7 +52,7 @@ export class SupplyComponent implements OnInit{
       startWith(''),
       map(value => this._filter(this.PROD_CLASS_OPTIONS, value))
     );
-    
+
   }
 
   private _filter(optionList: string[], value: string): string[] {

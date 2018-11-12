@@ -103,11 +103,19 @@
                 </ng-container>
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
+                  <mat-cell *matCellDef="let element" >
                     <input type="number" [(ngModel)]="element.quantity">
                      <!-- {{element.quantity}}  -->
                     </mat-cell>
                 </ng-container>
+                <ng-container matColumnDef="save">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                      <a (click)="save(element)" type="button">
+                        <mat-icon class="icon">save</mat-icon>
+                      </a>
+                    </mat-cell>
+                  </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
