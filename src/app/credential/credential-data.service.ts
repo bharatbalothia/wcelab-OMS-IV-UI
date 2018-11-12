@@ -43,7 +43,7 @@ export class CredentialDataService {
   
     this.handleError = httpErrorHandler.createHandleError('CredentialDataService');
 
-    const routerUrl = this.router.url;
+    const routerUrl = this.router.snapshot.url;
 
     console.debug('Router for credential-data is: ', routerUrl);
 
