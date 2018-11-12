@@ -104,7 +104,7 @@ export class SupplyComponent implements OnInit{
       shipNode: inq.controls.shipNodeToInquire.value,
       type: null,
       quantity: null,
-      shipByDate: null,
+      shipByDate: '2500-01-01T00:00:00Z',
       isNew: true,
     });
 

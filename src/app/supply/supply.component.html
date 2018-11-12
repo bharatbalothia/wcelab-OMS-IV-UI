@@ -1,6 +1,6 @@
 <div>
   <br>
-  <div class="container">
+  <!-- <div class="container">
     <div class="container">
       <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
         <div class="blocks">
@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <br>
+    <br> -->
     <div class="container">
       <div fxLayout="row" fxLayoutAlign="center center" class="content">
         <mat-card class="card">
@@ -25,7 +25,7 @@
                     Supply Inquiry
                   </mat-panel-title>
                   <mat-panel-description>
-                    Type itemId, UOM, Prod.Class, and Shipnode
+                    Search Supply for itemId, UOM, Prod.Class, and Shipnode
                   </mat-panel-description>
                 </mat-expansion-panel-header>
 
@@ -116,7 +116,6 @@
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
                   <mat-cell *matCellDef="let element" >
                     <input type="number" [(ngModel)]="element.quantity">
-                     <!-- {{element.quantity}}  -->
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="save">
