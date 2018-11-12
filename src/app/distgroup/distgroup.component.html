@@ -32,7 +32,7 @@
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                    <a (click)="deleteShipnode(element)" type="button">
+                    <a (click)="deleteDistgroup(element)" type="button">
                       <mat-icon class="icon">delete</mat-icon>
                     </a>
                   </mat-cell>

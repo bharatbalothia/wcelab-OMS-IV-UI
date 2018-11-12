@@ -93,6 +93,12 @@ export class DistgroupComponent implements OnInit {
     });
   }
 
+  deleteDistgroup(distgroupToDelete: DistributionGroup): void {
+    console.debug('Deleting Distribution Group. ', distgroupToDelete);
+
+    this.dataService.deleteDistgroup(distgroupToDelete);
+
+  }
   // // stringify list of shipnodes to a text to display 
   // stringifyShipnodes(dgShipNodes: DGShipNode[]): string{
 
