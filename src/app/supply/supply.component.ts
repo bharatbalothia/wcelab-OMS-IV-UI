@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from "@angular/common";
 
 import { SupplyDataService, SupplyQuery, ItemSupply } from './supply-data.service';
 
@@ -35,7 +36,8 @@ export class SupplyComponent implements OnInit{
   constructor(
     private credentDataService: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService,
-    private dataService: SupplyDataService) {
+    private dataService: SupplyDataService,
+    private datePipe: DatePipe) {
 
     // this.querySupply();
 
@@ -123,6 +125,8 @@ export class SupplyComponent implements OnInit{
 
   saveSupply(supplyElement: ItemSupply):void {
 
+    const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm:ssZZZ');
+
     let supplyToSync = {
       "eta": "1900-01-01T00:00:00Z",
       "itemId": supplyElement.itemId,
@@ -135,7 +139,7 @@ export class SupplyComponent implements OnInit{
       "segmentType": " ",
       "shipByDate": supplyElement.shipByDate,
       "shipNode": supplyElement.shipNode,
-      "sourceTs": new Date().toUTCString(),
+      "sourceTs": nowTimeString,
       "tagNumber": " ",
       "type": supplyElement.type,
       "unitOfMeasure": supplyElement.unitOfMeasure,
