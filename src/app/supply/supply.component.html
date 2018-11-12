@@ -19,7 +19,7 @@
           </mat-card-title>
           <mat-card-content>
             <mat-accordion>
-              <mat-expansion-panel>
+              <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     Supply Inquiry
@@ -103,7 +103,10 @@
                 </ng-container>
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                  <mat-cell *matCellDef="let element" (dblclick)="setSupplyQuantity(element)"> {{element.quantity}} </mat-cell>
+                  <mat-cell *matCellDef="let element">
+                    <input type="number" [(ngModel)]="element.quantity">
+                     <!-- {{element.quantity}}  -->
+                    </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
