@@ -153,6 +153,12 @@ export class SupplyComponent implements OnInit{
     this.dataService.putObject(supplyToSync);
   }
 
+  deleteSupply(supplyElement: ItemSupply):void {
+    // Set the quantity to 0 and save it.
+    supplyElement.quantity = 0;
+    this.saveSupply(supplyElement);
+  }
+
   // getSupply() {
   //   let query: SupplyQuery = {
   //     itemId: 'NZT001',
