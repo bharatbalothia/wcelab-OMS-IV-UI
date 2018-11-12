@@ -2,6 +2,35 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3.
 
+## Demo Environment
+
+The demo environment is current at http://ivdemo.adidas.wcelab.com. We are currently hardcode to use the eu-api.watsoncommerce.ibm.com server due to proxy configuration. You can use your own tenantID, ClientID, and ClientSecret to access the IV. 
+
+## Current Development Status
+
+The demo currently spport the following use case:
+
+1. Ship Node
+  1. View Ship Node List
+  1. Update existing Ship Node
+  1. Delete existing Ship Node
+  1. Create new Ship Node
+1. Distribution Group
+  1. View DG List
+  1. Update existing Distribution Group
+  1. Delete existing Distribution Group
+  1. Create new Distribution Group
+1. Supply
+  1. View Supply for ItemID, UOM, Product Class, and ShipNode
+  2. Update Supply (sync)
+  3. Add new supply
+
+### TODO:
+
+1. Get Availability
+1. Reservation
+1. Bunch of UI beautification
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
