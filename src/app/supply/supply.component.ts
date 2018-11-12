@@ -135,7 +135,7 @@ export class SupplyComponent implements OnInit{
       "segmentType": " ",
       "shipByDate": supplyElement.shipByDate,
       "shipNode": supplyElement.shipNode,
-      "sourceTs": new Date().toUTCString,
+      "sourceTs": new Date().toUTCString(),
       "tagNumber": " ",
       "type": supplyElement.type,
       "unitOfMeasure": supplyElement.unitOfMeasure,
