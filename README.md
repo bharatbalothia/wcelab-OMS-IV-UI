@@ -11,19 +11,19 @@ The demo environment is current at http://ivdemo.adidas.wcelab.com. We are curre
 The demo currently spport the following use case:
 
 1. Ship Node
-  1. View Ship Node List
-  1. Update existing Ship Node
-  1. Delete existing Ship Node
-  1. Create new Ship Node
+   1. View Ship Node List
+   1. Update existing Ship Node
+   1. Delete existing Ship Node
+   1. Create new Ship Node
 1. Distribution Group
-  1. View DG List
-  1. Update existing Distribution Group
-  1. Delete existing Distribution Group
-  1. Create new Distribution Group
+   1. View DG List
+   1. Update existing Distribution Group
+   1. Delete existing Distribution Group
+   1. Create new Distribution Group
 1. Supply
-  1. View Supply for ItemID, UOM, Product Class, and ShipNode
-  2. Update Supply (sync)
-  3. Add new supply
+   1. View Supply for ItemID, UOM, Product Class, and ShipNode
+   2. Update Supply (sync)
+   3. Add new supply
 
 ### TODO:
 
