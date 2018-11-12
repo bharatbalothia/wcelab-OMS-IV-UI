@@ -33,13 +33,16 @@ export class SupplyComponent implements OnInit{
 
   filteredSupplyTypeOptions: Observable<string[]>;
 
+  private datePipe: DatePipe;
+
   constructor(
     private credentDataService: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService,
-    private dataService: SupplyDataService,
-    private datePipe: DatePipe) {
+    private dataService: SupplyDataService) {
 
     // this.querySupply();
+
+    this.datePipe = new DatePipe();
 
   }
 
@@ -125,8 +128,10 @@ export class SupplyComponent implements OnInit{
 
   saveSupply(supplyElement: ItemSupply):void {
 
-    const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-dd') + 'T'
-    this.datePipe.transform(new Date(),'HH:mm:ssZZZ');
+    // const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-dd') + 'T'
+    // this.datePipe.transform(new Date(),'HH:mm:ssZZZ');
+
+    const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm:ssZZZ');
 
     let supplyToSync = {supplies: [{
       "eta": "1900-01-01T00:00:00Z",
