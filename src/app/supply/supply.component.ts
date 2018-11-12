@@ -127,7 +127,7 @@ export class SupplyComponent implements OnInit{
 
     const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm:ssZZZ');
 
-    let supplyToSync = {
+    let supplyToSync = {supplies: [{
       "eta": "1900-01-01T00:00:00Z",
       "itemId": supplyElement.itemId,
       "lineReference": " ",
@@ -143,7 +143,7 @@ export class SupplyComponent implements OnInit{
       "tagNumber": " ",
       "type": supplyElement.type,
       "unitOfMeasure": supplyElement.unitOfMeasure,
-    };
+    }]};
 
     this.dataService.putObject(supplyToSync);
   }
