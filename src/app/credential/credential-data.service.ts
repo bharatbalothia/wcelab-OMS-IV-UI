@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 import { catchError } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
 
 import {EntityUrl} from "../entity-url";
 
@@ -39,13 +40,13 @@ export class CredentialDataService {
   private handleError: HandleError;
 
 
-  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler, private router: ActivatedRoute ) { 
+  constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler, private location: Location ) { 
   
     this.handleError = httpErrorHandler.createHandleError('CredentialDataService');
 
-    const routerUrl = this.router.snapshot.url;
+    // const routerUrl = this.router.snapshot.url;
 
-    console.debug('Router for credential-data is: ', routerUrl);
+    console.debug('Router for credential-data is: ', this.location.path, this.location);
 
   }
 
