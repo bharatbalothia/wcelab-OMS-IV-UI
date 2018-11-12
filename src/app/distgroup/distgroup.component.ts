@@ -97,6 +97,15 @@ export class DistgroupComponent implements OnInit {
     console.debug('Deleting Distribution Group. ', distgroupToDelete);
 
     this.dataService.deleteDistgroup(distgroupToDelete);
+    
+    let distgroupList = this.dataSource.getDistgroupSubject().value;
+
+    let index = distgroupList.indexOf(distgroupToDelete, 0);
+    if (index > -1) {
+      distgroupList.splice(index, 1);
+    }
+
+    this.dataSource.getDistgroupSubject().next(distgroupList);
 
   }
   // // stringify list of shipnodes to a text to display 
