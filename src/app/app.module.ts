@@ -29,6 +29,7 @@ import { SupplyComponent } from './supply/supply.component';
 
 import { DatePipe } from '@angular/common';
 import { SettingComponent } from './setting/setting.component';
+import { AvailabilityComponent } from './availability/availability.component';
 
 
 
@@ -48,6 +49,7 @@ import { SettingComponent } from './setting/setting.component';
     ArrayListPipe,
     SupplyComponent,
     SettingComponent,
+    AvailabilityComponent,
   ],
   imports: [
     BrowserModule,
