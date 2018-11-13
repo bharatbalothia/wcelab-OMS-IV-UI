@@ -4,12 +4,14 @@ import {WelcomeComponent} from './welcome/welcome.component';
 import {ShipnodeComponent} from './shipnode/shipnode.component';
 import {DistgroupComponent} from './distgroup/distgroup.component';
 import {SupplyComponent} from './supply/supply.component';
+import {SettingComponent} from './setting/setting.component';
 
 const routes: Routes = [
   {path: '', component: WelcomeComponent},
-  {path: 'shipnode', component: ShipnodeComponent},
-  {path: 'distgroup', component: DistgroupComponent},
+  // {path: 'shipnode', component: ShipnodeComponent},
+  // {path: 'distgroup', component: DistgroupComponent},
   {path: 'supply', component: SupplyComponent},
+  {path: 'setting', component: SettingComponent},
 ];
 
 

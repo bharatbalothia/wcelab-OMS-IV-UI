@@ -48,8 +48,6 @@ import { SettingComponent } from './setting/setting.component';
     ArrayListPipe,
     SupplyComponent,
     SettingComponent,
-    
-    
   ],
   imports: [
     BrowserModule,
