@@ -28,6 +28,7 @@ import { ArrayListPipe } from './util/array-list.pipe';
 import { SupplyComponent } from './supply/supply.component';
 
 import { DatePipe } from '@angular/common';
+import { SettingComponent } from './setting/setting.component';
 
 
 
@@ -46,6 +47,7 @@ import { DatePipe } from '@angular/common';
     DistgroupEditorComponent,
     ArrayListPipe,
     SupplyComponent,
+    SettingComponent,
     
     
   ],
