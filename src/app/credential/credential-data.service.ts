@@ -15,6 +15,7 @@ export interface IVCredent {
   clientSecret?: string;
   tokens: {
     availabilityNetwork?: string;
+    availabilityNode?: string;
     configurationDistributionGroups?: string;
     configurationSettings?: string;
     configurationShipNodes?: string;
@@ -117,6 +118,11 @@ export class CredentialDataService {
       data => {this.credential.tokens.availabilityNetwork = data.access_token}
     );
 
+    let requestNodeAvailabilityToken : Observable<any> = this.requestNodeAvailabilityToken(this.credential);
+    requestNodeAvailabilityToken.subscribe(
+      data => {this.credential.tokens.availabilityNode = data.access_token}
+    );
+
     let requestDistributionGroupsToken : Observable<any> = this.requestDistributionGroupsToken(this.credential);
     requestDistributionGroupsToken.subscribe(
       data => {this.credential.tokens.configurationDistributionGroups = data.access_token}
@@ -159,7 +165,9 @@ export class CredentialDataService {
       requestThresholdsToken,
       requestDemandsToken,
       requestReservationsToken,
-      requestSuppliesToken
+      requestSuppliesToken,
+      requestNodeAvailabilityToken,
+      requestNetWorkAvailabilityToken,
     ).subscribe(
       any => {
         let safeCopyCredent : IVCredent = 

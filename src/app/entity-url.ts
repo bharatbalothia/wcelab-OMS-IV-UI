@@ -9,6 +9,7 @@ export class EntityUrl {
 
 
     public static readonly AVAILABILITY_NETWORK : string = "availability/network";
+    public static readonly AVAILABILITY_NODE : string = "availability/node";
     public static readonly CONFIGURATION_DISTRIBUTIONGROUPS : string = "configuration/distributionGroups";
     public static readonly CONFIGURATION_SETTINGS : string = "configuration/settings";
     public static readonly CONFIGURATION_SHIPNODES : string = "configuration/shipNodes";
