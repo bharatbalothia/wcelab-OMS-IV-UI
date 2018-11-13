@@ -190,6 +190,10 @@ export class CredentialDataService {
     return this.getToken(EntityUrl.AVAILABILITY_NETWORK);
   }
 
+  private requestNodeAvailabilityToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.AVAILABILITY_NODE);
+  }
+
   private requestDistributionGroupsToken(credential: IVCredent) : Observable<any>{
     return this.getToken(EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS);
   }
