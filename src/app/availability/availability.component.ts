@@ -3,7 +3,7 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import {Observable, BehaviorSubject} from 'rxjs';
 
 import { StringOptionFilter } from '../string-option-filter';
-import { AvaInquiryEditorComponent } from "./ava-inquiry-editor/ava-inquiry-editor.component"
+import { AvaiabilityInquiry } from "./ava-inquiry-editor/ava-inquiry-editor.component"
 
 
 
@@ -14,9 +14,16 @@ import { AvaInquiryEditorComponent } from "./ava-inquiry-editor/ava-inquiry-edit
 })
 export class AvailabilityComponent implements OnInit {
 
+  inquiry: AvaiabilityInquiry;
 
-
-  constructor() { }
+  constructor() { 
+    this.inquiry = {
+      distributionGroupId: null,
+      segment: null,
+      segmentType: null,
+      lines: [],
+    }
+  }
 
   ngOnInit() {
 

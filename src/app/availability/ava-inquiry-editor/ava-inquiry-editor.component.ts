@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 
 import {Observable} from 'rxjs';
 
@@ -9,14 +9,15 @@ export interface AvaiabilityInquiryLine {
   itemId: string;
   lineId: number;
   productClass: string;
+  shipNodes: string[];
   unitOfMeasure: string;
 };
 
 export interface AvaiabilityInquiry {
-  distributionGroupId: string;
-  segment: string;
-  segmentType: string;
-  "lines": AvaiabilityInquiryLine[],
+  distributionGroupId?: string;
+  segment?: string;
+  segmentType?: string;
+  lines: AvaiabilityInquiryLine[],
 }
 
 @Component({
@@ -43,12 +44,13 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
+  @Input() inquiry : AvaiabilityInquiry;
   
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
     console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
-    
+
   }
 
 }
