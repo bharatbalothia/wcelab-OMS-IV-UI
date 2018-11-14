@@ -1,9 +1,11 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {Observable, BehaviorSubject} from 'rxjs';
 
 import { StringOptionFilter } from '../string-option-filter';
 import { AvaiabilityInquiry } from "./ava-inquiry-editor/ava-inquiry-editor.component"
+import { IvConstant } from '../iv-constant';
+import { DistgroupDataService } from '../distgroup/distgroup-data.service';
 
 
 
@@ -16,13 +18,17 @@ export class AvailabilityComponent implements OnInit {
 
   inquiry: AvaiabilityInquiry;
 
-  constructor() { 
+  distgroupList: Observable<string[]>;
+
+  constructor( distgroupData: DistgroupDataService) { 
     this.inquiry = {
       distributionGroupId: null,
       segment: null,
       segmentType: null,
       lines: [],
     }
+
+    this.distgroupList = distgroupData.getDistgroupList();
   }
 
   ngOnInit() {
