@@ -11,24 +11,18 @@ import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } 
 import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
 import { CredentialDataService } from '../credential/credential-data.service';
 
+import { IvConstant } from "../iv-constant";
 
+import { StringOptionFilter } from "../string-option-filter";
 @Component({
   selector: 'app-supply',
   templateUrl: './supply.component.html',
   styleUrls: ['./supply.component.less']
 })
 export class SupplyComponent implements OnInit{
-
-  public readonly SUPPLY_TYPE: string[] = ['ONHAND', 'PO', 'PO_PLACED','PO_BACKORDER', 'PO_SCHEDULED', 'PO_RELEASED','INTRANSIT', 'HELD', 
-  'PLANNED_PO', 'PLANNED_TRANSFER', 'WIP', 'WO_PLACED'];
-
-
-  private readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
-  private readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];
   
   
   displayedColumns = ['itemId', 'shipNode', 'type', 'shipByDate', 'quantity','save', 'delete'];
-  // displayedColumns = ['itemId', 'unitOfMeasure', 'productClass', 'shipNode', 'type', 'shipByDate', 'quantity','delete'];
 
   filteredUomOptions: Observable<string[]>;
 
@@ -37,7 +31,6 @@ export class SupplyComponent implements OnInit{
   // filteredSupplyTypeOptions: Observable<string[]>;
 
  
-
   constructor(
     private credentDataService: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService,
@@ -50,23 +43,29 @@ export class SupplyComponent implements OnInit{
 
   ngOnInit() {
 
-    this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(this.UOM_OPTIONS, value))
-    );
+    // this.filteredUomOptions = StringOptionFilter. (IvConstant.UOM_OPTIONS, 
+    //   this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
 
-    this.filteredProdClassOptions = this.supplyInquiryForm.controls.productClassToInquire.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(this.PROD_CLASS_OPTIONS, value))
-    );
+    // this.filteredUomOptions = this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filter(IvConstant.UOM_OPTIONS, value))
+    // );
+
+    this.filteredUomOptions = StringOptionFilter.filterOptions(
+      IvConstant.UOM_OPTIONS,
+      this.supplyInquiryForm.controls.productClassToInquire.valueChanges);
+
+    this.filteredProdClassOptions = StringOptionFilter.filterOptions(
+      IvConstant.PROD_CLASS_OPTIONS,
+      this.supplyInquiryForm.controls.productClassToInquire.valueChanges);
 
   }
 
-  private _filter(optionList: string[], value: string): string[] {
-    const filterValue = value.toLowerCase();
+  // private _filter(optionList: string[], value: string): string[] {
+  //   const filterValue = value.toLowerCase();
 
-    return optionList.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
-  }
+  //   return optionList.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  // }
 
   supplyInquiryForm : FormGroup = new FormGroup({
     itemIdToInquire: new FormControl(''),

@@ -17,6 +17,5 @@ export class EntityUrl {
     public static readonly DEMANDS : string = "demands";
     public static readonly RESERVATIONS : string = "reservations";
     public static readonly SUPPLIES : string = "supplies";
-
-    public static readonly STORE_IV_INFO_AND_TOKEN : string = "iv_connection_info";
+    
 }

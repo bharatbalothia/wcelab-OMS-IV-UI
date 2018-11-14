@@ -75,6 +75,8 @@ import { LoginComponent } from './login/login.component';
   //   multi   : true,
   // },
     DatePipe,
+    // Require the next two providers (MatDialogRef & MAT_DIALOG_DATA)
+    // to inject CredentialComponent which has referece to dialog
     {
        provide: MatDialogRef,
        useValue: {

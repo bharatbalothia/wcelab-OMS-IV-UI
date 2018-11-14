@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
 
 import {EntityUrl} from "../entity-url";
+import { IvConstant } from "../iv-constant";
 
 export interface IVCredent {
   baseUrl?: string;
@@ -87,22 +88,22 @@ export class CredentialDataService {
   }
 
   public loadCredentFromStore(): void {
-    let ivInfoString: string = localStorage.getItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    let ivInfoString: string = localStorage.getItem(IvConstant.STORE_IV_INFO_AND_TOKEN);
     if (ivInfoString != null && ivInfoString.length > 0) {     
       let credentFromStore = JSON.parse(ivInfoString);
-      console.info('Updating Credent from localStorage [%s].', EntityUrl.STORE_IV_INFO_AND_TOKEN, credentFromStore);
+      console.info('Updating Credent from localStorage [%s].', IvConstant.STORE_IV_INFO_AND_TOKEN, credentFromStore);
       this.setCredential(credentFromStore);
     } else {
-      console.info('No Credent found from localStorage [%s].', EntityUrl.STORE_IV_INFO_AND_TOKEN);
+      console.info('No Credent found from localStorage [%s].', IvConstant.STORE_IV_INFO_AND_TOKEN);
     }
   }
 
   // Retrieve all tokens and store them into credentialStorage
   public reloadTokens():void {
 
-    console.info('Removing store [%s]', EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    console.info('Removing store [%s]', IvConstant.STORE_IV_INFO_AND_TOKEN);
 
-    localStorage.removeItem(EntityUrl.STORE_IV_INFO_AND_TOKEN);
+    localStorage.removeItem(IvConstant.STORE_IV_INFO_AND_TOKEN);
 
     // TODO: check if the logic below is correct. 
     // the code currently subscribe to each Observable twice
@@ -173,8 +174,8 @@ export class CredentialDataService {
         let safeCopyCredent : IVCredent = 
           this.getCopyOfCredentialWithoutClientIdOrSecret();
         let ivInfoToStore: string = JSON.stringify(safeCopyCredent);
-        console.info('Saving to store [%s]', EntityUrl.STORE_IV_INFO_AND_TOKEN, ivInfoToStore)
-        localStorage.setItem(EntityUrl.STORE_IV_INFO_AND_TOKEN, ivInfoToStore);
+        console.info('Saving to store [%s]', IvConstant.STORE_IV_INFO_AND_TOKEN, ivInfoToStore)
+        localStorage.setItem(IvConstant.STORE_IV_INFO_AND_TOKEN, ivInfoToStore);
       }
     );
   }
