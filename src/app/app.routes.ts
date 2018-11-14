@@ -7,7 +7,7 @@ import {SupplyComponent} from './supply/supply.component';
 import {SettingComponent} from './setting/setting.component';
 
 const routes: Routes = [
-  {path: '', component: WelcomeComponent},
+  {path: '/', component: WelcomeComponent},
   // {path: 'shipnode', component: ShipnodeComponent},
   // {path: 'distgroup', component: DistgroupComponent},
   {path: 'supply', component: SupplyComponent},
