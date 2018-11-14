@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject,ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, Injectable, ChangeDetectorRef } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {IVCredent, CredentialDataService} from "./credential-data.service";
 // import { Observable, forkJoin  } from 'rxjs';
@@ -9,6 +9,9 @@ import {IVCredent, CredentialDataService} from "./credential-data.service";
   selector: 'app-credential',
   templateUrl: './credential.component.html',
   styleUrls: ['./credential.component.less']
+})
+@Injectable({
+  providedIn: 'root'
 })
 export class CredentialComponent implements OnInit {
 
