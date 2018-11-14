@@ -30,7 +30,8 @@ export class SupplyComponent implements OnInit{
 
   // filteredSupplyTypeOptions: Observable<string[]>;
 
- 
+  public readonly SUPPLY_TYPE: string[] = IvConstant.SUPPLY_TYPE;
+
   constructor(
     private credentDataService: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService,
