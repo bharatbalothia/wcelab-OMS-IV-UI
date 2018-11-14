@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject,ChangeDetectorRef } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {IVCredent, CredentialDataService} from "./credential-data.service";
 // import { Observable, forkJoin  } from 'rxjs';
 // import { EntityUrl } from '../entity-url'
@@ -15,6 +15,7 @@ export class CredentialComponent implements OnInit {
   private credentialDirty = false;
 
   constructor(
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<CredentialComponent>,
     @Inject(MAT_DIALOG_DATA) public cloneOfCredential: IVCredent,
     public dataService: CredentialDataService, 
@@ -68,6 +69,16 @@ export class CredentialComponent implements OnInit {
     
   }
 
+  promptUserToLogin(dialogWidth = '600px') : void {
+    
+    let credentialCopy = Object.assign({}, this.dataService.getCredential());
+    
+    this.dialog.open(CredentialComponent, {
+      width: dialogWidth,
+      data: credentialCopy,
+    });
+
+  }
 
 
 }

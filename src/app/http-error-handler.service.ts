@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from './message.service';
 
+import { CredentialComponent } from './credential/credential.component';
+
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
   <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => Observable<T>;
@@ -13,11 +15,11 @@ export type HandleError =
 @Injectable({
   providedIn: 'root'} )
 export class HttpErrorHandler {
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService, private credentialComponent: CredentialComponent) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => <T>
-    (operation = 'operation', result = {} as T) => this.handleError(serviceName, operation, result);
+    (operation = 'http operation', result = {} as T) => this.handleError(serviceName, operation, result);
 
   /**
    * Returns a function that handles Http operation failures.
@@ -39,6 +41,12 @@ export class HttpErrorHandler {
       // TODO: better job of transforming error for user consumption
       this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
 
+      if (error instanceof HttpErrorResponse) {
+        if (error.status == 401) {
+          // Unauthorized. Prompt user to log in
+          this.credentialComponent.promptUserToLogin();
+        }
+      }
       // Let the app keep running by returning a safe result.
       return of( result );
     };

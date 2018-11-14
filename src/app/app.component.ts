@@ -16,7 +16,8 @@ import {EntityUrl} from "./entity-url";
 export class AppComponent implements OnInit {
   title = 'sterling-iv-poc';
 
-  constructor (public dialog: MatDialog, private credentialDataService : CredentialDataService) {
+  constructor (public dialog: MatDialog, private credentialComponent: CredentialComponent,
+    private credentialDataService : CredentialDataService) {
 
   }
 
@@ -26,23 +27,8 @@ export class AppComponent implements OnInit {
     
   }
 
-  doLogin() : void {
+  doLogin() {
     
-    let credentialCopy = Object.assign({}, this.credentialDataService.getCredential());
-    // let tokenCopy = Object.assign({}, this.credentialDataService.getTokens());
-
-    // let editingData = {credential: credentialCopy, tokens: tokenCopy};
-
-    let dialogRef = this.dialog.open(CredentialComponent, {
-      width: '600px',
-      data: credentialCopy,
-    });
-
-    // dialogRef.componentInstance.event.subscribe((result) => {
-    //   // this.dataService.addShipnode(result.data);
-    //   // // this.dataService.getData();
-    //   // this.dataSource = new ShipnodeDataSource(this.dataService);
-    //   // this.changeDetectorRefs.detectChanges();
-    // });
   }
+
 }
