@@ -33,6 +33,7 @@ import { DatePipe } from '@angular/common';
 import { SettingComponent } from './setting/setting.component';
 import { AvailabilityComponent } from './availability/availability.component';
 import { LoginComponent } from './login/login.component';
+import { FilteredInputComponent } from './filtered-input/filtered-input.component';
 
 
 
@@ -54,6 +55,7 @@ import { LoginComponent } from './login/login.component';
     SettingComponent,
     AvailabilityComponent,
     LoginComponent,
+    FilteredInputComponent,
   ],
   imports: [
     BrowserModule,
