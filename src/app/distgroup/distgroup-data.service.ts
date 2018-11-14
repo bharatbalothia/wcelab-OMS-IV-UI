@@ -42,7 +42,7 @@ export class DistgroupDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.configurationDistributionGroups; 
   }
 
-  getDistgroupList() : Observable<DistributionGroup[]> {
+  getDistgroupList() :BehaviorSubject<DistributionGroup[]> {
     return this.distgroupSubject;
   }
 
