@@ -7,10 +7,10 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <input type="text" [(ngModel)]="avaInquiry.segment" placeholder="Segment">
+    <input matInput type="text" [(ngModel)]="avaInquiry.segment" placeholder="Segment">
   </mat-form-field>
   <mat-form-field>
-    <input type="text" [(ngModel)]="avaInquiry.segmentType" placeholder="Segment Type">
+    <input matInput type="text" [(ngModel)]="avaInquiry.segmentType" placeholder="Segment Type">
   </mat-form-field>
 
   <mat-table #table [dataSource]="avaInquiry.lines">
