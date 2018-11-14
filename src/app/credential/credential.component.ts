@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Injectable, ChangeDetectorRef } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {IVCredent, CredentialDataService} from "./credential-data.service";
 // import { Observable, forkJoin  } from 'rxjs';
 // import { EntityUrl } from '../entity-url'
