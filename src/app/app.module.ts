@@ -17,6 +17,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 import {AppRouters} from './app.routes';
 
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+
 import { ShipnodeComponent } from './shipnode/shipnode.component';
 import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-editor.component';
 
@@ -73,6 +75,8 @@ import { LoginComponent } from './login/login.component';
   //   multi   : true,
   // },
     DatePipe,
+    MatDialog,
+    MatDialogRef,
   ],
 
   entryComponents: [
