@@ -16,7 +16,7 @@ import {EntityUrl} from "./entity-url";
 export class AppComponent implements OnInit {
   title = 'sterling-iv-poc';
 
-  constructor (private credentialDataService : CredentialDataService) {
+  constructor (private credentialComponent: CredentialComponent, private credentialDataService : CredentialDataService) {
 
   }
 
@@ -26,4 +26,7 @@ export class AppComponent implements OnInit {
     
   }
 
+  doLogin(): void {
+    this.credentialComponent.promptUserToLogin();
+  }
 }

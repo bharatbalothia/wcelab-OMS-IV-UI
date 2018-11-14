@@ -5,11 +5,13 @@ import {ShipnodeComponent} from './shipnode/shipnode.component';
 import {DistgroupComponent} from './distgroup/distgroup.component';
 import {SupplyComponent} from './supply/supply.component';
 import {SettingComponent} from './setting/setting.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {path: '', component: WelcomeComponent},
   // {path: 'shipnode', component: ShipnodeComponent},
   // {path: 'distgroup', component: DistgroupComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'supply', component: SupplyComponent},
   {path: 'setting', component: SettingComponent},
   {path: '**', component: WelcomeComponent},
