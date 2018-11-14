@@ -34,6 +34,7 @@ import { SettingComponent } from './setting/setting.component';
 import { AvailabilityComponent } from './availability/availability.component';
 import { LoginComponent } from './login/login.component';
 import { FilteredInputComponent } from './filtered-input/filtered-input.component';
+import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
 
 
 
@@ -56,6 +57,7 @@ import { FilteredInputComponent } from './filtered-input/filtered-input.componen
     AvailabilityComponent,
     LoginComponent,
     FilteredInputComponent,
+    AvaInquiryEditorComponent,
   ],
   imports: [
     BrowserModule,
