@@ -71,7 +71,6 @@ import { AvailabilityComponent } from './availability/availability.component';
   //   multi   : true,
   // },
     DatePipe,
-    CredentialComponent,
   ],
 
   entryComponents: [

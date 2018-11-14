@@ -16,8 +16,7 @@ import {EntityUrl} from "./entity-url";
 export class AppComponent implements OnInit {
   title = 'sterling-iv-poc';
 
-  constructor (public dialog: MatDialog, private credentialComponent: CredentialComponent,
-    private credentialDataService : CredentialDataService) {
+  constructor (private credentialDataService : CredentialDataService) {
 
   }
 
@@ -25,10 +24,6 @@ export class AppComponent implements OnInit {
 
     this.credentialDataService.loadCredentFromStore();
     
-  }
-
-  doLogin() {
-    this.credentialComponent.promptUserToLogin();
   }
 
 }
