@@ -1,8 +1,8 @@
 <div>
   <mat-form-field>
     <mat-select placeholder="Distribution Group ID" [(ngModel)]="avaInquiry.distributionGroupId">
-      <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup">
-        {{distgroup}}
+      <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup.distributionGroupId">
+        {{distgroup.distributionGroupId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
