@@ -10,7 +10,7 @@ import { CredentialComponent } from '../credential/credential.component'
 })
 export class WelcomeComponent implements OnInit {
 
-  constructor(private router: Router, private credentialComponent : CredentialComponent) {
+  constructor(private router: Router) {//, private credentialComponent : CredentialComponent) {
 
   }
 
