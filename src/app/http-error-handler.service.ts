@@ -45,7 +45,7 @@ export class HttpErrorHandler {
 
       if (error.status == 401) {
         // Unauthorized. Prompt user to log in
-        this.router.route('/login');
+        this.router.navigateByUrl('/login');
       }
       // Let the app keep running by returning a safe result.
       return of( result );
