@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Router } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
@@ -15,7 +15,7 @@ export type HandleError =
 @Injectable({
   providedIn: 'root'} )
 export class HttpErrorHandler {
-  constructor(private messageService: MessageService, private credentialComponent: CredentialComponent) { }
+  constructor(private router:Router, private messageService: MessageService) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => <T>
@@ -41,11 +41,9 @@ export class HttpErrorHandler {
       // TODO: better job of transforming error for user consumption
       this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
 
-      if (error instanceof HttpErrorResponse) {
-        if (error.status == 401) {
-          // Unauthorized. Prompt user to log in
-          this.credentialComponent.promptUserToLogin();
-        }
+      if (error.status == 401) {
+        // Unauthorized. Prompt user to log in
+        this.router.route('/login');
       }
       // Let the app keep running by returning a safe result.
       return of( result );

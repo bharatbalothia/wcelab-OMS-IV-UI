@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   }
 
   doLogin() {
-    
+    this.credentialComponent.promptUserToLogin();
   }
 
 }

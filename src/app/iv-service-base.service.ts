@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import {IVCredent, CredentialDataService} from './credential/credential-data.ser
 
 export abstract class IvServiceBase {
   
+  private localHandleError: HandleError;
   private handleError: HandleError;
 
   // subclass provides the entity url like "configuration/shipNodes" or "supplies"
@@ -26,7 +27,34 @@ export abstract class IvServiceBase {
 
   // need the http client to do CRUD operation
   constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler, private credentialData: CredentialDataService) {
-    this.handleError = httpErrorHandler.createHandleError('IVRestService');
+    
+    this.localHandleError = (serviceName = 'iv-service-base') => <T>
+    (operation = 'http operation', result = {} as T) => {
+      
+      return (error: HttpErrorResponse): Observable<T> => {
+        // TODO: send the error to remote logging infrastructure
+        console.error(error); // log to console instead
+  
+        const message = (error.error instanceof ErrorEvent) ?
+          error.error.message :
+         `server returned code ${error.status} with body "${error.error}"`;
+  
+        // TODO: better job of transforming error for user consumption
+        this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
+  
+        if (error instanceof HttpErrorResponse) {
+          if (error.status == 401) {
+            // Unauthorized. Prompt user to log in
+            this.credentialComponent.promptUserToLogin();
+          }
+        }
+        // Let the app keep running by returning a safe result.
+        return of( result );
+      };
+
+      this.httpErrorHandler.handleError(serviceName, operation, result);
+    };
+    // this.handleError = httpErrorHandler.createHandleError('IVRestService');
   }
 
   private getUrl = (additionalUrl:string): string => {
@@ -66,22 +94,11 @@ export abstract class IvServiceBase {
     return headers;
   }
 
-  // get a list by REST GET. Caller specify the return type
+  // get a list by REST GET.
   getList<T>(additionalUrl: string = '', params?: any) : Observable<any>{
 
-  //   let url = this.getUrl(additionalUrl);
-
-  //   let httpOptions = this.getHttpOptions() ;
-
-  //   if (url == null || httpOptions == null) {
-  //     return null; 
-  //   } else {
-  //     return this.http.get<T[]>(url, httpOptions)
-  //     .pipe(
-  //       catchError(this.handleError('getList', []))
-  //     );
-  //  }
     return this.getObject<T[]>(additionalUrl, params);
+  
   }
 
   putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
