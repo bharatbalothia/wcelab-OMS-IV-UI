@@ -4,9 +4,8 @@ import { DatePipe } from "@angular/common";
 import { SupplyDataService, SupplyQuery, ItemSupply } from './supply-data.service';
 
 import {Observable, BehaviorSubject} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
 
-import { FormGroup, ReactiveFormsModule, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
 import { CredentialDataService } from '../credential/credential-data.service';

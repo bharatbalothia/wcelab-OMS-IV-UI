@@ -10,6 +10,9 @@ export class IvConstant {
   'PLANNED_PO', 'PLANNED_TRANSFER', 
   'WIP', 'WO_PLACED'];
 
+  public static readonly DELIVERY_METHOD_OPTIONS: string[] = [
+    'SHP', 'PICK', "DEL"
+  ]
   public static readonly UOM_OPTIONS: string[] = ["EACH", "CASE", "PALLET"];
 
   public static readonly PROD_CLASS_OPTIONS: string[] = ["NEW", "OPEN_BOX", "USED"];

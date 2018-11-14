@@ -1,3 +1,92 @@
-<p>
-  ava-inquiry-editor works!
-</p>
+<div>
+  <mat-form-field>
+    <mat-select placeholder="Distribution Group ID" [(ngModel)]="avaInquiry.distributionGroupId">
+      <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup">
+        {{distgroup}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="text" [(ngModel)]="element.segment" placeholder="Segment">
+  </mat-form-field>
+  <mat-form-field>
+    <input type="text" [(ngModel)]="element.segmentType" placeholder="Segment Type">
+  </mat-form-field>
+
+  <mat-table #table [dataSource]="avaInquiry.lines">
+    <ng-container matColumnDef="itemId">
+      <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.itemId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="unitOfMeasure">
+      <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <input matInput placeholder="UOM" [matAutocomplete]="uomAutoComp" [(ngModel)]="element.unitOfMeasure">
+        <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
+          <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="productClass">
+      <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <input matInput placeholder="Product Class" [(ngModel)]="element.productClass"
+          [matAutocomplete]="prodClassAutoComp">
+        <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
+          <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="deliveryMethod">
+      <mat-header-cell *matHeaderCellDef> Delivery Method </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+          <input matInput placeholder="Product Class" [(ngModel)]="element.deliveryMethod"
+            [matAutocomplete]="deliveryMethodAutoComp">
+          <mat-autocomplete autoActiveFirstOption #deliveryMethodAutoComp="matAutocomplete">
+            <mat-option *ngFor="let option of filteredDeliveryMethodOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <!-- <mat-form-field>
+    <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire" [matAutocomplete]="uomAutoComp">
+    <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
+      <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Product Class" formControlName="productClassToInquire"
+      [matAutocomplete]="prodClassAutoComp">
+    <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
+      <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire">
+      <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
+        {{shipnode.shipNode}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+</div>
+
+<button type="submit" mat-raised-button color="primary" (click)="querySupply()">
+  <mat-icon>whatshot</mat-icon> Find Supply
+</button>
+&nbsp;
