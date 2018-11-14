@@ -6,12 +6,12 @@ import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
 
 export interface AvaiabilityInquiryLine {
-  deliveryMethod: string;
-  itemId: string;
   lineId: number;
-  productClass: string;
-  shipNodes: string[];
-  unitOfMeasure: string;
+  itemId: string;
+  unitOfMeasure?: string;
+  productClass?: string;
+  deliveryMethod?: string;
+  shipNodes?: string[];
 };
 
 export interface AvaiabilityInquiry {

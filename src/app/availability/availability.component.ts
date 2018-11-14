@@ -25,7 +25,11 @@ export class AvailabilityComponent implements OnInit {
       distributionGroupId: null,
       segment: null,
       segmentType: null,
-      lines: [],
+      lines: [{
+        lineId: 1,
+        itemId: '',
+        shipNodes: []
+      },],
     }
   }
 
