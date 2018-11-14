@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Injectable, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, Injectable } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {IVCredent, CredentialDataService} from "./credential-data.service";
 // import { Observable, forkJoin  } from 'rxjs';
@@ -21,8 +21,8 @@ export class CredentialComponent implements OnInit {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CredentialComponent>,
     @Inject(MAT_DIALOG_DATA) public cloneOfCredential: IVCredent,
-    public dataService: CredentialDataService, 
-    private changeDetectorRefs: ChangeDetectorRef) { }
+    public dataService: CredentialDataService 
+    ) { }
 
   // public event: EventEmitter<any> = new EventEmitter();
 
@@ -68,7 +68,7 @@ export class CredentialComponent implements OnInit {
 
     this.dataService.reloadTokens();
 
-    this.changeDetectorRefs.detectChanges();
+    //this.changeDetectorRefs.detectChanges();
     
   }
 
