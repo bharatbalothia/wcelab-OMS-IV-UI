@@ -18,17 +18,15 @@ export class AvailabilityComponent implements OnInit {
 
   inquiry: AvaiabilityInquiry;
 
-  distgroupList: Observable<string[]>;
+  
 
-  constructor( distgroupData: DistgroupDataService) { 
+  constructor( ) { 
     this.inquiry = {
       distributionGroupId: null,
       segment: null,
       segmentType: null,
       lines: [],
     }
-
-    this.distgroupList = distgroupData.getDistgroupList();
   }
 
   ngOnInit() {

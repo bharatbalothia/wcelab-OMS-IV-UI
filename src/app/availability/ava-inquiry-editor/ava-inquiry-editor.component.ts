@@ -3,6 +3,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/cor
 import {Observable} from 'rxjs';
 
 import { IvConstant } from 'src/app/iv-constant';
+import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
 
 export interface AvaiabilityInquiryLine {
   deliveryMethod: string;
@@ -37,7 +38,13 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   public readonly PRODCLASS_OPTIONS = IvConstant.PROD_CLASS_OPTIONS;
   public readonly DELIVERY_METHOD_OPTIONS = IvConstant.DELIVERY_METHOD_OPTIONS;
 
-  constructor() { }
+  distgroupList: Observable<string[]>;
+
+  constructor(distgroupData: DistgroupDataService) { 
+
+    this.distgroupList = distgroupData.getDistgroupList();
+  
+  }
 
   ngOnInit() {
   }
