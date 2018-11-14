@@ -40,6 +40,9 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   distgroupList: Observable<string[]>;
 
+  inquiryLineDisplayColumns: string[] = [
+    'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod' ];
+
   constructor(distgroupData: DistgroupDataService) { 
 
     this.distgroupList = distgroupData.getDistgroupList().value;
