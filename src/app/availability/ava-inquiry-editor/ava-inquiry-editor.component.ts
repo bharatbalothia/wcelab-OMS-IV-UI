@@ -106,7 +106,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
-    // console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
+    console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
 
   }
 
