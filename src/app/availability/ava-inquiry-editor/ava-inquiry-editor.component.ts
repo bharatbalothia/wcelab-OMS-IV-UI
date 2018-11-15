@@ -62,7 +62,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   constructor(distgroupData: DistgroupDataService) { 
 
-    this.distgroupList = distgroupData.getDistgroupList().value;
+    this.distgroupList = distgroupData.getDistgroupList();
   
   }
 
