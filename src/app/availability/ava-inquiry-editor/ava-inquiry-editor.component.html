@@ -18,7 +18,7 @@
   </button>
 
   <form [formGroup]="availabilityLineInquiryForm">
-  <mat-table #table [dataSource]="avaInquiry.lines">
+  <mat-table #table [dataSource]="avaInquirySubject.lines">
     <ng-container matColumnDef="itemId">
       <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
       <mat-cell *matCellDef="let element">
