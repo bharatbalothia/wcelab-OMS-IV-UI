@@ -4,7 +4,7 @@ import {Observable, BehaviorSubject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import { IvConstant } from 'src/app/iv-constant';
-import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
+import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
 
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -44,7 +44,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   public readonly PRODCLASS_OPTIONS = IvConstant.PROD_CLASS_OPTIONS;
   public readonly DELIVERY_METHOD_OPTIONS = IvConstant.DELIVERY_METHOD_OPTIONS;
 
-  distgroupList: Observable<string[]>;
+  distgroupList: DistributionGroup[] = new Array<DistributionGroup>();
 
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete' ];
@@ -62,7 +62,11 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   constructor(distgroupData: DistgroupDataService) { 
 
-    this.distgroupList = distgroupData.getDistgroupList();
+    distgroupData.getDistgroupList().subscribe(
+      data => {
+        this.distgroupList.push(data);
+      }
+    );
   
   }
 
