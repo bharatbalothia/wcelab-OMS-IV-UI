@@ -83,26 +83,28 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   doUomFilter(userInput): void {
-    this.doFilter(this.filteredUomOptions, userInput);
+    this.filteredUomOptions = this.createFilter(this.filteredUomOptions, userInput);
   }
 
   doProductClassFilter(userInput): void {
-    this.doFilter(this.filteredProdClassOptions, userInput);
+    this.filteredProdClassOptions = this.createFilter(this.filteredProdClassOptions, userInput);
   }
 
   doDeliveryMethodFilter(userInput): void {
-    this.doFilter(this.filteredDeliveryMethodOptions, userInput);
+    this.filteredDeliveryMethodOptions = this.createFilter(this.filteredDeliveryMethodOptions, userInput);
   }
 
-  private doFilter(optionsObervable: BehaviorSubject<string>, userInput: string): void {
+  private createFilter(optionsObervable: BehaviorSubject<string>, userInput: string): BehaviorSubject<string[]> {
     console.debug('userINput: ', userInput);
 
-    optionsObervable.next(optionsObervable.value);
-    
-    optionsObervable.pipe(
+    let newObserver: BehaviorSubject<string[]> = new BehaviorSubject(optionsObervable.value);
+
+    newObserver.pipe(
       startWith(''),
       map(value => this.filterStartWith(optionsObervable.value, userInput))
     );
+
+    return newObserver;
     
   }
   private filterStartWith(options: string[], userInput): string[] {
