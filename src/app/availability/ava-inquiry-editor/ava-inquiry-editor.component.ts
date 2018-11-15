@@ -73,34 +73,42 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     
-    this.filteredUomOptions = StringOptionFilter.filterOptions(
-      IvConstant.UOM_OPTIONS,
-      this.availabilityLineInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
+    // this.filteredUomOptions = StringOptionFilter.filterOptions(
+    //   IvConstant.UOM_OPTIONS,
+    //   this.availabilityLineInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
 
-    this.filteredProdClassOptions = StringOptionFilter.filterOptions(
-      IvConstant.PROD_CLASS_OPTIONS,
-      this.availabilityLineInquiryForm.controls.productClassToInquire.valueChanges);
+    // this.filteredProdClassOptions = StringOptionFilter.filterOptions(
+    //   IvConstant.PROD_CLASS_OPTIONS,
+    //   this.availabilityLineInquiryForm.controls.productClassToInquire.valueChanges);
 
-    this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
-      IvConstant.DELIVERY_METHOD_OPTIONS,
-      this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
+    // this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
+    //   IvConstant.DELIVERY_METHOD_OPTIONS,
+    //   this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
 
     this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
   }
 
-
   doUomFilter(userInput): void {
-    
-    console.debug('userINput: ', userInput);
-
-    this.filteredUomOptions = 
-      new BehaviorSubject<string[]>(IvConstant.UOM_OPTIONS).pipe(
-        startWith(''),
-        map(value => this.filterStartWith(IvConstant.UOM_OPTIONS, userInput))
-      );
+    this.filteredUomOptions = this.createFilter(IvConstant.UOM_OPTIONS, userInput);
   }
 
-  private filterStartWith(options: string[], userInput) {
+  doProductClassFilter(userInput): void {
+    this.filteredProdClassOptions = this.createFilter(IvConstant.PROD_CLASS_OPTIONS, userInput);
+  }
+
+  doDeliveryMethodFilter(userInput): void {
+    this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
+  }
+
+  private createFilter(options: string[], userInput: string): Observable<string> {
+    console.debug('userINput: ', userInput);
+
+    return new BehaviorSubject<string[]>(options).pipe(
+        startWith(''),
+        map(value => this.filterStartWith(options, userInput))
+      );
+  }
+  private filterStartWith(options: string[], userInput): string[] {
     const filterValue = userInput.toLowerCase();
     return options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
@@ -124,7 +132,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
 
-    // this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
