@@ -97,12 +97,12 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   private doFilter(optionsObervable: BehaviorSubject<string>, userInput: string): void {
     console.debug('userINput: ', userInput);
 
+    optionsObervable.next(optionsObervable.value);
+    
     optionsObervable.pipe(
       startWith(''),
       map(value => this.filterStartWith(optionsObervable.value, userInput))
     );
-
-    optionsObervable.next(optionsObervable.value);
     
   }
   private filterStartWith(options: string[], userInput): string[] {
