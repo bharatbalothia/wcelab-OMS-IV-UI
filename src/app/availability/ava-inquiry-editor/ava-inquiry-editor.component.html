@@ -17,17 +17,18 @@
     <mat-icon>add</mat-icon> Add Line
   </button>
 
-  <form [formGroup]="availabilityLineInquiryForm">
+  <!-- <form [formGroup]="availabilityLineInquiryForm"> -->
   <mat-table #table [dataSource]="avaInquiryLineListSubject">
     <ng-container matColumnDef="itemId">
       <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <input matInput type="text" [(ngModel)]="element.itemId" placeholder="Item ID" formControlName="itemIdToInquire"></mat-cell>
+        <input matInput type="text" [(ngModel)]="element.itemId" placeholder="Item ID"></mat-cell>
     </ng-container>
     <ng-container matColumnDef="unitOfMeasure">
       <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <input matInput placeholder="UOM" [matAutocomplete]="uomAutoComp" [(ngModel)]="element.unitOfMeasure" formControlName="unitOfMeasureToInquire">
+        <input matInput placeholder="UOM" [matAutocomplete]="uomAutoComp" 
+        [(ngModel)]="element.unitOfMeasure" (ngModelChange)="doUomFilter(this)">
         <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
           <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
             {{option}}
@@ -38,7 +39,8 @@
     <ng-container matColumnDef="productClass">
       <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <input matInput placeholder="Product Class" [(ngModel)]="element.productClass" formControlName="productClassToInquire"
+        <input matInput placeholder="Product Class" [(ngModel)]="element.productClass" 
+        (ngModelChange)="doProductClassFilter()"
           [matAutocomplete]="prodClassAutoComp">
         <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
           <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
@@ -51,7 +53,8 @@
     <ng-container matColumnDef="deliveryMethod">
       <mat-header-cell *matHeaderCellDef> Delivery Method </mat-header-cell>
       <mat-cell *matCellDef="let element">
-          <input matInput placeholder="Delivery Method" [(ngModel)]="element.deliveryMethod" formControlName="deliveryMethodToInquire"
+          <input matInput placeholder="Delivery Method" [(ngModel)]="element.deliveryMethod" 
+          (ngModelChange)="doDeliveryMethodFilter()"
             [matAutocomplete]="deliveryMethodAutoComp">
           <mat-autocomplete autoActiveFirstOption #deliveryMethodAutoComp="matAutocomplete">
             <mat-option *ngFor="let option of filteredDeliveryMethodOptions | async" [value]="option">
@@ -73,7 +76,7 @@
     <mat-header-row *matHeaderRowDef="inquiryLineDisplayColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: inquiryLineDisplayColumns"></mat-row>
   </mat-table>
-  </form>
+  <!-- </form> -->
 
   <!-- <mat-form-field>
     <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire" [matAutocomplete]="uomAutoComp">

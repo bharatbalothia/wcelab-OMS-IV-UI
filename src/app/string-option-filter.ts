@@ -3,6 +3,9 @@ import {map, startWith} from 'rxjs/operators';
 
 export class StringOptionFilter {
 
+  //TODO: this class might not be correct in using the options.
+  // options should be coming in through the Observable instead of the parameter.
+  
   public static filterOptions(
     options: string[], filterTrigger: Observable<string>): Observable<string[]> {
     

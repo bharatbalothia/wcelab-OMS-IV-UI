@@ -1,12 +1,15 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 
 import {Observable, BehaviorSubject} from 'rxjs';
+import { startWith, map } from 'rxjs/operators/map';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
 
 import { FormGroup, FormControl } from '@angular/forms';
 import { StringOptionFilter } from 'src/app/string-option-filter';
+
+
 
 export interface AvaiabilityInquiryLine {
   lineId: number;
@@ -86,6 +89,21 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
 
+  doUomFilter(userInput): void {
+    
+    console.debug('userINput: ', userInput);
+
+    this.filteredUomOptions = 
+      new BehaviorSubject<string[]>(IvConstant.UOM_OPTIONS).pipe(
+        startWith(''),
+        map(value => this.filterStartWith(IvConstant.UOM_OPTIONS, userInput))
+      );
+  }
+
+  private filterStartWith(options: string[], userInput) {
+    const filterValue = userInput.toLowerCase();
+    return options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
   
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
@@ -106,7 +124,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
 
-    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    // this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
