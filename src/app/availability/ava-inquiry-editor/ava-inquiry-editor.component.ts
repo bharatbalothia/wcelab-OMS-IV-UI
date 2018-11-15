@@ -5,7 +5,7 @@ import {map, startWith} from 'rxjs/operators';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
-import { AvaiabilityInquiry } from '../availability-data.service';
+import { AvaiabilityInquiry, AvaiabilityInquiryLine } from '../availability-data.service';
 
 // import { FormGroup, FormControl } from '@angular/forms';
 
@@ -44,7 +44,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   @Input("inquiry") avaInquiry : AvaiabilityInquiry;
 
-  avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiry>;
+  avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiryLine[]>;
 
   constructor(distgroupData: DistgroupDataService) { 
 
@@ -88,7 +88,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   // TODO: There has to be a better way than creating this BehaviorSubject each time
-  private createFilter(options: string[], userInput: string): BehaviorSubject<string[]> {
+  private createFilter(options: string[], userInput: string): Observable<string[]> {
     console.debug('userINput: ', userInput);
 
     return new BehaviorSubject(options).pipe(
@@ -122,7 +122,9 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
 
-    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    for (let line of this.avaInquiry.lines) {
+      this.avaInquiryLineListSubject.next(line);
+    }
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
@@ -133,8 +135,12 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     if (index > -1) {
       this.avaInquiry.lines.splice(index, 1);
     }
+    
+    for (let line of this.avaInquiry.lines) {
+      this.avaInquiryLineListSubject.next(line);
+    }
 
-    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    // this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
 }
