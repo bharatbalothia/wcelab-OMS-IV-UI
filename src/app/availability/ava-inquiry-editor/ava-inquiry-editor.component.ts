@@ -73,13 +73,13 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     
-    this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
+    // this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
 
-    this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
+    // this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
 
-    this.filteredDeliveryMethodOptions = new BehaviorSubject(IvConstant.DELIVERY_METHOD_OPTIONS);
+    // this.filteredDeliveryMethodOptions = new BehaviorSubject(IvConstant.DELIVERY_METHOD_OPTIONS);
 
-    this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
+    // this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
   }
 
   doUomFilter(userInput): void {
