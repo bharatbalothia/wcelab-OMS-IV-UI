@@ -18,7 +18,7 @@
     <ng-container matColumnDef="itemId">
       <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <input matInput type="text" [(ngModel)]="element.itemId" placeholder="Item ID"></mat-cell>
+        <input matInput type="text" [(ngModel)]="element.itemId" placeholder="Item ID" formControlName="itemIdToInquire"></mat-cell>
     </ng-container>
     <ng-container matColumnDef="unitOfMeasure">
       <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
@@ -47,7 +47,7 @@
     <ng-container matColumnDef="deliveryMethod">
       <mat-header-cell *matHeaderCellDef> Delivery Method </mat-header-cell>
       <mat-cell *matCellDef="let element">
-          <input matInput placeholder="Product Class" [(ngModel)]="element.deliveryMethod" formControlName="deliveryMethodToInquire"
+          <input matInput placeholder="Delivery Method" [(ngModel)]="element.deliveryMethod" formControlName="deliveryMethodToInquire"
             [matAutocomplete]="deliveryMethodAutoComp">
           <mat-autocomplete autoActiveFirstOption #deliveryMethodAutoComp="matAutocomplete">
             <mat-option *ngFor="let option of filteredDeliveryMethodOptions | async" [value]="option">

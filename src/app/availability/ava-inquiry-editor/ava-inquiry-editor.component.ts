@@ -47,6 +47,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod' ];
 
   availabilityLineInquiryForm: FormGroup = new FormGroup({
+    itemIdToInquire: new FormControl(''),
     unitOfMeasureToInquire: new FormControl(''),
     productClassToInquire: new FormControl(''),
     deliveryMethodToInquire: new FormControl(''),
