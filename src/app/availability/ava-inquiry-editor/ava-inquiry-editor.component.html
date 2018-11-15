@@ -1,12 +1,12 @@
 <div>
-  <mat-form-field *ngIf="searchByDbOrShipnode.value == 'distgroup'">
+  <mat-form-field *ngIf="searchByDbOrShipnode == 'distgroup'">
     <mat-select placeholder="Distribution Group ID" [(ngModel)]="avaInquiry.distributionGroupId">
       <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup.distributionGroupId">
         {{distgroup.distributionGroupId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="searchByDbOrShipnode.value == 'shipnode'">
+  <mat-form-field *ngIf="searchByDbOrShipnode == 'shipnode'">
       <mat-select placeholder="Ship Node ID" [(ngModel)]="avaInquiry.shipNode">
         <mat-option *ngFor="let shipnode of shipNodeList" [value]="shipnode.shipNode">
           {{shipnode.shipNode}}
