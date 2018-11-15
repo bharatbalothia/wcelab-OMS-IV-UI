@@ -7,7 +7,7 @@ import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
 
 import { FormGroup, FormControl } from '@angular/forms';
-import { StringOptionFilter } from 'src/app/string-option-filter';
+
 
 
 
@@ -94,13 +94,16 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.doFilter(this.filteredDeliveryMethodOptions, userInput);
   }
 
-  private doFilter(optionsObesrerver: BehaviorSubject<string>, userInput: string): void {
+  private doFilter(optionsObervable: BehaviorSubject<string>, userInput: string): void {
     console.debug('userINput: ', userInput);
 
-    optionsObesrerver.pipe(
-        startWith(''),
-        map(value => this.filterStartWith(optionsObesrerver.value, userInput))
-      );
+    optionsObervable.pipe(
+      startWith(''),
+      map(value => this.filterStartWith(optionsObervable.value, userInput))
+    );
+
+    optionsObervable.next(optionsObervable.value);
+    
   }
   private filterStartWith(options: string[], userInput): string[] {
     const filterValue = userInput.toLowerCase();
