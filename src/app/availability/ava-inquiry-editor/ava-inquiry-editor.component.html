@@ -28,7 +28,7 @@
       <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
       <mat-cell *matCellDef="let element; let lineNum = index">
         <input matInput placeholder="UOM" [matAutocomplete]="uomAutoComp" 
-        [(ngModel)]="element.unitOfMeasure" (ngModelChange)="doUomFilter($event)">
+        [(ngModel)]="element.unitOfMeasure" (ngModelChange)="doUomFilter($event)" (blur)='doUomFilter("")'>
         <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
           <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
             {{option}}
@@ -40,7 +40,7 @@
       <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
       <mat-cell *matCellDef="let element">
         <input matInput placeholder="Product Class" [(ngModel)]="element.productClass" 
-        (ngModelChange)="doProductClassFilter($event)"
+        (ngModelChange)="doProductClassFilter($event)" (blur)='doProductClassFilter("")'
           [matAutocomplete]="prodClassAutoComp">
         <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
           <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
@@ -54,7 +54,7 @@
       <mat-header-cell *matHeaderCellDef> Delivery Method </mat-header-cell>
       <mat-cell *matCellDef="let element">
           <input matInput placeholder="Delivery Method" [(ngModel)]="element.deliveryMethod" 
-          (ngModelChange)="doDeliveryMethodFilter($event)"
+          (ngModelChange)="doDeliveryMethodFilter($event)" (blur)='doDeliveryMethodFilter("")'
             [matAutocomplete]="deliveryMethodAutoComp">
           <mat-autocomplete autoActiveFirstOption #deliveryMethodAutoComp="matAutocomplete">
             <mat-option *ngFor="let option of filteredDeliveryMethodOptions | async" [value]="option">

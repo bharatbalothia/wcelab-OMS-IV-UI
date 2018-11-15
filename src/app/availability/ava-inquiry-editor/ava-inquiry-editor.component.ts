@@ -93,6 +93,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
   }
 
+  // TODO: There has to be a better way than creating this BehaviorSubject each time
   private createFilter(options: string[], userInput: string): BehaviorSubject<string[]> {
     console.debug('userINput: ', userInput);
 
