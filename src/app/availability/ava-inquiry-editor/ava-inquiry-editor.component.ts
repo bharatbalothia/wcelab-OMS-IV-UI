@@ -95,10 +95,15 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   addInquiryLine(): void {
+    
+    console.debug("Adding new line to the inquiry.", this.avaInquiry);
+    
     this.avaInquiry.lines.push({
       lineId: this.avaInquiry.lines.length,
       itemId: null,
     });
+
+    console.debug("Added new line to the inquiry.", this.avaInquiry);
 
     this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
