@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 
 import {Observable, BehaviorSubject} from 'rxjs';
-import { startWith, map } from 'rxjs/operators/map';
+import {map, startWith} from 'rxjs/operators';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';

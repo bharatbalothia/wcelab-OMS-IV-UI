@@ -27,8 +27,8 @@
     <ng-container matColumnDef="unitOfMeasure">
       <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
       <mat-cell *matCellDef="let element; let lineNum = index">
-        <input matInput #uomInput_{{lineNum}} placeholder="UOM" [matAutocomplete]="uomAutoComp" 
-        [(ngModel)]="element.unitOfMeasure" (ngModelChange)="doUomFilter(uomInput_{{lineNum}}.value)">
+        <input matInput placeholder="UOM" [matAutocomplete]="uomAutoComp" 
+        [(ngModel)]="element.unitOfMeasure" (ngModelChange)="doUomFilter($event)">
         <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
           <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
             {{option}}
