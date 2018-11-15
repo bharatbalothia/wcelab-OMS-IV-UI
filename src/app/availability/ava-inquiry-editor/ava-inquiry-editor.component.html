@@ -13,6 +13,10 @@
     <input matInput type="text" [(ngModel)]="avaInquiry.segmentType" placeholder="Segment Type">
   </mat-form-field>
 
+  <button type='button'mat-raised-button color="primary" (click)="addInquiryLine()">
+    <mat-icon>add</mat-icon> Add Line
+  </button>
+
   <form [formGroup]="availabilityLineInquiryForm">
   <mat-table #table [dataSource]="avaInquiry.lines">
     <ng-container matColumnDef="itemId">
@@ -57,6 +61,14 @@
         </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+        <a (click)="deleteInquiryLine(element)" type="button">
+          <mat-icon class="icon">delete</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="inquiryLineDisplayColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: inquiryLineDisplayColumns"></mat-row>

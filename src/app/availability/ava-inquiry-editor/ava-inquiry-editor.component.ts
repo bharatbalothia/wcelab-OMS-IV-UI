@@ -44,7 +44,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   distgroupList: Observable<string[]>;
 
   inquiryLineDisplayColumns: string[] = [
-    'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod' ];
+    'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete' ];
 
   availabilityLineInquiryForm: FormGroup = new FormGroup({
     itemIdToInquire: new FormControl(''),
@@ -58,6 +58,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.distgroupList = distgroupData.getDistgroupList().value;
   
   }
+
+  @Input("inquiry") avaInquiry : AvaiabilityInquiry;
 
   ngOnInit() {
 
@@ -73,15 +75,33 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
       IvConstant.DELIVERY_METHOD_OPTIONS,
       this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
-  
+
   }
 
-  @Input("inquiry") avaInquiry : AvaiabilityInquiry;
+
   
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
     console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
+
+  }
+
+  addInquiryLine(): void {
+    this.avaInquiry.lines.push({
+      lineId: this.avaInquiry.lines.length,
+      itemId: null,
+    });
+  }
+
+  deleteDistgroup(inquiryLineToDelete: AvaiabilityInquiryLine): void {
+    console.debug('Deleting Distribution Group. ', inquiryLineToDelete);
+    
+    let index = this.avaInquiry.lines.indexOf(inquiryLineToDelete, 0);
+    
+    if (index > -1) {
+      this.avaInquiry.lines.splice(index, 1);
+    }
 
   }
 
