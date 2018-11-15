@@ -53,15 +53,19 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     deliveryMethodToInquire: new FormControl(''),
   });
 
+  @Input("inquiry") avaInquiry : AvaiabilityInquiry;
+
+  avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiry>;
+
   constructor(distgroupData: DistgroupDataService) { 
 
     this.distgroupList = distgroupData.getDistgroupList().value;
   
   }
 
-  @Input("inquiry") avaInquiry : AvaiabilityInquiry;
 
-  avaInquirySubject: BehaviorSubject<AvaiabilityInquiry>;
+
+
 
   ngOnInit() {
 
@@ -78,7 +82,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       IvConstant.DELIVERY_METHOD_OPTIONS,
       this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
 
-    this.avaInquirySubject = new BehaviorSubject(this.avaInquiry);
+    this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
   }
 
 
@@ -96,7 +100,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       itemId: null,
     });
 
-    this.avaInquirySubject.next(this.avaInquiry);
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
@@ -108,7 +112,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       this.avaInquiry.lines.splice(index, 1);
     }
 
-    this.avaInquirySubject.next(this.avaInquiry);
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
 }
