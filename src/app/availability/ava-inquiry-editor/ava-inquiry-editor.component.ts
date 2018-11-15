@@ -122,9 +122,11 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
 
-    for (let line of this.avaInquiry.lines) {
-      this.avaInquiryLineListSubject.next(line);
-    }
+    // for (let line of this.avaInquiry.lines) {
+    //   this.avaInquiryLineListSubject.next(line);
+    // }
+
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
@@ -136,11 +138,11 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       this.avaInquiry.lines.splice(index, 1);
     }
     
-    for (let line of this.avaInquiry.lines) {
-      this.avaInquiryLineListSubject.next(line);
-    }
+    // for (let line of this.avaInquiry.lines) {
+    //   this.avaInquiryLineListSubject.next(line);
+    // }
 
-    // this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
 }
