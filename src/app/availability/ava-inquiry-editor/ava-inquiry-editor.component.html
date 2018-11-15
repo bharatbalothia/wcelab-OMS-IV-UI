@@ -1,20 +1,20 @@
 <div>
-  <mat-form-field *ngIf="#group.value == 'distgroup'">
+  <mat-form-field *ngIf="searchByDbOrShipnode == 'distgroup'">
     <mat-select placeholder="Distribution Group ID" [(ngModel)]="avaInquiry.distributionGroupId">
       <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup.distributionGroupId">
         {{distgroup.distributionGroupId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="#group.value == 'shipnode'">
+  <mat-form-field *ngIf="searchByDbOrShipnode == 'shipnode'">
       <mat-select placeholder="Ship Node ID" [(ngModel)]="avaInquiry.shipNode">
         <mat-option *ngFor="let shipnode of shipNodeList" [value]="shipnode.shipNode">
           {{shipnode.shipNode}}
         </mat-option>
       </mat-select>
   </mat-form-field>
-  <mat-button-toggle-group #group="matButtonToggleGroup">
-      <mat-button-toggle value="distgroup">
+  <mat-button-toggle-group [(ngModel)]="searchByDgOrShipnode">
+      <mat-button-toggle ngdefaultButton value="distgroup">
         Dist. Group
       </mat-button-toggle>
       <mat-button-toggle value="shipnode">

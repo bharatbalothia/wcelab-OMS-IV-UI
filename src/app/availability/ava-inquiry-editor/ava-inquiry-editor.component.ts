@@ -24,6 +24,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   filteredDeliveryMethodOptions: Observable<string[]>;
 
+  searchByDgOrShipnode: string;
+
   public readonly UOM_OPTIONS = IvConstant.UOM_OPTIONS;
   public readonly PRODCLASS_OPTIONS = IvConstant.PROD_CLASS_OPTIONS;
   public readonly DELIVERY_METHOD_OPTIONS = IvConstant.DELIVERY_METHOD_OPTIONS;
