@@ -100,7 +100,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     
     this.avaInquiry.lines.push({
       lineId: this.avaInquiry.lines.length + 1,
-      itemId: null,
+      itemId: '',
+      shipNodes: [],
     });
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
