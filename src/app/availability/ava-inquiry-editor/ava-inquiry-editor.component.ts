@@ -5,6 +5,9 @@ import {Observable} from 'rxjs';
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
 
+import { FormGroup, FormControl } from '@angular/forms';
+import { StringOptionFilter } from 'src/app/string-option-filter';
+
 export interface AvaiabilityInquiryLine {
   lineId: number;
   itemId: string;
@@ -43,6 +46,12 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod' ];
 
+  availabilityLineInquiryForm: FormGroup = new FormGroup({
+    unitOfMeasureToInquire: new FormControl(''),
+    productClassToInquire: new FormControl(''),
+    deliveryMethodToInquire: new FormControl(''),
+  });
+
   constructor(distgroupData: DistgroupDataService) { 
 
     this.distgroupList = distgroupData.getDistgroupList().value;
@@ -50,6 +59,20 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+
+    
+    this.filteredUomOptions = StringOptionFilter.filterOptions(
+      IvConstant.UOM_OPTIONS,
+      this.availabilityLineInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
+
+    this.filteredProdClassOptions = StringOptionFilter.filterOptions(
+      IvConstant.PROD_CLASS_OPTIONS,
+      this.availabilityLineInquiryForm.controls.productClassToInquire.valueChanges);
+
+    this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
+      IvConstant.DELIVERY_METHOD_OPTIONS,
+      this.availabilityLineInquiryForm.controls.deliverMethodToInquire.valueChanges);
+  
   }
 
   @Input("inquiry") avaInquiry : AvaiabilityInquiry;

@@ -53,7 +53,7 @@ export class SupplyComponent implements OnInit{
 
     this.filteredUomOptions = StringOptionFilter.filterOptions(
       IvConstant.UOM_OPTIONS,
-      this.supplyInquiryForm.controls.productClassToInquire.valueChanges);
+      this.supplyInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
 
     this.filteredProdClassOptions = StringOptionFilter.filterOptions(
       IvConstant.PROD_CLASS_OPTIONS,
