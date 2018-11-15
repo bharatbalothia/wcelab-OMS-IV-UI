@@ -106,7 +106,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug("Added new line to the inquiry.", this.avaInquiry);
 
-    // this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
+    this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
