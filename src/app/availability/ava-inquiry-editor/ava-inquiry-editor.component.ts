@@ -96,14 +96,10 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   private createFilter(options: string[], userInput: string): BehaviorSubject<string[]> {
     console.debug('userINput: ', userInput);
 
-    let newObserver: BehaviorSubject<string[]> = new BehaviorSubject(options);
-
-    newObserver.pipe(
+    return new BehaviorSubject(options).pipe(
       startWith(''),
       map(value => this.filterStartWith(options, userInput))
     );
-
-    return newObserver;
     
   }
   private filterStartWith(options: string[], userInput): string[] {
