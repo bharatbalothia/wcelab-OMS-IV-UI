@@ -32,6 +32,8 @@ export class DistgroupDataService extends IvServiceBase {
 
   distgroupSubject: BehaviorSubject<DistributionGroup[]> = new BehaviorSubject<DistributionGroup[]>([]);
 
+  private retriveNeeded: boolean = true;
+
   constructor( http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
     super(http, httpErrorHandler, credentialData);
   }
@@ -42,7 +44,19 @@ export class DistgroupDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.configurationDistributionGroups; 
   }
 
-  getDistgroupList() :BehaviorSubject<DistributionGroup[]> {
+  getDistgroupList(reloadDistgroups=false) :BehaviorSubject<DistributionGroup[]> {
+    
+    if (reloadDistgroups) {
+      this.retriveNeeded = true;
+      console.debug('User requested to reload distribution groups');
+    }
+    
+    if (this.retriveNeeded) {
+      this.retriveNeeded = false;
+      console.debug('Requesting DGs from server. Current Dist. Groups: ', this.distgroupSubject.value);
+      this.retrieveAllDistgroups();
+    }
+
     return this.distgroupSubject;
   }
 

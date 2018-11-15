@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import {Observable, BehaviorSubject} from 'rxjs';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService } from 'src/app/distgroup/distgroup-data.service';
@@ -61,6 +61,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   @Input("inquiry") avaInquiry : AvaiabilityInquiry;
 
+  avaInquirySubject: BehaviorSubject<AvaiabilityInquiry>;
+
   ngOnInit() {
 
     
@@ -76,6 +78,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       IvConstant.DELIVERY_METHOD_OPTIONS,
       this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
 
+    this.avaInquirySubject = new BehaviorSubject(this.avaInquiry);
   }
 
 
@@ -92,9 +95,11 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       lineId: this.avaInquiry.lines.length,
       itemId: null,
     });
+
+    this.avaInquirySubject.next(this.avaInquiry);
   }
 
-  deleteDistgroup(inquiryLineToDelete: AvaiabilityInquiryLine): void {
+  deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
     console.debug('Deleting Distribution Group. ', inquiryLineToDelete);
     
     let index = this.avaInquiry.lines.indexOf(inquiryLineToDelete, 0);
@@ -103,6 +108,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       this.avaInquiry.lines.splice(index, 1);
     }
 
+    this.avaInquirySubject.next(this.avaInquiry);
   }
 
 }
