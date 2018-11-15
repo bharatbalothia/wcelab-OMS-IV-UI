@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import {Observable, BehaviorSubject} from 'rxjs';
 
-import { StringOptionFilter } from '../string-option-filter';
-import { AvaiabilityInquiry } from "./ava-inquiry-editor/ava-inquiry-editor.component"
-import { IvConstant } from '../iv-constant';
-import { DistgroupDataService } from '../distgroup/distgroup-data.service';
+import { NetworkAvailabilityDataService } from './network-availability-data.service';
+import { NodeAvailabilityDataService } from './node-availability-data.service';
+import { AvaiabilityInquiry, AvailabilityResult } from './availability-data.service';
 
 
 
@@ -20,7 +19,8 @@ export class AvailabilityComponent implements OnInit {
 
   
 
-  constructor( ) { 
+  constructor(private networkAvaDataService: NetworkAvailabilityDataService,
+    private nodeAvaDataService: NodeAvailabilityDataService) { 
     this.inquiry = {
       distributionGroupId: null,
       segment: null,
@@ -41,15 +41,9 @@ export class AvailabilityComponent implements OnInit {
     
     console.debug('Query Availability for: ', this.inquiry);
 
+    let avaResult: Observable<AvailabilityResult> = this.networkAvaDataService.getNetworkAvailability(this.inquiry);
+
+    avaResult.subscribe(data=>{console.debug(`receide avaiability of ${JSON.stringify(avaResult)}`)});
   }
-
-  // filterOption(options: string[], trigger: any, fieldToObserv: string) : Observable<string[]> {
-
-  //   const {objectToObserv: Observable, proxy} = observe(trigger);
-
-  //   return StringOptionFilter.filterOptions(
-  //     options,
-  //     trigger);
-  // }
-
+  
 }

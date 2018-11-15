@@ -5,27 +5,11 @@ import {map, startWith} from 'rxjs/operators';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
+import { AvaiabilityInquiry } from '../availability-data.service';
 
-import { FormGroup, FormControl } from '@angular/forms';
+// import { FormGroup, FormControl } from '@angular/forms';
 
 
-
-
-export interface AvaiabilityInquiryLine {
-  lineId: number;
-  itemId: string;
-  unitOfMeasure?: string;
-  productClass?: string;
-  deliveryMethod?: string;
-  shipNodes?: string[];
-};
-
-export interface AvaiabilityInquiry {
-  distributionGroupId?: string;
-  segment?: string;
-  segmentType?: string;
-  lines: AvaiabilityInquiryLine[],
-}
 
 @Component({
   selector: 'app-ava-inquiry-editor',
@@ -49,12 +33,12 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete' ];
 
-  availabilityLineInquiryForm: FormGroup = new FormGroup({
-    itemIdToInquire: new FormControl(''),
-    unitOfMeasureToInquire: new FormControl(''),
-    productClassToInquire: new FormControl(''),
-    deliveryMethodToInquire: new FormControl(''),
-  });
+  // availabilityLineInquiryForm: FormGroup = new FormGroup({
+  //   itemIdToInquire: new FormControl(''),
+  //   unitOfMeasureToInquire: new FormControl(''),
+  //   productClassToInquire: new FormControl(''),
+  //   deliveryMethodToInquire: new FormControl(''),
+  // });
 
   @Input("inquiry") avaInquiry : AvaiabilityInquiry;
 
@@ -120,7 +104,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
-    console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
+    // console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
 
   }
 
