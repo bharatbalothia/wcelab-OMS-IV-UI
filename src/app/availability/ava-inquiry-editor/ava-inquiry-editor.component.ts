@@ -73,39 +73,33 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     
-    // this.filteredUomOptions = StringOptionFilter.filterOptions(
-    //   IvConstant.UOM_OPTIONS,
-    //   this.availabilityLineInquiryForm.controls.unitOfMeasureToInquire.valueChanges);
+    this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
 
-    // this.filteredProdClassOptions = StringOptionFilter.filterOptions(
-    //   IvConstant.PROD_CLASS_OPTIONS,
-    //   this.availabilityLineInquiryForm.controls.productClassToInquire.valueChanges);
+    this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
 
-    // this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
-    //   IvConstant.DELIVERY_METHOD_OPTIONS,
-    //   this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
+    this.filteredDeliveryMethodOptions = new BehaviorSubject(IvConstant.DELIVERY_METHOD_OPTIONS);
 
     this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
   }
 
   doUomFilter(userInput): void {
-    this.filteredUomOptions = this.createFilter(IvConstant.UOM_OPTIONS, userInput);
+    this.doFilter(this.filteredUomOptions, userInput);
   }
 
   doProductClassFilter(userInput): void {
-    this.filteredProdClassOptions = this.createFilter(IvConstant.PROD_CLASS_OPTIONS, userInput);
+    this.doFilter(this.filteredProdClassOptions, userInput);
   }
 
   doDeliveryMethodFilter(userInput): void {
-    this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
+    this.doFilter(this.filteredDeliveryMethodOptions, userInput);
   }
 
-  private createFilter(options: string[], userInput: string): Observable<string> {
+  private doFilter(optionsObesrerver: BehaviorSubject<string>, userInput: string): void {
     console.debug('userINput: ', userInput);
 
-    return new BehaviorSubject<string[]>(options).pipe(
+    optionsObesrerver.pipe(
         startWith(''),
-        map(value => this.filterStartWith(options, userInput))
+        map(value => this.filterStartWith(optionsObesrerver.value, userInput))
       );
   }
   private filterStartWith(options: string[], userInput): string[] {
@@ -136,7 +130,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
-    console.debug('Deleting Distribution Group. ', inquiryLineToDelete);
+    console.debug('Deleting availability inquiry line. ', inquiryLineToDelete);
     
     let index = this.avaInquiry.lines.indexOf(inquiryLineToDelete, 0);
     
