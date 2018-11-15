@@ -71,7 +71,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     this.filteredDeliveryMethodOptions = StringOptionFilter.filterOptions(
       IvConstant.DELIVERY_METHOD_OPTIONS,
-      this.availabilityLineInquiryForm.controls.deliverMethodToInquire.valueChanges);
+      this.availabilityLineInquiryForm.controls.deliveryMethodToInquire.valueChanges);
   
   }
 

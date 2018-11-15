@@ -37,6 +37,12 @@ export class AvailabilityComponent implements OnInit {
 
   }
 
+  queryAvailability(): void {
+    
+    console.debug('Query Availability for: ', this.inquiry);
+
+  }
+
   // filterOption(options: string[], trigger: any, fieldToObserv: string) : Observable<string[]> {
 
   //   const {objectToObserv: Observable, proxy} = observe(trigger);
