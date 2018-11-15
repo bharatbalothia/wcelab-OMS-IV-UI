@@ -16,7 +16,8 @@
   <mat-table #table [dataSource]="avaInquiry.lines">
     <ng-container matColumnDef="itemId">
       <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.itemId}} </mat-cell>
+      <mat-cell *matCellDef="let element">
+        <input matInput type="text" [(ngModel)]="element.itemId" placeholder="Item ID"></mat-cell>
     </ng-container>
     <ng-container matColumnDef="unitOfMeasure">
       <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
@@ -56,8 +57,8 @@
     </ng-container>
 
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-header-row *matHeaderRowDef="inquiryLineDisplayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: inquiryLineDisplayColumns"></mat-row>
   </mat-table>
 
   <!-- <mat-form-field>
