@@ -65,6 +65,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     distgroupData.getDistgroupList().subscribe(
       data => {
         this.distgroupList.push(data);
+        console.debug(`After pushing data into distgroupData. ${JSON.stringify(this.distgroupList)}`);
       }
     );
   
