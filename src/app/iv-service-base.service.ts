@@ -95,6 +95,25 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
+  postObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
+
+    let url = this.getUrl(additionalUrl);
+
+    let httpOptions = this.getHttpOptions();
+
+    console.debug('Post object to %s', url, objectToPut);
+
+    let postResult = this.http.put(url, objectToPut, httpOptions).pipe(
+      catchError(this.handleError('putObject', []))
+    ); 
+    
+    // Put an empty subscriber here to avoid angular not executing put without
+    // a subscriber.
+    postResult.subscribe();
+    
+    return postResult;
+  }
+
   getObject<T>(additionalUrl: string = '', params?: any) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);

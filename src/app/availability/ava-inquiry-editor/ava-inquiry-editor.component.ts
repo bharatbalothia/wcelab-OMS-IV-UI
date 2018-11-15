@@ -77,6 +77,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
+    //TODO: Check if we need to instantiate 3 Options first.
     this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
 
     this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
@@ -108,6 +109,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     );
     
   }
+
   private filterStartWith(options: string[], userInput): string[] {
     const filterValue = userInput.toLowerCase();
     return options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
