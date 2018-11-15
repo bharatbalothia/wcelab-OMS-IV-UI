@@ -72,36 +72,35 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
-    
-    // this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
+    this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
 
-    // this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
+    this.filteredProdClassOptions = new BehaviorSubject(IvConstant.PROD_CLASS_OPTIONS);
 
-    // this.filteredDeliveryMethodOptions = new BehaviorSubject(IvConstant.DELIVERY_METHOD_OPTIONS);
+    this.filteredDeliveryMethodOptions = new BehaviorSubject(IvConstant.DELIVERY_METHOD_OPTIONS);
 
-    // this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
+    this.avaInquiryLineListSubject = new BehaviorSubject(this.avaInquiry.lines);
   }
 
   doUomFilter(userInput): void {
-    this.filteredUomOptions = this.createFilter(this.filteredUomOptions, userInput);
+    this.filteredUomOptions = this.createFilter(IvConstant.UOM_OPTIONS, userInput);
   }
 
   doProductClassFilter(userInput): void {
-    this.filteredProdClassOptions = this.createFilter(this.filteredProdClassOptions, userInput);
+    this.filteredProdClassOptions = this.createFilter(IvConstant.PROD_CLASS_OPTIONS, userInput);
   }
 
   doDeliveryMethodFilter(userInput): void {
-    this.filteredDeliveryMethodOptions = this.createFilter(this.filteredDeliveryMethodOptions, userInput);
+    this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
   }
 
-  private createFilter(optionsObervable: BehaviorSubject<string>, userInput: string): BehaviorSubject<string[]> {
+  private createFilter(options: string[], userInput: string): BehaviorSubject<string[]> {
     console.debug('userINput: ', userInput);
 
-    let newObserver: BehaviorSubject<string[]> = new BehaviorSubject(optionsObervable.value);
+    let newObserver: BehaviorSubject<string[]> = new BehaviorSubject(options);
 
     newObserver.pipe(
       startWith(''),
-      map(value => this.filterStartWith(optionsObervable.value, userInput))
+      map(value => this.filterStartWith(options, userInput))
     );
 
     return newObserver;
