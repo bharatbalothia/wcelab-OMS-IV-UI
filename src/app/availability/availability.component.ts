@@ -33,10 +33,12 @@ export class AvailabilityComponent implements OnInit {
     avaResult.subscribe(data=>{console.debug(`Received avaiability result: ${JSON.stringify(data)}`)});
   }
 
+  // Prepare inqury data before sending to the IV server
   private setInquiryShipnode(inquiry: AvaiabilityInquiry, shipnodeId: string) {
 
     if (shipnodeId != null && shipnodeId.length > 0){
       // Search node Availaiblity
+      // set shipNodes array in each lines
       delete inquiry.distributionGroupId;
       delete inquiry.shipnodeId;
       for (let avaLine of inquiry.lines) {
@@ -44,6 +46,7 @@ export class AvailabilityComponent implements OnInit {
       }
     } else {
       // Search network Availability
+      // remove any shipNodes array in each lines
       delete inquiry.shipnodeId;
       for (let avaLine of inquiry.lines) {
         delete avaLine.shipNodes;
@@ -65,8 +68,5 @@ export class AvailabilityComponent implements OnInit {
       this.setInquiryShipnode(inquiry, inquiry.shipnodeId);
       return this.networkAvaDataService.getNetworkAvailability(inquiry);
     }
-
-    
-
   }
 }
