@@ -103,7 +103,7 @@ export abstract class IvServiceBase {
 
     console.debug('Post object to %s', url, objectToPut);
 
-    let postResult = this.http.put(url, objectToPut, httpOptions).pipe(
+    let postResult = this.http.post(url, objectToPut, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
     ); 
     
