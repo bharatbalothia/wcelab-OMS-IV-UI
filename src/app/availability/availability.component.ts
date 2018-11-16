@@ -44,6 +44,7 @@ export class AvailabilityComponent implements OnInit {
     } else {
       // Search network Availability
       delete inquiry.shipnodeId;
+      delete inquiry.distributionGroupId;
       for (let avaLine of inquiry.lines) {
         delete avaLine.shipNodes;
       }
