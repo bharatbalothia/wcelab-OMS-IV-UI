@@ -6,6 +6,7 @@ import {map, startWith} from 'rxjs/operators';
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
 import { AvaiabilityInquiry, AvaiabilityInquiryLine } from '../availability-data.service';
+import { ShipnodeDataService, ShipNode } from 'src/app/shipnode/shipnode-data.service';
 
 // import { FormGroup, FormControl } from '@angular/forms';
 
@@ -32,6 +33,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   distgroupList: DistributionGroup[] = new Array<DistributionGroup>();
 
+  shipnodeList: ShipNode[] = new Array<ShipNode>();
+
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete' ];
 
@@ -46,10 +49,15 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiryLine[]>;
 
-  constructor(distgroupData: DistgroupDataService) { 
+  constructor(distgroupData: DistgroupDataService, shipnodeData: ShipnodeDataService) { 
 
     distgroupData.getDistgroupList().subscribe(
       data => {
+        // Clear the current distgroupList if needed
+        if (this.distgroupList.length > 0) {
+          console.info('Have to clear current %d member distgroup list', this.distgroupList.length, this.distgroupList);
+          this.distgroupList.slice(0, this.distgroupList.length);
+        }
         for (let dg of data) {
           this.distgroupList.push(dg);
         }
@@ -57,6 +65,21 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       }
     );
 
+    shipnodeData.getShipnodeList().subscribe(
+      data => {
+        // Clear the current shipnodelist if needed
+        if (this.shipnodeList.length > 0) {
+          console.info('Have to clear current %d member shipnode list', this.shipnodeList.length, this.shipnodeList);
+          this.shipnodeList.slice(0, this.shipnodeList.length);
+        }
+        for (let shipnode of data) {
+          this.shipnodeList.push(shipnode);
+        }
+        console.debug(`After pushing data into shipnodelist. ${JSON.stringify(this.shipnodeList)}`);
+      }
+    );
+    
+    // Default to search by network
     this.searchByDgOrShipnode = 'distgroup';
   
   }
