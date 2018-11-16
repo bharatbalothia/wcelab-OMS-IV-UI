@@ -24,7 +24,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   filteredDeliveryMethodOptions: Observable<string[]>;
 
-  searchByDbOrShipnode: string;
+  searchByDgOrShipnode: string;
 
   public readonly UOM_OPTIONS = IvConstant.UOM_OPTIONS;
   public readonly PRODCLASS_OPTIONS = IvConstant.PROD_CLASS_OPTIONS;
@@ -57,7 +57,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       }
     );
 
-    this.searchByDbOrShipnode = 'distgroup';
+    this.searchByDgOrShipnode = 'distgroup';
   
   }
 
