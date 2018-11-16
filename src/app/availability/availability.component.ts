@@ -15,31 +15,30 @@ import { AvaiabilityInquiry, AvailabilityResult } from './availability-data.serv
 })
 export class AvailabilityComponent implements OnInit {
 
-  inquiry: AvaiabilityInquiry;
+  // inquiry: AvaiabilityInquiry;
 
   constructor(private networkAvaDataService: NetworkAvailabilityDataService,
     private nodeAvaDataService: NodeAvailabilityDataService) { 
-    this.inquiry = {
-      distributionGroupId: null,
-      segment: null,
-      segmentType: null,
-      lines: [{
-        lineId: 1,
-        itemId: '',
-        shipNodes: []
-      },],
-    }
+    // this.inquiry = {
+    //   distributionGroupId: null,
+    //   segment: null,
+    //   segmentType: null,
+    //   lines: [{
+    //     lineId: 1,
+    //     itemId: '',
+    //     shipNodes: []
+    //   },],
+    // }
   }
 
   ngOnInit() {
-
   }
 
-  queryAvailability(): void {
+  showAvailability(inquiry: AvaiabilityInquiry): void {
     
-    console.debug('Query Availability for: ', this.inquiry);
+    console.debug('Query Availability for: ', inquiry);
 
-    let avaResult: Observable<AvailabilityResult> = this.networkAvaDataService.getNetworkAvailability(this.inquiry);
+    let avaResult: Observable<AvailabilityResult> = this.networkAvaDataService.getNetworkAvailability(inquiry);
 
     avaResult.subscribe(data=>{console.debug(`Received avaiability result: ${JSON.stringify(data)}`)});
   }

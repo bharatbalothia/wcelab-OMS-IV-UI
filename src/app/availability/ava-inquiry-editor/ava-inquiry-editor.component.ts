@@ -46,8 +46,10 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   //   deliveryMethodToInquire: new FormControl(''),
   // });
 
-  @Input("inquiry") avaInquiry: AvaiabilityInquiry;
-  @Output() queryEvent = new EventEmitter<AvaiabilityInquiry>();
+  // @Input("inquiry") avaInquiry: AvaiabilityInquiry;
+  
+  // Output event to query avaiability 
+  @Output() queryAvailability = new EventEmitter<AvaiabilityInquiry>();
 
   avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiryLine[]>;
 
@@ -137,13 +139,13 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     if (this.searchByDgOrShipnode != 'shipnode') {
       queryClone.shipnodeId = null;
-    } else if (this.searchByDgOrShipnode != 'distgroup') {
+    } else if (this.searchByDgOrShipnode = 'distgroup') {
       queryClone.distributionGroupId = null;
     }
 
     console.debug(`avaInquiry after preparation: ${JSON.stringify(queryClone)}`);
     
-    this.queryEvent.emit(queryClone);
+    this.queryAvailability.emit(queryClone);
 
   }
 
