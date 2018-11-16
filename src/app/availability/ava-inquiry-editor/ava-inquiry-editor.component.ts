@@ -131,7 +131,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug(`avaInquiry now: ${JSON.stringify(this.avaInquiry)}`);
 
-    var queryClone;
+    let queryClone: AvaiabilityInquiry = {lines: []};
 
     Object.assign(queryClone, this.avaInquiry);
 
