@@ -7,7 +7,7 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="searchByDgOrShipnode == 'shipnode'">
-      <mat-select placeholder="Ship Node ID" [(ngModel)]="avaInquiry.shipNode">
+      <mat-select placeholder="Ship Node ID" [(ngModel)]="avaInquiry.shipnodeId">
         <mat-option *ngFor="let shipnode of shipnodeList" [value]="shipnode.shipNode">
           {{shipnode.shipNode}}
         </mat-option>

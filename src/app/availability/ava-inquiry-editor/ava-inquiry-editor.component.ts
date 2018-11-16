@@ -7,6 +7,7 @@ import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
 import { AvaiabilityInquiry, AvaiabilityInquiryLine } from '../availability-data.service';
 import { ShipnodeDataService, ShipNode } from 'src/app/shipnode/shipnode-data.service';
+import { AvailabilityComponent } from '../availability.component';
 
 // import { FormGroup, FormControl } from '@angular/forms';
 
@@ -130,15 +131,19 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
     console.debug(`avaInquiry now: ${JSON.stringify(this.avaInquiry)}`);
 
+    var queryClone;
+
+    Object.assign(queryClone, this.avaInquiry);
+
     if (this.searchByDgOrShipnode != 'shipnode') {
-      this.avaInquiry.shipnodeId = null;
+      queryClone.shipnodeId = null;
     } else if (this.searchByDgOrShipnode != 'distgroup') {
-      this.avaInquiry.distributionGroupId = null;
+      queryClone.distributionGroupId = null;
     }
 
-    console.debug(`avaInquiry after preparation: ${JSON.stringify(this.avaInquiry)}`);
+    console.debug(`avaInquiry after preparation: ${JSON.stringify(queryClone)}`);
     
-    this.queryEvent.emit(this.avaInquiry);
+    this.queryEvent.emit(queryClone);
 
   }
 
