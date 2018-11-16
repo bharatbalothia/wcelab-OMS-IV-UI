@@ -38,6 +38,8 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete'];
+  
+  private avaInquiry: AvaiabilityInquiry;
 
   // availabilityLineInquiryForm: FormGroup = new FormGroup({
   //   itemIdToInquire: new FormControl(''),
@@ -94,6 +96,17 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
+    this.avaInquiry = {
+      distributionGroupId: null,
+      segment: null,
+      segmentType: null,
+      lines: [{
+        lineId: 1,
+        itemId: '',
+        shipNodes: []
+      },],
+    };
+    
     //TODO: Check if we need to instantiate 3 Options first.
     this.filteredUomOptions = new BehaviorSubject(IvConstant.UOM_OPTIONS);
 
