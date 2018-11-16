@@ -146,7 +146,7 @@ export class DistgroupDataSource extends DataSource<DistributionGroup> {
 
   connect(): Observable<DistributionGroup[]> {
     
-    this.dataService.retrieveAllDistgroups();
+    // this.dataService.retrieveAllDistgroups();
     
     return this.dataService.getDistgroupList();
   }
