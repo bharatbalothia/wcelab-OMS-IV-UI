@@ -1,12 +1,12 @@
 <div>
-  <mat-form-field *ngIf="searchByDbOrShipnode == 'distgroup'">
+  <mat-form-field *ngIf="searchByDgOrShipnode == 'distgroup'">
     <mat-select placeholder="Distribution Group ID" [(ngModel)]="avaInquiry.distributionGroupId">
       <mat-option *ngFor="let distgroup of distgroupList" [value]="distgroup.distributionGroupId">
         {{distgroup.distributionGroupId}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="searchByDbOrShipnode == 'shipnode'">
+  <mat-form-field *ngIf="searchByDgOrShipnode == 'shipnode'">
       <mat-select placeholder="Ship Node ID" [(ngModel)]="avaInquiry.shipNode">
         <mat-option *ngFor="let shipnode of shipNodeList" [value]="shipnode.shipNode">
           {{shipnode.shipNode}}
@@ -14,7 +14,7 @@
       </mat-select>
   </mat-form-field>
   
-  <mat-radio-group  [(ngModel)]="searchByDgOrShipnode">
+  <mat-radio-group  [(ngModel)]="searchByDgOrShipnode" (change)="debuglog('radio-group changed to: ', searchByDgOrShipnode)" >
       <mat-radio-button value="distgroup" selected >Dist. Group</mat-radio-button>
       <mat-radio-button value="shipnode">Ship Node</mat-radio-button>
   </mat-radio-group>

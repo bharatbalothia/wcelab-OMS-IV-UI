@@ -147,4 +147,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.avaInquiryLineListSubject.next(this.avaInquiry.lines);
   }
 
+  debuglog(message?: any, ...optionalParams: any[]): void {
+    console.debug(message, optionalParams);
+  }
 }
