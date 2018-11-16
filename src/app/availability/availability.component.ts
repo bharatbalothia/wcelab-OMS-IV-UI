@@ -43,7 +43,7 @@ export class AvailabilityComponent implements OnInit {
 
     let avaResult: Observable<AvailabilityResult> = this.networkAvaDataService.getNetworkAvailability(this.inquiry);
 
-    avaResult.subscribe(data=>{console.debug(`receide avaiability of ${JSON.stringify(avaResult)}`)});
+    avaResult.subscribe(data=>{console.debug(`Received avaiability result: ${JSON.stringify(data)}`)});
   }
   
 }
