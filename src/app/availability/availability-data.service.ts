@@ -1,5 +1,3 @@
-
-
 export interface AvaiabilityInquiryLine {
   lineId: number;
   itemId: string;
@@ -16,22 +14,57 @@ export interface AvaiabilityInquiry {
   lines: AvaiabilityInquiryLine[];
 }
 
-export interface AvailabilityResult {
-  
-  lines: AvaiabilityResultLine[];
+export interface NetworkAvailability {
+
+  lines: NetworkAvailabilityLine[];
 };
 
-export interface AvaiabilityResultLine{
+export interface NetworkAvailabilityLine {
   lineId: number;
-  itemId: string;
-  unitOfMeasure?: string;
-  productClass?: string;
-  deliveryMethod?: string;
-  shipNodes?: string[];
-  quantity?: number;
+  networkAvailabilities: NetworkAvailabilityLineDetail[];
 }
 
-export class AvailabilityDataService  {
+export interface NetworkAvailabilityLineDetail {
+  alertLevel: number;
+  alertQuantity: number;
+  distributionGroupId: string;
+  earliestShipTs: string;
+  futureAvailableQuantity: number;
+  futureEarliestShipTs: string;
+  futureLatestShipTs: string;
+  onhandAvailableQuantity: number;
+  onhandEarliestShipTs: string;
+  onhandLatestShipTs: string;
+  thresholdLevel: number;
+  thresholdQuantity: number;
+  totalAvailableQuantity: number;
+}
+
+export interface ShipnodeAvailability {
+
+  lines: ShipnodeAvailabilityLine[];
+};
+
+export interface ShipnodeAvailabilityLine {
+  lineId: number;
+  shipNodeAvailability: ShipnodeAvailabilityLineDetail[];
+}
+
+export interface ShipnodeAvailabilityLineDetail {
+  earliestShipTs: string;
+  futureAvailableQuantity: number;
+  futureEarliestShipTs: string;
+  futureLatestShipTs: string;
+  latestShipTs: string;
+  onhandAvailableQuantity: number;
+  onhandEarliestShipTs: string;
+  onhandLatestShipTs: string;
+  shipNode: string;
+  totalAvailableQuantity: 15.4
+}
+
+
+export class AvailabilityDataService {
 
   constructor() { }
 }
