@@ -38,13 +38,13 @@ export class AvailabilityComponent implements OnInit {
     if (shipnodeId != null && shipnodeId.length > 0){
       // Search node Availaiblity
       delete inquiry.distributionGroupId;
+      delete inquiry.shipnodeId;
       for (let avaLine of inquiry.lines) {
         avaLine.shipNodes = [shipnodeId];
       }
     } else {
       // Search network Availability
       delete inquiry.shipnodeId;
-      delete inquiry.distributionGroupId;
       for (let avaLine of inquiry.lines) {
         delete avaLine.shipNodes;
       }
