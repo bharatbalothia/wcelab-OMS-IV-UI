@@ -17,8 +17,6 @@ export class AvailabilityComponent implements OnInit {
 
   inquiry: AvaiabilityInquiry;
 
-  
-
   constructor(private networkAvaDataService: NetworkAvailabilityDataService,
     private nodeAvaDataService: NodeAvailabilityDataService) { 
     this.inquiry = {

@@ -9,6 +9,7 @@ export interface AvaiabilityInquiryLine {
 
 export interface AvaiabilityInquiry {
   distributionGroupId?: string;
+  shipnodeId?: string;
   segment?: string;
   segmentType?: string;
   lines: AvaiabilityInquiryLine[];

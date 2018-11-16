@@ -14,7 +14,7 @@
       </mat-select>
   </mat-form-field>
   
-  <mat-radio-group class="radio-inline" [(ngModel)]="searchByDgOrShipnode" (change)="debuglog('radio-group changed to: ', searchByDgOrShipnode)" >
+  <mat-radio-group class="radio-inline" [(ngModel)]="searchByDgOrShipnode" (change)="onSearchModeChange($event)" >
       <mat-radio-button value="distgroup" selected >Dist. Group</mat-radio-button>
       <mat-radio-button value="shipnode">Ship Node</mat-radio-button>
   </mat-radio-group>

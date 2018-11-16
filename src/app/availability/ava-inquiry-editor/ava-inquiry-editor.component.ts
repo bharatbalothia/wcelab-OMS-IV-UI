@@ -112,6 +112,19 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
   }
 
+  onSearchModeChange(event): void {
+
+    console.debug('Search Mode Change Event: ', event);
+
+    if (event != 'shipnode') {
+      this.avaInquiry.shipnodeId = null;
+    } else if (event != 'distgroup') {
+      this.avaInquiry.distributionGroupId = null;
+    }
+    
+    console.debug(`avaInquiry changed to ${JSON.stringify(this.avaInquiry)}`);
+  }
+
   // TODO: There has to be a better way than creating this BehaviorSubject each time
   private createFilter(options: string[], userInput: string): Observable<string[]> {
     console.debug('userINput: ', userInput);
@@ -131,7 +144,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
-    console.log('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
+    // console.debug('AvaInquiryEditorComponent.ngOnChanges fired!', changes);
 
   }
 
