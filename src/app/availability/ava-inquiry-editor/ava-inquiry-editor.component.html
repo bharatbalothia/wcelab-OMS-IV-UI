@@ -13,14 +13,12 @@
         </mat-option>
       </mat-select>
   </mat-form-field>
-  <mat-button-toggle-group [(ngModel)]="searchByDgOrShipnode">
-    <mat-button-toggle ngdefaultButton value="distgroup">
-      Dist. Group
-    </mat-button-toggle>
-    <mat-button-toggle value="shipnode">
-      Ship Node
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  
+  <mat-radio-group  [(ngModel)]="searchByDgOrShipnode">
+      <mat-radio-button value="distgroup" selected >Dist. Group</mat-radio-button>
+      <mat-radio-button value="shipnode">Ship Node</mat-radio-button>
+  </mat-radio-group>
+
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="avaInquiry.segment" placeholder="Segment">
   </mat-form-field>
