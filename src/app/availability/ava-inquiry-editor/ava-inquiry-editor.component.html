@@ -89,31 +89,13 @@
     <mat-header-row *matHeaderRowDef="inquiryLineDisplayColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: inquiryLineDisplayColumns"></mat-row>
   </mat-table>
-  <!-- </form> -->
+  
+  <br>
+  
+  <button type="button" mat-raised-button color="primary" (click)="submitQuery()">
+    <mat-icon>whatshot</mat-icon> List Availability
+  </button>
+  &nbsp;
 
-  <!-- <mat-form-field>
-    <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire" [matAutocomplete]="uomAutoComp">
-    <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
-      <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Product Class" formControlName="productClassToInquire"
-      [matAutocomplete]="prodClassAutoComp">
-    <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
-      <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire">
-      <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
-        {{shipnode.shipNode}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field> -->
 </div>
 

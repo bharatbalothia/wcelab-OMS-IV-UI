@@ -1,7 +1,7 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, EventEmitter, Output } from '@angular/core';
 
-import {Observable, BehaviorSubject} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { IvConstant } from 'src/app/iv-constant';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
@@ -36,7 +36,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   shipnodeList: ShipNode[] = new Array<ShipNode>();
 
   inquiryLineDisplayColumns: string[] = [
-    'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete' ];
+    'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete'];
 
   // availabilityLineInquiryForm: FormGroup = new FormGroup({
   //   itemIdToInquire: new FormControl(''),
@@ -45,11 +45,12 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   //   deliveryMethodToInquire: new FormControl(''),
   // });
 
-  @Input("inquiry") avaInquiry : AvaiabilityInquiry;
+  @Input("inquiry") avaInquiry: AvaiabilityInquiry;
+  @Output() queryEvent = new EventEmitter<AvaiabilityInquiry>();
 
   avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiryLine[]>;
 
-  constructor(distgroupData: DistgroupDataService, shipnodeData: ShipnodeDataService) { 
+  constructor(distgroupData: DistgroupDataService, shipnodeData: ShipnodeDataService) {
 
     distgroupData.getDistgroupList().subscribe(
       data => {
@@ -78,10 +79,10 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
         console.debug(`After pushing data into shipnodelist. ${JSON.stringify(this.shipnodeList)}`);
       }
     );
-    
+
     // Default to search by network
     this.searchByDgOrShipnode = 'distgroup';
-  
+
   }
 
 
@@ -112,17 +113,33 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
     this.filteredDeliveryMethodOptions = this.createFilter(IvConstant.DELIVERY_METHOD_OPTIONS, userInput);
   }
 
-  onSearchModeChange(event): void {
+  // onSearchModeChange(event): void {
 
-    console.debug('Search Mode Change Event: ', event);
+  //   console.debug('Search Mode Change Event: ', event);
 
-    if (event != 'shipnode') {
+  //   if (event != 'shipnode') {
+  //     this.avaInquiry.shipnodeId = null;
+  //   } else if (event != 'distgroup') {
+  //     this.avaInquiry.distributionGroupId = null;
+  //   }
+
+  //   console.debug(`avaInquiry changed to ${JSON.stringify(this.avaInquiry)}`);
+  // }
+
+  submitQuery(): void {
+
+    console.debug(`avaInquiry now: ${JSON.stringify(this.avaInquiry)}`);
+
+    if (this.searchByDgOrShipnode != 'shipnode') {
       this.avaInquiry.shipnodeId = null;
-    } else if (event != 'distgroup') {
+    } else if (this.searchByDgOrShipnode != 'distgroup') {
       this.avaInquiry.distributionGroupId = null;
     }
+
+    console.debug(`avaInquiry after preparation: ${JSON.stringify(this.avaInquiry)}`);
     
-    console.debug(`avaInquiry changed to ${JSON.stringify(this.avaInquiry)}`);
+    this.queryEvent.emit(this.avaInquiry);
+
   }
 
   // TODO: There has to be a better way than creating this BehaviorSubject each time
@@ -133,14 +150,14 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
       startWith(''),
       map(value => this.filterStartWith(options, userInput))
     );
-    
+
   }
 
   private filterStartWith(options: string[], userInput): string[] {
     const filterValue = userInput.toLowerCase();
     return options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     // changes.prop contains the old and the new value...
 
@@ -149,9 +166,9 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
   }
 
   addInquiryLine(): void {
-    
+
     console.debug("Adding new line to the inquiry.", this.avaInquiry);
-    
+
     this.avaInquiry.lines.push({
       lineId: this.avaInquiry.lines.length + 1,
       itemId: '',
@@ -169,13 +186,13 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   deleteInquiryLine(inquiryLineToDelete: AvaiabilityInquiryLine): void {
     console.debug('Deleting availability inquiry line. ', inquiryLineToDelete);
-    
+
     let index = this.avaInquiry.lines.indexOf(inquiryLineToDelete, 0);
-    
+
     if (index > -1) {
       this.avaInquiry.lines.splice(index, 1);
     }
-    
+
     // for (let line of this.avaInquiry.lines) {
     //   this.avaInquiryLineListSubject.next(line);
     // }
