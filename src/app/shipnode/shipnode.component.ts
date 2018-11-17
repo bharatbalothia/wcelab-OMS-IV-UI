@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 
 import {DataSource} from '@angular/cdk/table';
-import {BehaviorSubject} from 'rxjs';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
+import {BehaviorSubject, of} from 'rxjs';
 import {Observable} from 'rxjs/Observable';
 
 
@@ -16,7 +18,14 @@ import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.compone
 @Component({
   selector: 'app-shipnode',
   templateUrl: './shipnode.component.html',
-  styleUrls: ['./shipnode.component.less']
+  styleUrls: ['./shipnode.component.less'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: "*", minHeight: '56px', width: '100%'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class ShipnodeComponent{
@@ -89,6 +98,28 @@ export class ShipnodeComponent{
 
     this.openAddShipnodeDialog(shipnodeToEdit);
   }
+
+
+  expandedElement: ShipNode;
+
+  onRowClick(shipNodeClicked: ShipNode) {
+    this.expandedElement = shipNodeClicked;
+  }
+
+  // showMap(event: any, shipnode: ShipNode) {
+  //   console.debug("showmap called. ", event, shipnode);
+
+  //   let mapDiv = event.target.nextSibling;
+
+  //   console.debug("map div is: ", mapDiv);
+
+  //   var mapProp = {
+  //     center: new google.maps.LatLng(shipnode.latitude, shipnode.longitude),
+  //     zoom: 15,
+  //     mapTypeId: google.maps.MapTypeId.ROADMAP
+  //   };
+  //   let map = new google.maps.Map(mapDiv.nativeElement, mapProp);
+  // }
 }
 
 export class ShipnodeDataSource extends DataSource<ShipNode> {
@@ -102,11 +133,18 @@ export class ShipnodeDataSource extends DataSource<ShipNode> {
   getShipnodeSubject = (): BehaviorSubject<ShipNode[]> => {return this.dataService.getShipnodeList()};
 
 
-  connect(): Observable<ShipNode[]> {
+  connect(): Observable<any[]> {
+
+    // let tableRowArray: any[] = new Array();
+
+    // this.dataService.getShipnodeList(true).subscribe(data => {
+    //   data.forEach(element => tableRowArray.push(element, {detailRow: true, element}));
+    //   console.debug('loaded all rows. ', tableRowArray);
+    // });
+
+    // return of(tableRowArray);
     
-    // this.dataService.retrieveAllShipnodes();
-    
-    return this.dataService.getShipnodeList(true);
+    return this.dataService.getShipnodeList();
   }
 
   disconnect() {

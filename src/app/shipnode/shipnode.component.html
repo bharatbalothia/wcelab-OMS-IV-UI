@@ -1,50 +1,71 @@
 <div>
   <br>
+  <div class="container">
     <div class="container">
-        <div class="container">
-          <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
-              <div class="blocks">
-                  <button button="submit" mat-raised-button color="primary" (click)="openAddShipnodeDialog()">
-                      <mat-icon>add</mat-icon> Add ShipNode
-                  </button>
-              </div>
+      <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
+        <div class="blocks">
+          <button button="submit" mat-raised-button color="primary" (click)="openAddShipnodeDialog()">
+            <mat-icon>add</mat-icon> Add ShipNode
+          </button>
         </div>
+      </div>
     </div>
     <br>
     <div class="container">
       <div fxLayout="row" fxLayoutAlign="center center" class="content">
-        <mat-card class="card" >
+        <mat-card class="card">
           <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
             <h3>Ship Nodes</h3>
           </mat-card-title>
           <mat-card-content>
-              <div class="example-container mat-elevation-z8">
-                  <mat-table #table [dataSource]="dataSource">
-                  <ng-container matColumnDef="shipNode">
-                    <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
-                    <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.shipNode}} </mat-cell>
-                  </ng-container>
-                    <ng-container matColumnDef="latitude">
-                      <mat-header-cell *matHeaderCellDef> Latitude </mat-header-cell>
-                      <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.latitude}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="longitude">
-                      <mat-header-cell *matHeaderCellDef> Longitude </mat-header-cell>
-                      <mat-cell *matCellDef="let element" (dblclick)="editShipnode(element)"> {{element.longitude}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="delete">
-                      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                      <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"> 
-                        <a (click)="deleteShipnode(element)"
-                            type="button">
-                          <mat-icon class="icon">delete</mat-icon>
-                        </a> 
-                      </mat-cell>
-                    </ng-container>   
-                    <mat-header-row *matHeaderRowDef="displayedColumns" ></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                  </mat-table>
-                </div> 
+            <div class="example-container mat-elevation-z8">
+              <mat-table multiTemplateDataRows [dataSource]="dataSource">
+                <ng-container matColumnDef="shipNode">
+                  <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.shipNode}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="latitude">
+                  <mat-header-cell *matHeaderCellDef> Latitude </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.latitude}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="longitude">
+                  <mat-header-cell *matHeaderCellDef> Longitude </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.longitude}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    <a (click)="deleteShipnode(element)" type="button">
+                      <mat-icon class="icon">delete</mat-icon>
+                    </a>
+                  </mat-cell>
+                </ng-container>
+
+                <!-- Expanded Content Column - The detail row is made up of this one column -->
+                <ng-container matColumnDef="expandedShipnodeDetail">
+                  <mat-cell *matCellDef="let detail" [attr.colspan]="displayedColumns.length">
+                    <div [@detailExpand]=" detail === expandedElement ? 'expanded' : 'collapsed'">
+                      <!-- The location of {{detail.shipNode}} is {{detail.latitude}} :
+                      {{detail.longitude}} -->
+                      <agm-map [mapDraggable]="'false'" [latitude]="detail.latitude" [longitude]="detail.longitude" [zoom]="12">
+                        <agm-marker [latitude]="detail.latitude" [longitude]="detail.longitude"></agm-marker>
+                      </agm-map>
+                      <!-- <div><button mat-raised-button color="primary" (click)="showMap($event, detail)"><mat-icon>place</mat-icon>Show Map</button> <div #gmap style=”width:100%;height:400px”></div></div> -->
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <!-- The regular table row -->
+                <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="element-row" [class.expanded]="expandedElement === row"
+                  (click)="onRowClick(row)" (dblclick)="editShipnode(row)"></mat-row>
+                <!-- The expanded detail row -->
+                <mat-row *matRowDef="let row; columns: ['expandedShipnodeDetail']" class="detail-row"></mat-row>
+              </mat-table>
+            </div>
           </mat-card-content>
         </mat-card>
       </div>

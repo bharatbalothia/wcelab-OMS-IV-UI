@@ -4,7 +4,7 @@ import {Observable, BehaviorSubject} from 'rxjs';
 
 import { NetworkAvailabilityDataService } from './network-availability-data.service';
 import { NodeAvailabilityDataService } from './node-availability-data.service';
-import { AvaiabilityInquiry } from './availability-data.service';
+import { AvaiabilityInquiry, ShipnodeAvailability, NetworkAvailability } from './availability-data.service';
 
 
 
@@ -28,9 +28,22 @@ export class AvailabilityComponent implements OnInit {
     
     console.debug('Query Availability for: ', inquiry);
 
-    let avaResult = this.getAvailability(inquiry);
+    if (inquiry.distributionGroupId != null && inquiry.distributionGroupId.length > 0 && inquiry.distributionGroupId != ' ') {
+      
+      console.debug("Getting Networking Availability");
+      this.setInquiryShipnode(inquiry, null);
+      let nodeAva: Observable<ShipnodeAvailability> = this.nodeAvaDataService.getNodeAvailability(inquiry);
 
-    avaResult.subscribe(data=>{console.debug(`Received avaiability result: ${JSON.stringify(data)}`)});
+      nodeAva.subscribe(data=>{console.debug(`Received shipnode avaiability result: ${JSON.stringify(data)}`)});
+
+    } else if (inquiry.shipnodeId != null && inquiry.shipnodeId.length > 0 && inquiry.shipnodeId != ' ') {
+      
+      console.debug("Getting Node Availability");
+      this.setInquiryShipnode(inquiry, inquiry.shipnodeId);
+      let networkAva: Observable<NetworkAvailability> = this.networkAvaDataService.getNetworkAvailability(inquiry);
+
+      networkAva.subscribe(data=>{console.debug(`Received network avaiability result: ${JSON.stringify(data)}`)});
+    }
   }
 
   // Prepare inqury data before sending to the IV server
@@ -54,19 +67,4 @@ export class AvailabilityComponent implements OnInit {
     }
   }
   
-  private getAvailability(inquiry: AvaiabilityInquiry) {
-    
-    if (inquiry.distributionGroupId != null && inquiry.distributionGroupId.length > 0 && inquiry.distributionGroupId != ' ') {
-      
-      console.debug("Getting Networking Availability");
-      this.setInquiryShipnode(inquiry, null);
-      return this.nodeAvaDataService.getNodeAvailability(inquiry);
-
-    } else if (inquiry.shipnodeId != null && inquiry.shipnodeId.length > 0 && inquiry.shipnodeId != ' ') {
-      
-      console.debug("Getting Node Availability");
-      this.setInquiryShipnode(inquiry, inquiry.shipnodeId);
-      return this.networkAvaDataService.getNetworkAvailability(inquiry);
-    }
-  }
 }

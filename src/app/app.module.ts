@@ -35,7 +35,7 @@ import { AvailabilityComponent } from './availability/availability.component';
 import { LoginComponent } from './login/login.component';
 import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
 
-
+import { AgmCoreModule } from '@agm/core';
 
 // import { AuthInterceptor } from './auth.interceptor';
 
@@ -68,6 +68,9 @@ import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCssljS7J3SwyWobPQ87VUmafNtZK1Wop4' //Google API key for maps
+    })
   ],
   
   providers: [  

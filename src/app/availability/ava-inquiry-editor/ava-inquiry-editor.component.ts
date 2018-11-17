@@ -164,7 +164,7 @@ export class AvaInquiryEditorComponent implements OnInit, OnChanges {
 
   // TODO: There has to be a better way than creating this BehaviorSubject each time
   private createFilter(options: string[], userInput: string): Observable<string[]> {
-    console.debug('userINput: ', userInput);
+    // console.debug('userINput: ', userInput);
 
     return new BehaviorSubject(options).pipe(
       startWith(''),
