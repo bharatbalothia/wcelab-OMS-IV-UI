@@ -46,6 +46,11 @@ git clone git@github.ibm.com:Ned-Zhang/OMS-IV-UI.git
 npm update
 ```
 
+## Start the project using container
+
+See the [docker README](docker/README.md) for how run development using docker.
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
