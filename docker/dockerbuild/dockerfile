@@ -1,0 +1,12 @@
+FROM node
+
+MAINTAINER Ned Zhang <ned_zhang@us.ibm.com>
+
+## Create a angular development ready environment
+
+RUN npm install -g @angular/cli
+
+# Expose the port for ng serve
+EXPOSE 4200
+
+CMD [ "node" ]
