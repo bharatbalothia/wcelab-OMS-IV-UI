@@ -50,8 +50,8 @@
                     <div [@detailExpand]=" detail === expandedElement ? 'expanded' : 'collapsed'">
                       <!-- The location of {{detail.shipNode}} is {{detail.latitude}} :
                       {{detail.longitude}} -->
-                      <agm-map [mapDraggable]="'false'" [latitude]="detail.latitude" [longitude]="detail.longitude" [zoom]="12">
-                        <agm-marker [latitude]="detail.latitude" [longitude]="detail.longitude"></agm-marker>
+                      <agm-map class="shipnodemap" [mapDraggable]="true" [latitude]="detail.latitude" [longitude]="detail.longitude" [zoom]="12">
+                        <agm-marker [latitude]="detail.latitude" [longitude]="detail.longitude" [title]="detail.shipNode"></agm-marker>
                       </agm-map>
                       <!-- <div><button mat-raised-button color="primary" (click)="showMap($event, detail)"><mat-icon>place</mat-icon>Show Map</button> <div #gmap style=”width:100%;height:400px”></div></div> -->
                     </div>

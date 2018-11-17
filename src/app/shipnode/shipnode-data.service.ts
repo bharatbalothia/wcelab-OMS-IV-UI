@@ -105,4 +105,14 @@ export class ShipnodeDataService extends IvServiceBase {
 
   }
 
+  getShipnodeByName(shipnodeName: string): ShipNode {
+    for (let shipnode of this.shipnodeSubject.value) {
+      if (shipnode.shipNode == shipnodeName) {
+        return shipnode;
+      }
+    }
+
+    return null;
+  }
+
 }

@@ -103,7 +103,9 @@ export class ShipnodeComponent{
   expandedElement: ShipNode;
 
   onRowClick(shipNodeClicked: ShipNode) {
-    this.expandedElement = shipNodeClicked;
+    
+      this.expandedElement = (shipNodeClicked !== this.expandedElement) ? 
+        shipNodeClicked : null;
   }
 
   // showMap(event: any, shipnode: ShipNode) {
