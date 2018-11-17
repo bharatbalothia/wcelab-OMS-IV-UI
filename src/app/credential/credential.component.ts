@@ -64,11 +64,9 @@ export class CredentialComponent implements OnInit {
 
   renewAllTokens(): void {
 
-    console.warn('Renewing all API tokens');
+    console.info('Renewing all API tokens');
 
     this.dataService.reloadTokens();
-
-    //this.changeDetectorRefs.detectChanges();
     
   }
 
