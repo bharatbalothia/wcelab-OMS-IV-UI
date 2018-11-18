@@ -21,7 +21,7 @@ import {ShipnodeEditorComponent} from './shipnode-editor/shipnode-editor.compone
   styleUrls: ['./shipnode.component.less'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'hidden'})),
       state('expanded', style({height: "*", minHeight: '56px', width: '100%'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),

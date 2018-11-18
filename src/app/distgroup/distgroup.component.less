@@ -1,8 +1,30 @@
 @import "../css/mat-table.less";
 
-.mat-column-delete {
+.element-row {
+    position: relative;
+}
 
+.element-row:not(.expanded) {
+    cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+    background: #f5f5f5;
+}
+
+.element-row.expanded {
+    border-bottom-color: transparent;
+}
+
+
+.detail-row {
+    min-height: 0;
+    overflow: hidden;
     display: flex;
-    justify-content: flex-end;
+}
 
+
+agm-map.distgroupmap {
+    height: 400px;
+    width: 100%;
 }

@@ -19,15 +19,15 @@
           </mat-card-title>
           <mat-card-content>
             <div class="example-container mat-elevation-z8">
-              <mat-table #table [dataSource]="dataSource">
+              <mat-table multiTemplateDataRows [dataSource]="dataSource">
                 <ng-container matColumnDef="distributionGroupId">
                   <mat-header-cell *matHeaderCellDef> Distribution Group </mat-header-cell>
-                  <mat-cell *matCellDef="let element" (dblclick)="editDistgroup(element)" > {{element.distributionGroupId}} </mat-cell>
+                  <mat-cell *matCellDef="let element"> {{element.distributionGroupId}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="dgShipnodeList">
                   <mat-header-cell *matHeaderCellDef> Ship Nodes </mat-header-cell>
                   <!-- <mat-cell *matCellDef="let element" >{{stringifyShipnodes(element.shipNodes)}}</mat-cell> -->
-                  <mat-cell *matCellDef="let element" (dblclick)="editDistgroup(element)">{{element.shipNodes | arrayList: 'shipNode' : ', '}}</mat-cell>
+                  <mat-cell *matCellDef="let element">{{element.shipNodes | arrayList: 'shipNode' : ', '}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -37,8 +37,29 @@
                     </a>
                   </mat-cell>
                 </ng-container>
+
+                <!-- Expanded Content Column - The detail row is made up of this one column -->
+                <ng-container matColumnDef="expandedDistgroupDetail">
+                  <mat-cell *matCellDef="let detail" [attr.colspan]="displayedColumns.length">
+                    <div [@distgroupExpand]=" detail === expandedElement ? 'expanded' : 'collapsed'" >
+                      <!-- The location of {{detail.shipNode}} is {{detail.latitude}} :
+                                        {{detail.longitude}} -->
+                                        <!-- [latitude]="calculateAverageLat(detail)" [longitude]="calculateAverageLon(detail)" [fitBounds]="getFitBounds(detail)" [latitude]="detail.center.latitude" [longitude]="detail.center.longitude"  -->
+                      <agm-map class="distgroupmap" (mapReady)="onMapReady($event, detail)" [mapDraggable]="true" >
+                          <!-- [latitude]="detail.latitude" [longitude]="detail.longitude" [zoom]="12" -->
+                        <!-- <agm-marker *ngFor="let shipnode of detail.shipNodes" [latitude]="shipnode.latitude" [longitude]="shipnode.longitude" [label]="shipnode.shipNode"></agm-marker> -->
+                      </agm-map>
+                      <!-- <div><button mat-raised-button color="primary" (click)="showMap($event, detail)"><mat-icon>place</mat-icon>Show Map</button> <div #gmap style=”width:100%;height:400px”></div></div> -->
+                    </div>
+                  </mat-cell>
+                </ng-container>
+
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <!-- The regular table row -->
+                <mat-row *matRowDef="let row; columns: displayedColumns" matRipple class="element-row" [class.expanded]="expandedElement === row"
+                  (click)="onRowClick(row)" (dblclick)="editDistgroup(row)"></mat-row>
+                <!-- The expanded detail row -->
+                <mat-row *matRowDef="let row; columns: ['expandedDistgroupDetail']" class="detail-row"></mat-row>
               </mat-table>
             </div>
           </mat-card-content>
