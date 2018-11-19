@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { DistributionGroup, DistgroupDataService, DGShipNode } from '../distgroup-data.service';
+import { Observable } from 'rxjs';
+import { DistributionGroup, DistgroupDataService } from '../distgroup-data.service';
 import { ShipNode, ShipnodeDataService } from '../../shipnode/shipnode-data.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class DistgroupEditorComponent implements OnInit  {
 
   public createNewDistgroup : boolean = false;
 
-  public dgshipnodeToEdit : DGShipNode;
+  public dgshipnodeToEdit : ShipNode;
 
   constructor(
     public dialogRef: MatDialogRef<DistgroupEditorComponent>,
@@ -32,11 +33,11 @@ export class DistgroupEditorComponent implements OnInit  {
 
   }
 
-  editShipnodeInDistgroup(shipnodeToEdit: DGShipNode){
+  editShipnodeInDistgroup(shipnodeToEdit: ShipNode){
     this.dgshipnodeToEdit = shipnodeToEdit;
   }
 
-  deleteShipNodeFromDg(dgshipnodeArray: DGShipNode[], indexToRemove: number) {
+  deleteShipNodeFromDg(dgshipnodeArray: ShipNode[], indexToRemove: number) {
     if (dgshipnodeArray != null && indexToRemove >= 0){
       dgshipnodeArray.splice(indexToRemove, 1);
     }
@@ -46,9 +47,9 @@ export class DistgroupEditorComponent implements OnInit  {
     
     if (distgroupToEdit != null){
       if (distgroupToEdit.shipNodes == null) {
-        distgroupToEdit.shipNodes = new Array<DGShipNode>();
+        distgroupToEdit.shipNodes = new Array<ShipNode>();
       }
-      let newDgshipnode : DGShipNode = {
+      let newDgshipnode : ShipNode = {
         shipNode: null,
       };
 
@@ -56,15 +57,9 @@ export class DistgroupEditorComponent implements OnInit  {
     }
   }
 
-  getShipnodeList() : ShipNode[] {
+  getShipnodeList() : Observable<ShipNode[]> {
 
-
-
-    let shipnodeList : ShipNode[] = this.shipnodeDataService.getShipnodeList().value;
-
-    // console.log(`getShipnodeList: ${JSON.stringify(shipnodeList)}`);
-    return shipnodeList;
-
+    return this.shipnodeDataService.getShipnodeList();
   }
 
   onNoClick(): void {

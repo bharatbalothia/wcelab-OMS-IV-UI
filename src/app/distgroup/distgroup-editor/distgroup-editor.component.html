@@ -10,7 +10,7 @@
 
           <mat-form-field>
               <mat-select placeholder="Ship Node ID" [(ngModel)]="dgshipnode.shipNode" name="dgshipnode{{index}}">
-                <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
+                <mat-option *ngFor="let shipnode of getShipnodeList() | async" [value]="shipnode.shipNode">
                   {{shipnode.shipNode}}
                 </mat-option>
               </mat-select>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
@@ -15,18 +15,18 @@ import { EntityUrl } from "../entity-url";
 import { IVCredent, CredentialDataService } from "../credential/credential-data.service";
 import { ShipnodeDataService, ShipNode } from '../shipnode/shipnode-data.service';
 
-export interface DGShipNode {
-  shipNode: string;
-  latitude?: number;
-  longitude?: number;
-}
+// export interface DGShipNode {
+//   shipNode: string;
+//   latitude?: number;
+//   longitude?: number;
+// }
 
 export interface DistributionGroup {
   distributionGroupId: string;
   // description: string;
-  shipNodes: DGShipNode[];
+  shipNodes: ShipNode[];
 
-  center?: { latitude: number; longitude: number };
+  // center?: { latitude: number; longitude: number };
   // corners?: {south: number; west: number; north: number; east: number};
 }
 
@@ -36,22 +36,26 @@ export interface DistributionGroup {
 })
 export class DistgroupDataService extends IvServiceBase {
 
-  distgroupSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
+  // distgroupSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
 
   private retriveNeeded: boolean = true;
+
+  // @Output() distgroupChangedEvent: EventEmitter<DistributionGroup[]>;
 
   constructor(http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService,
     private shipnodeDataService: ShipnodeDataService) {
     super(http, httpErrorHandler, credentialData);
   }
 
-  public getEntityUrl = () => { return EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS; }
+  protected getEntityUrl = () => { return EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS; }
 
-  public getBearerToken = (credential: IVCredent) => {
+  protected getBearerToken = (credential: IVCredent) => {
     return credential == null ? null : credential.tokens.configurationDistributionGroups;
   }
 
   getDistgroupList(reloadDistgroups = false): Observable<DistributionGroup[]> {
+
+    const distgroupSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
 
     if (reloadDistgroups) {
       this.retriveNeeded = true;
@@ -61,16 +65,15 @@ export class DistgroupDataService extends IvServiceBase {
     if (this.retriveNeeded) {
       this.retriveNeeded = false;
       console.debug('Requesting DGs from server.');
-      this.retrieveAllDistgroups(this.distgroupSubject);
+      this.retrieveAllDistgroups(distgroupSubject);
     }
 
-    return this.distgroupSubject;
+    return distgroupSubject;
   }
 
   retrieveAllDistgroups(distgroupSubject: AsyncSubject<DistributionGroup[]>): void {
     this.getList<DistributionGroup>().subscribe(data => {
       this.populateAndPublishDistgroupDetail(distgroupSubject, data);
-      // this.distgroupSubject.next(data);
     });
   }
 
@@ -93,36 +96,26 @@ export class DistgroupDataService extends IvServiceBase {
 
     dgSubscribers.push(getShipnodeListObservable);
 
+    // The result from IV's get distribution group detail 
+    // doesn't have distributiongroup id. Using a pipe to add it.
     const setDGId = (dgId) => map(value => {
       const dg: DistributionGroup = <DistributionGroup>value;
       dg.distributionGroupId = dgId;
       return dg;
     });
 
-    // const setDgIdAgain = (v: DistributionGroup, id: string): DistributionGroup => {
-    //   v.distributionGroupId = id;
-    //   return v;
-    // }
-
     // Then get each distribution group's ship node list
     distgroups.forEach((dg, index) => {
+      
       const dgGetShipnodeListObservable =
+
         this.getObject('/' + encodeURIComponent(dg.distributionGroupId))
           .pipe(setDGId(dg.distributionGroupId));
 
       dgSubscribers.push(dgGetShipnodeListObservable);
-      // // For each DG subscribe to get DG's shipnode list
-      // dgGetShipnodeListObservable.subscribe(data => {
-
-      //   dg.shipNodes = [] as DGShipNode[];
-
-      //   let response: DistributionGroup = data as DistributionGroup;
-
-      //   Object.assign(dg.shipNodes, response.shipNodes);
-      // });
     });
 
-    console.debug('Distributiongroup getter Observable array ready.', dgSubscribers);
+    // console.debug('Distributiongroup getter Observable array ready.', dgSubscribers);
 
 
     // Need to create the distribution list by 
@@ -142,84 +135,41 @@ export class DistgroupDataService extends IvServiceBase {
       
       emittingObjectList.forEach((emitObj: DistributionGroup | ShipNode[], index: number) => {
 
-        console.debug('Received [%d/%d]:', index, emittingListLength, emitObj);
+        // console.debug('Received [%d/%d]:', index, emittingListLength, emitObj);
 
         if ((<DistributionGroup>emitObj).distributionGroupId) {
           // This is a distribution gorup
           const emitDG: DistributionGroup = <DistributionGroup>emitObj;
 
-          const dgToEdit: DistributionGroup = distgroups.filter(dg => dg.distributionGroupId == emitDG.distributionGroupId)[0];
+          const dgToEdit: DistributionGroup = distgroups.find(dg => dg.distributionGroupId == emitDG.distributionGroupId);
           // Copy the shipnodes into the dg in the data array
           dgToEdit.shipNodes = [] as ShipNode[];
           Object.assign(dgToEdit.shipNodes, emitDG.shipNodes)
 
-          dgToEdit.shipNodes.forEach((dgshipnode) => {
-            const shipnodeFromList: ShipNode = shipnodeList.filter(shipnode => shipnode.shipNode == dgshipnode.shipNode)[0];
-            dgshipnode.latitude = shipnodeFromList.latitude;
-            dgshipnode.longitude = shipnodeFromList.longitude;
-          });
+          DistgroupDataService.populateShipnodeGeoInDG(dgToEdit, shipnodeList);
         } else {
           // This is emitted by the get ShipNode List and should come first.
           shipnodeList = <ShipNode[]>emitObj;
         }
-      });
+      }); 
 
+      // Now the list of distribution group is ready with the detail of each shipnodes in them
       console.debug('DG** Merged shipnode data into DGs.', distgroups);
 
       subjectToPublish.next(distgroups);
 
       subjectToPublish.complete();
 
-    })
+    });
 
   }
 
-  // for (let dg of distgroups){
-
-  //   this.getObject('/' + encodeURIComponent(dg.distributionGroupId)).subscribe(data => {
-  //     dg.shipNodes = [] as DGShipNode[];
-
-  //     let response: DistributionGroup = data as DistributionGroup;
-
-  //     Object.assign(dg.shipNodes, response.shipNodes);
-
-  //     dg.center = {latitude: 0.0, longitude: 0.0};
-  //     dg.corners = {south: 200.0, west: 200.0, north: -200.0, east: -200.0};
-
-  //     let count: number = 0;
-
-  //     for (let dgShipnode of dg.shipNodes) {
-  //       let detailShipnode: ShipNode = this.shipnodeDataService.getShipnodeByName(dgShipnode.shipNode);
-  //       if (detailShipnode != null) {
-  //         dgShipnode.latitude = detailShipnode.latitude;
-  //         dgShipnode.longitude = detailShipnode.longitude;
-
-  //         count++;
-
-  //         dg.center.latitude = (dg.center.latitude * (count - 1) + detailShipnode.latitude) / count;
-  //         dg.center.longitude = (dg.center.longitude * (count - 1) + detailShipnode.longitude) / count;
-
-  //         if (detailShipnode.latitude < dg.corners.south) {
-  //           dg.corners.south = detailShipnode.latitude
-  //         }
-
-  //         if (detailShipnode.latitude > dg.corners.north) {
-  //           dg.corners.north = detailShipnode.latitude;
-  //         }
-
-  //         if (detailShipnode.longitude < dg.corners.west) {
-  //           dg.corners.west = detailShipnode.longitude
-  //         }
-
-  //         if (detailShipnode.longitude > dg.corners.east) {
-  //           dg.corners.east = detailShipnode.longitude;
-  //         }
-
-  //       } else {
-  //         console.warn ('Not able to find shipnode [%s] from list', dgShipnode.shipNode, dgShipnode);
-  //       }
-  //     }
-  //   });
-  // }
-  // }
+  public static populateShipnodeGeoInDG(dgWithoutShipnodeGeo: DistributionGroup, shipnodeList: ShipNode[]) {
+    dgWithoutShipnodeGeo.shipNodes.forEach((dgshipnode) => {
+      const shipnodeFromList: ShipNode = shipnodeList.find(shipnode => shipnode.shipNode == dgshipnode.shipNode);
+      // shipnodeFromList could be null if the shipnode was deleted but not removed from dg.
+      dgshipnode.latitude = shipnodeFromList ? shipnodeFromList.latitude : null;
+      dgshipnode.longitude = shipnodeFromList ? shipnodeFromList.longitude : null;
+    });
+  }
 }

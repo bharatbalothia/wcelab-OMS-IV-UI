@@ -6,15 +6,17 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
-import { AsyncSubject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { MatDialog, MatPaginator } from '@angular/material';
 
-import { DistributionGroup, DistgroupDataService, DGShipNode } from './distgroup-data.service';
+import { DistributionGroup, DistgroupDataService } from './distgroup-data.service';
 
 import { DistgroupEditorComponent } from './distgroup-editor/distgroup-editor.component';
+import { ArrayUtil } from '../util/array-util';
+import { ShipnodeDataService, ShipNode } from '../shipnode/shipnode-data.service';
 
 // import { LatLngBoundsLiteral } from '@agm/core';
 // import {ArrayListPipe} from '../util/array-list.pipe.ts';
@@ -35,15 +37,33 @@ import { DistgroupEditorComponent } from './distgroup-editor/distgroup-editor.co
 })
 export class DistgroupComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private dataService: DistgroupDataService) {
-  }
-
-  ngOnInit() {
-  }
-
   displayedColumns = ['distributionGroupId', 'dgShipnodeList', 'delete'];
 
-  dataSource = new DistgroupDataSource(this.dataService);
+  dgTableDataSource: MatTableDataSource;
+
+  private distgroupList: DistributionGroup[];
+
+  private distgroupListSubject: BehaviorSubject<DistributionGroup[]>;
+
+  constructor(public dialog: MatDialog, private dgDataService: DistgroupDataService,
+    private shipnodeDataService: ShipnodeDataService) {
+    // this.distgroupList = [] as DistributionGroup[];
+
+    this.distgroupListSubject = new BehaviorSubject<DistributionGroup[]>(null);
+
+    this.dgTableDataSource = new MatTableDataSource(this.distgroupListSubject);
+  }
+
+
+  ngOnInit() {
+
+    this.dgDataService.getDistgroupList().subscribe(
+      (dglist: DistributionGroup[]) => {
+        this.distgroupList = dglist;
+        this.publishDistgroupList();
+      }
+    );
+  }
 
   editDistgroup(disgroupToEdit: DistributionGroup): void {
 
@@ -53,11 +73,9 @@ export class DistgroupComponent implements OnInit {
   }
 
   onAddnewDistgroup(): void {
-    let newDG: DistributionGroup = { distributionGroupId: null, shipNodes: [] };
+    // let newDG: DistributionGroup = { distributionGroupId: null, shipNodes: [] };
 
-    this.dataSource.getDistrbutionGroupList().push(newDG);
-
-    this.openEditDistgroupDialog(newDG);
+    this.openEditDistgroupDialog(null);
 
   }
 
@@ -83,69 +101,60 @@ export class DistgroupComponent implements OnInit {
       data: dgToEditCopy
     });
 
+    // TODO: need to unsubscribe from the dialog if user just cancel.
     dialogRef.componentInstance.event.subscribe((result) => {
 
       let distgroupEdited = result.data;
 
-      this.dataService.putDistgroup(distgroupEdited);
-      console.debug('Create or update distribution group.', distgroupEdited);
+      this.dgDataService.putDistgroup(distgroupEdited);
 
-      var distgroupList: DistributionGroup[];
+      
+      this.shipnodeDataService.getShipnodeList().subscribe(
+        (shipnodeList: ShipNode[]) => {
 
-      this.dataSource.getDistgroupSubject().subscribe(dglst => distgroupList = dglst);
-      // TODO: following block should be inside the subscribe
-      if (createNewDistgroup) {
-        // Add distgroupEdited to the array if it is new
-        console.debug('Add new distribution group %s to client side', distgroupEdited.distributionGroupId);
-        distgroupList.push(distgroupEdited);
-      } else {
-        console.debug('Update distribution group %s on client side', distgroupEdited.distributionGroupId);
-        // update the existing DG
-        dgToEdit.distributionGroupId = distgroupEdited.distributionGroupId;
-        dgToEdit.shipNodes = distgroupEdited.shipNodes;
-        // dgToEdit = JSON.parse(JSON.stringify(distgroupEdited));
-      }
-      this.dataSource.broadcastChange(distgroupList);
+          // Put shipnode GeoData in the shipnodes.
+          DistgroupDataService.populateShipnodeGeoInDG(distgroupEdited, shipnodeList);
+
+          if (createNewDistgroup) {
+            // Add distgroupEdited to the array if it is new
+            console.debug('Add new distribution group %s.', distgroupEdited.distributionGroupId);
+            this.distgroupList.push(distgroupEdited);
+          } else {
+            console.debug('Update distribution group %s.', distgroupEdited.distributionGroupId);
+            const dgToUpdate = 
+              this.distgroupList.find(itm => itm.distributionGroupId == distgroupEdited.distributionGroupId);
+
+            if (dgToUpdate != null) {
+              dgToUpdate.distributionGroupId = distgroupEdited.distributionGroupId;
+              dgToUpdate.shipNodes = distgroupEdited.shipNodes;
+            }
+          }
+    
+          this.publishDistgroupList();
+        }
+      );
     });
   }
 
   deleteDistgroup(distgroupToDelete: DistributionGroup): void {
     console.debug('Deleting Distribution Group. ', distgroupToDelete);
 
-    this.dataService.deleteDistgroup(distgroupToDelete);
+    this.dgDataService.deleteDistgroup(distgroupToDelete);
 
-    let distgroupList = this.dataSource.getDistrbutionGroupList();
+    ArrayUtil.findAndRemoveFromArray(this.distgroupList,
+      (dg) => dg.distributionGroupId == distgroupToDelete.distributionGroupId);
 
-    let index = distgroupList.indexOf(distgroupToDelete, 0);
-    if (index > -1) {
-      distgroupList.splice(index, 1);
-    }
-
-    this.dataSource.broadcastChange(distgroupList);
-
+    this.publishDistgroupList();
   }
-  // // stringify list of shipnodes to a text to display 
-  // stringifyShipnodes(dgShipNodes: DGShipNode[]): string{
 
-  //   if (dgShipNodes == null) {
-  //     return null;
-  //   } else {
+  private publishDistgroupList() {
+    this.distgroupListSubject.next(this.distgroupList);
+  }
 
-  //     let firstElement = true;
 
-  //     let desc = '';
-
-  //     for (let shipnode of dgShipNodes) {
-  //       if (!firstElement) {
-  //         desc += ', ';
-  //         firstElement = false;
-  //       }
-  //       desc += shipnode.shipNode;
-  //     }
-  //     return desc;
-  //   }
-
-  // }
+  //********************************************
+  //** Code for the expanded element for map
+  //********************************************
 
   expandedElement: DistributionGroup;
 
@@ -154,47 +163,39 @@ export class DistgroupComponent implements OnInit {
       null : distgroup;
   }
 
+  /**
+   * The function puts markers and bounds on the map.
+   * @param map the google map widget
+   * @param distgroup the distribution group to put on the map
+   */
   onMapReady(map: google.maps.Map, distgroup: DistributionGroup) {
+
     console.debug(`Setting DG ${JSON.stringify(distgroup)} on map: `, map);
 
-    this.dataService.getDistgroupList().subscribe(data => {
+    const bounds = new google.maps.LatLngBounds();
 
-      console.debug('Map is ready to paint and received Distribution Group observable: ', data);
+    for (let dgShipnode of distgroup.shipNodes) {
 
-      // const bound: google.maps.LatLngBoundsLiteral = {
-      //   east: -100,
-      //   west: 100,
-      //   north: -100,
-      //   south: 100,
-      // }
+      const markerLoc = new google.maps.LatLng(dgShipnode.latitude, dgShipnode.longitude);
 
-      const bounds  = new google.maps.LatLngBounds();
+      const markerOption: google.maps.MarkerOptions = {
+        position: markerLoc,
+        map: map,
+        label: dgShipnode.shipNode,
+      };
 
-      for (let dgShipnode of distgroup.shipNodes) {
+      const marker: google.maps.Marker = new google.maps.Marker(markerOption);
 
-        const markerLoc = new google.maps.LatLng(dgShipnode.latitude, dgShipnode.longitude);
+      bounds.extend(markerLoc);
+    }
 
-        const markerOption: google.maps.MarkerOptions = {
-          position: markerLoc,
-          map: map,
-          label: dgShipnode.shipNode,
-        };
-
-        const marker: google.maps.Marker = new google.maps.Marker(markerOption);
-
-        bounds.extend(markerLoc);
-
-      }
-
-      console.debug('Bounds for DG [%s]: SW: %s NE %s ', distgroup.distributionGroupId, 
+    console.debug('Bounds for DG [%s]: SW: %s NE %s ', distgroup.distributionGroupId,
       JSON.stringify(bounds.getSouthWest()), JSON.stringify(bounds.getNorthEast()));
 
-      map.fitBounds(bounds, 0);
-      map.panToBounds(bounds, 0);
+    map.fitBounds(bounds, 0);
+    map.panToBounds(bounds, 0);
 
-    });
-
-  }
+  };
 
   // getFitBounds(distgroup: DistributionGroup): LatLngBoundsLiteral {
 
@@ -247,43 +248,15 @@ export class DistgroupComponent implements OnInit {
   // }
 }
 
-export class DistgroupDataSource extends DataSource<DistributionGroup> {
+class MatTableDataSource extends DataSource<DistributionGroup> {
 
-  private dgList: DistributionGroup[];
-
-  // private distgroupListObv: Observable<DistributionGroup[]>;
-
-  private localSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
-
-  constructor(private dataService: DistgroupDataService) {
+  constructor(private distgroupListObservable: Observable<DistributionGroup[]>) {
     super();
   }
 
-  getDistrbutionGroupList(): DistributionGroup[] {
-    return this.dgList;
-  }
-
-  broadcastChange(dataToBroadcast: DistributionGroup[]): void {
-    this.dgList = dataToBroadcast;
-    this.localSubject.next(this.dgList);
-    this.localSubject.complete();
-  }
-
-  getDistgroupSubject = (): Observable<DistributionGroup[]> => { return this.dataService.getDistgroupList() };
-
-  // getDistgroupSubject = (): AsyncSubject<DistributionGroup[]> => {return this.dataService.distgroupSubject};
-
 
   connect(): Observable<DistributionGroup[]> {
-
-    const distgroupListObv: Observable<DistributionGroup[]> = this.dataService.getDistgroupList();
-
-    // Populate the class variable
-    distgroupListObv.subscribe(emittedDgList => this.dgList = emittedDgList);
-
-    // Return the Observable for others to observe
-    return distgroupListObv;
-
+    return this.distgroupListObservable;
   }
 
   disconnect() {

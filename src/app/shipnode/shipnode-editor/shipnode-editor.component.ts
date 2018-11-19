@@ -15,7 +15,7 @@ export class ShipnodeEditorComponent {
   //   longitude: 0,
   // };
 
-  public event: EventEmitter<any> = new EventEmitter();
+  public submitEvent: EventEmitter<ShipNode> = new EventEmitter();
 
   public createNewShipnode : boolean = false;
 
@@ -35,7 +35,7 @@ export class ShipnodeEditorComponent {
 
   onSubmit(): void {
     // this.shipnodeToEdit. = this.dataService.dataLength();
-    this.event.emit({data: this.shipnodeToEdit});
+    this.submitEvent.emit(this.shipnodeToEdit);
     this.dialogRef.close();
   }
 }

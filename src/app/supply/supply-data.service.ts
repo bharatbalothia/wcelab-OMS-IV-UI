@@ -65,9 +65,9 @@ export class SupplyDataService extends IvServiceBase {
     super(http, httpErrorHandler, credentialData);
   }
 
-  public getEntityUrl = () => { return EntityUrl.SUPPLIES; }
+  protected getEntityUrl = () => { return EntityUrl.SUPPLIES; }
 
-  public getBearerToken = (credential: IVCredent)  => {
+  protected getBearerToken = (credential: IVCredent)  => {
     return credential == null ? null : credential.tokens.supplies; 
   }
 
@@ -83,8 +83,15 @@ export class SupplyDataService extends IvServiceBase {
     return supplySubject;
   }
 
-  putSupplyAdjustment(supplytoAdjust: SupplyAdjustment): void {
-    this.putObject<SupplyAdjustment>(supplytoAdjust);
+
+  /**
+   * Sync supply to the list
+   * @param suppliestoAdjust Array of supplies to sync server to
+   */
+  syncSupply(suppliestoAdjust: SupplyAdjustment[]): void {
+    this.putObject<{supplies:SupplyAdjustment[]}>({
+      supplies: suppliestoAdjust
+    });
   }
 
 }

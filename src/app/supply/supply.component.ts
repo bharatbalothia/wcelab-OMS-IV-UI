@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from "@angular/common";
 
-import { SupplyDataService, SupplyQuery, ItemSupply } from './supply-data.service';
+import { SupplyDataService, SupplyQuery, ItemSupply, SupplyAdjustment } from './supply-data.service';
 
 import {Observable, BehaviorSubject} from 'rxjs';
 
@@ -111,11 +111,10 @@ export class SupplyComponent implements OnInit{
   }
 
   // Get the list of shipnode. To populate the dropdown box
-  getShipnodeList() : ShipNode[] {
+  getShipnodeList() : Observable<ShipNode[]> {
 
-    let shipnodeList : ShipNode[] = this.shipnodeDataService.getShipnodeList().value;
-
-    return shipnodeList;
+    return this.shipnodeDataService.getShipnodeList();
+    
   }
 
   private createQuery = (): SupplyQuery => {
@@ -135,7 +134,7 @@ export class SupplyComponent implements OnInit{
 
     const nowTimeString: string = this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm:ssZZZ');
 
-    let supplyToSync = {supplies: [{
+    let supplyToSync: SupplyAdjustment = {
       "eta": "1900-01-01T00:00:00Z",
       "itemId": supplyElement.itemId,
       "lineReference": " ",
@@ -151,9 +150,9 @@ export class SupplyComponent implements OnInit{
       "tagNumber": " ",
       "type": supplyElement.type,
       "unitOfMeasure": supplyElement.unitOfMeasure,
-    }]};
+    };
 
-    this.dataService.putObject(supplyToSync);
+    this.dataService.syncSupply([supplyToSync]);
   }
 
   deleteSupply(supplyElement: ItemSupply):void {

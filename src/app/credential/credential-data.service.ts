@@ -5,7 +5,7 @@ import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 import { catchError } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
 
-import {EntityUrl} from "../entity-url";
+import { EntityUrl } from "../entity-url";
 import { IvConstant } from "../iv-constant";
 
 export interface IVCredent {
@@ -104,15 +104,6 @@ export class CredentialDataService {
     console.info('Removing store [%s]', IvConstant.STORE_IV_INFO_AND_TOKEN);
 
     localStorage.removeItem(IvConstant.STORE_IV_INFO_AND_TOKEN);
-
-    // TODO: check if the logic below is correct. 
-    // the code currently subscribe to each Observable twice
-    //  once in the code just below to process the data
-    //  another time to forkJoin all Observables to get a JSON of updated credentials 
-    //  to update the localStorage.
-    //  Will the first subscrib trigger the execution of the request? 
-    //  If so, could the the request complete before the starting of forkJoin? 
-    //  Will that cuase the forJoin to never complete?
     
     let requestNetWorkAvailabilityToken : Observable<any> = this.requestNetWorkAvailabilityToken(this.credential);
     requestNetWorkAvailabilityToken.subscribe(
@@ -159,6 +150,7 @@ export class CredentialDataService {
       data => {this.credential.tokens.supplies = data.access_token}
     );
 
+    // Use forkJoin to write to the localstorage after recevied all tokens.
     forkJoin(
       requestDistributionGroupsToken,
       requestSettingsToken,
@@ -170,7 +162,7 @@ export class CredentialDataService {
       requestNodeAvailabilityToken,
       requestNetWorkAvailabilityToken,
     ).subscribe(
-      any => {
+      data => {
         let safeCopyCredent : IVCredent = 
           this.getCopyOfCredentialWithoutClientIdOrSecret();
         let ivInfoToStore: string = JSON.stringify(safeCopyCredent);

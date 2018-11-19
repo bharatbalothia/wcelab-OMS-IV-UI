@@ -19,7 +19,7 @@
           </mat-card-title>
           <mat-card-content>
             <div class="example-container mat-elevation-z8">
-              <mat-table multiTemplateDataRows [dataSource]="dataSource">
+              <mat-table multiTemplateDataRows [dataSource]="dgTableDataSource">
                 <ng-container matColumnDef="distributionGroupId">
                   <mat-header-cell *matHeaderCellDef> Distribution Group </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.distributionGroupId}} </mat-cell>

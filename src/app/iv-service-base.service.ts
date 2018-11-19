@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
@@ -8,20 +7,28 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 
-import {IVCredent, CredentialDataService} from './credential/credential-data.service';
+import { IVCredent, CredentialDataService } from './credential/credential-data.service';
 
 
+/**
+ * Base class for REST data Access.
+ * This base class provides the REST operations.
+ */
 export abstract class IvServiceBase {
   
   private handleError: HandleError;
 
-  // subclass provides the entity url like "configuration/shipNodes" or "supplies"
-  abstract getEntityUrl() : string;
+  /**
+   * subclass provides the entity url like "configuration/shipNodes" or "supplies"
+   */
+  protected abstract getEntityUrl() : string;
 
-  // subclass provides the bearerToken
-  abstract getBearerToken(credential: IVCredent) : string;
-
-  // protected getBaseUrl = () => { return '/ivproxy/inventory/42dd13f4/v1'; }
+  /**
+   * subclass provides the bearerToken
+   * @param credential the credentail. IvServiceBase
+   * passes the current credentail when invoiking this function.
+   */
+  protected abstract getBearerToken(credential: IVCredent) : string;
 
   // need the http client to do CRUD operation
   constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler, private credentialData: CredentialDataService) {
@@ -51,7 +58,7 @@ export abstract class IvServiceBase {
         'Content-Type':  'application/json',
         'cache-control': 'no-cache'
       });
-
+    
     let bearerToken = this.getBearerToken(this.credentialData.getCredential());
 
     if (bearerToken == null) {
@@ -66,13 +73,13 @@ export abstract class IvServiceBase {
   }
 
   // get a list by REST GET.
-  getList<T>(additionalUrl: string = '', params?: any) : Observable<any>{
+  protected getList<T>(additionalUrl: string = '', params?: any) : Observable<any>{
 
     return this.getObject<T[]>(additionalUrl, params);
   
   }
 
-  putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
+  protected putObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
@@ -95,7 +102,7 @@ export abstract class IvServiceBase {
     return putResult;
   }
   
-  postObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
+  protected postObject<T>(objectToPut: T, additionalUrl:string = '') : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
@@ -114,7 +121,7 @@ export abstract class IvServiceBase {
     return postResult;
   }
 
-  getObject<T>(additionalUrl: string = '', params?: any) : Observable<any> {
+  protected getObject<T>(additionalUrl: string = '', params?: any) : Observable<any> {
 
     let url = this.getUrl(additionalUrl);
 
@@ -129,7 +136,7 @@ export abstract class IvServiceBase {
     );
   }
 
-  deleteObject(additionalUrl:string) : Observable<any> {
+  protected deleteObject(additionalUrl:string) : Observable<any> {
     let url = this.getUrl(additionalUrl);
 
     let httpOptions = this.getHttpOptions();

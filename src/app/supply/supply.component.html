@@ -55,7 +55,7 @@
                     <mat-form-field>
                       <!-- <input matInput placeholder="Ship Node" formControlName="shipNodeToInquire"> -->
                       <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire">
-                        <mat-option *ngFor="let shipnode of getShipnodeList()" [value]="shipnode.shipNode">
+                        <mat-option *ngFor="let shipnode of getShipnodeList() | async" [value]="shipnode.shipNode">
                           {{shipnode.shipNode}}
                         </mat-option>
                       </mat-select>
