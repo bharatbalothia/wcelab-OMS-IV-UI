@@ -1,46 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { AgmCoreModule } from '@agm/core';
+import { DatePipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-// Imports to support Angular Material
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FlexLayoutModule} from '@angular/flex-layout';
-
-import {MaterialModule} from './material.module';
-import {FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { HttpClientModule } from '@angular/common/http';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
-// import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
-import {AppRouters} from './app.routes';
-
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-import { ShipnodeComponent } from './shipnode/shipnode.component';
-import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-editor.component';
-
-import { WelcomeComponent } from './welcome/welcome.component';
-import { CredentialComponent } from './credential/credential.component';
-import { DistgroupComponent } from './distgroup/distgroup.component';
-import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup-editor.component';
-import { ArrayListPipe } from './util/array-list.pipe';
-import { SupplyComponent } from './supply/supply.component';
-
-import { DatePipe } from '@angular/common';
-import { SettingComponent } from './setting/setting.component';
-import { AvailabilityComponent } from './availability/availability.component';
-import { LoginComponent } from './login/login.component';
+import { AppRouters } from './app.routes';
 import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
-
-import { AgmCoreModule } from '@agm/core';
+import { AvailabilityComponent } from './availability/availability.component';
 import { AutocompleteDropdownComponent } from './comp/autocomplete-dropdown/autocomplete-dropdown.component';
-
-// import { AuthInterceptor } from './auth.interceptor';
-
-// import {DataService} from './data/data.service';
+import { CredentialComponent } from './credential/credential.component';
+import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup-editor.component';
+import { DistgroupComponent } from './distgroup/distgroup.component';
+import { LoginComponent } from './login/login.component';
+import { MaterialModule } from './material.module';
+import { SettingComponent } from './setting/setting.component';
+import { ShipnodeEditorComponent } from './shipnode/shipnode-editor/shipnode-editor.component';
+import { ShipnodeComponent } from './shipnode/shipnode.component';
+import { SupplyComponent } from './supply/supply.component';
+import { ArrayListPipe } from './util/array-list.pipe';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [

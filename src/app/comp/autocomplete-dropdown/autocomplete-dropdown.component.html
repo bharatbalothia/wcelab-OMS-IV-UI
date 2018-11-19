@@ -1,3 +1,8 @@
-<p>
-  autocomplete-dropdown works!
-</p>
+<input matInput [placeholder]="placeholder" [matAutocomplete]="autocomp" [(ngModel)]="modelData"
+  (ngModelChange)="doAutoCompFilter($event)" (focus)='doAutoCompFilter(modelData)'>
+  <!-- [(ngModel)]="modelData" [(ngModel)]="userInputModel"  -->
+<mat-autocomplete autoActiveFirstOption #autocomp="matAutocomplete">
+  <mat-option *ngFor="let option of filteredAutoCompOptions | async" [value]="option">
+    {{option}}
+  </mat-option>
+</mat-autocomplete>

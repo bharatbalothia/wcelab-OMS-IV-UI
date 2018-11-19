@@ -40,6 +40,8 @@ export class DistgroupDataService extends IvServiceBase {
 
   private retriveNeeded: boolean = true;
 
+  private readonly distgroupSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
+
   // @Output() distgroupChangedEvent: EventEmitter<DistributionGroup[]>;
 
   constructor(http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService,
@@ -53,9 +55,9 @@ export class DistgroupDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.configurationDistributionGroups;
   }
 
+
   getDistgroupList(reloadDistgroups = false): Observable<DistributionGroup[]> {
 
-    const distgroupSubject: AsyncSubject<DistributionGroup[]> = new AsyncSubject<DistributionGroup[]>();
 
     if (reloadDistgroups) {
       this.retriveNeeded = true;
@@ -65,10 +67,10 @@ export class DistgroupDataService extends IvServiceBase {
     if (this.retriveNeeded) {
       this.retriveNeeded = false;
       console.debug('Requesting DGs from server.');
-      this.retrieveAllDistgroups(distgroupSubject);
+      this.retrieveAllDistgroups(this.distgroupSubject);
     }
 
-    return distgroupSubject;
+    return this.distgroupSubject;
   }
 
   retrieveAllDistgroups(distgroupSubject: AsyncSubject<DistributionGroup[]>): void {
