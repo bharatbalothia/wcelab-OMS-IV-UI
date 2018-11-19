@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { CredentialComponent } from './credential/credential.component';
 import { CredentialDataService } from './credential/credential-data.service';
@@ -16,14 +17,20 @@ import {EntityUrl} from "./entity-url";
 export class AppComponent implements OnInit {
   title = 'sterling-iv-poc';
 
-  constructor (private credentialComponent: CredentialComponent, private credentialDataService : CredentialDataService) {
+  constructor (private router: Router, 
+    private credentialComponent: CredentialComponent, private credentialDataService : CredentialDataService) {
 
   }
 
   ngOnInit() {
 
     this.credentialDataService.loadCredentFromStore();
+
+    const ivBaseUrl: string = this.credentialDataService.getIvBaseUrl();
     
+    if (ivBaseUrl == null) {
+      this.router.navigateByUrl('/login');
+    }
   }
 
   doLogin(): void {
