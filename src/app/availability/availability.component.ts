@@ -31,18 +31,19 @@ export class AvailabilityComponent implements OnInit {
     if (inquiry.distributionGroupId != null && inquiry.distributionGroupId.length > 0 && inquiry.distributionGroupId != ' ') {
       
       console.debug("Getting Networking Availability");
-      this.setInquiryShipnode(inquiry, null);
-      let nodeAva: Observable<ShipnodeAvailability> = this.nodeAvaDataService.getNodeAvailability(inquiry);
-
-      nodeAva.subscribe(data=>{console.debug(`Received shipnode avaiability result: ${JSON.stringify(data)}`)});
-
-    } else if (inquiry.shipnodeId != null && inquiry.shipnodeId.length > 0 && inquiry.shipnodeId != ' ') {
-      
-      console.debug("Getting Node Availability");
       this.setInquiryShipnode(inquiry, inquiry.shipnodeId);
       let networkAva: Observable<NetworkAvailability> = this.networkAvaDataService.getNetworkAvailability(inquiry);
 
       networkAva.subscribe(data=>{console.debug(`Received network avaiability result: ${JSON.stringify(data)}`)});
+
+
+    } else if (inquiry.shipnodeId != null && inquiry.shipnodeId.length > 0 && inquiry.shipnodeId != ' ') {
+      
+      console.debug("Getting Node Availability");
+      this.setInquiryShipnode(inquiry, null);
+      let nodeAva: Observable<ShipnodeAvailability> = this.nodeAvaDataService.getNodeAvailability(inquiry);
+
+      nodeAva.subscribe(data=>{console.debug(`Received shipnode avaiability result: ${JSON.stringify(data)}`)});
     }
   }
 
