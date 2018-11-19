@@ -36,6 +36,7 @@ import { LoginComponent } from './login/login.component';
 import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
 
 import { AgmCoreModule } from '@agm/core';
+import { AutocompleteDropdownComponent } from './comp/autocomplete-dropdown/autocomplete-dropdown.component';
 
 // import { AuthInterceptor } from './auth.interceptor';
 
@@ -56,6 +57,7 @@ import { AgmCoreModule } from '@agm/core';
     AvailabilityComponent,
     LoginComponent,
     AvaInquiryEditorComponent,
+    AutocompleteDropdownComponent,
   ],
   imports: [
     BrowserModule,

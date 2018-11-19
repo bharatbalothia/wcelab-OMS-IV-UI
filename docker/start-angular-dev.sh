@@ -20,5 +20,5 @@ fi
 # Have to run as root for npm update :-(    --user $(id -u ${USER}):$(id -g ${USER})
 
 # Run the docker with parent directory mounted as nodeapp. 
-echo "docker run -d -v ${VOLMOUNT} --name appdev -p 24200:4200  angulardev /bin/sh -c \"cd /nodeapp && npm install -d && ./start-poc.sh\""
-docker run -d -v ${VOLMOUNT} --name appdev -p 24200:4200 angulardev /bin/sh -c "cd /nodeapp && npm install -d && ./start-poc.sh"
+echo "docker run -d -v ${VOLMOUNT} --name appdev -p 24100:4200  angulardev /bin/sh -c \"cd /nodeapp && npm install -d && ./start-poc.sh\""
+docker run -d -v ${VOLMOUNT} --name appdev -p 24100:4200 angulardev /bin/sh -c "cd /nodeapp && npm install -d && ./start-poc.sh"
