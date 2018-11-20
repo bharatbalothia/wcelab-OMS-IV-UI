@@ -35,7 +35,7 @@ export class AvailabilityComponent implements OnInit {
       
       let networkAva: Observable<NetworkAvailability> = this.networkAvaDataService.getNetworkAvailability(inquiry);
 
-      networkAva.subscribe(data=>{console.debug(`Received network avaiability result: ${JSON.stringify(data)}`)});
+      networkAva.subscribe(data=>{console.debug('Received network avaiability result: ', data)});
 
 
     } else if (inquiry.shipnodeId != null && inquiry.shipnodeId.length > 0 && inquiry.shipnodeId != ' ') {
@@ -45,7 +45,7 @@ export class AvailabilityComponent implements OnInit {
 
       let nodeAva: Observable<ShipnodeAvailability> = this.nodeAvaDataService.getNodeAvailability(inquiry);
 
-      nodeAva.subscribe(data=>{console.debug(`Received shipnode avaiability result: ${JSON.stringify(data)}`)});
+      nodeAva.subscribe(data=>{console.debug('Received shipnode avaiability result: ', data)});
     }
   }
 

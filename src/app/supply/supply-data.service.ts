@@ -15,14 +15,21 @@ import { IVCredent, CredentialDataService } from "../credential/credential-data.
 
 
 export interface ItemSupply {
-  itemId: string;
-  unitOfMeasure: string;
-  productClass: string;
-  organizationCode: string;
-  shipNode: string;
-  type: string;
-  quantity: number;
-  shipByDate: string;
+  organizationCode?: string;
+  eta : string;
+  itemId : string;
+  lineReference? : string;
+  productClass : string;
+  quantity : number,
+  reference? : string;
+  referenceType? : string;
+  segment? : string;
+  segmentType? : string;
+  shipByDate : string;
+  shipNode : string;
+  tagNumber? : string;
+  type : string;
+  unitOfMeasure : string;
   isNew?: boolean;
 }
 
@@ -71,16 +78,16 @@ export class SupplyDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.supplies; 
   }
 
-  getSupply(query: SupplyQuery): BehaviorSubject<ItemSupply[]> {
+  getSupply(query: SupplyQuery): Observable<ItemSupply[]> {
 
-    let supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
+    // let supplySubject: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>([]);
 
-    this.getList<ItemSupply>('', query).subscribe(data => {
-      console.debug('Received item supply from server.', data);
-      supplySubject.next(data);
-    });
+    // this.getList<ItemSupply>('', query).subscribe(data => {
+    //   console.debug('Received item supply from server.', data);
+    //   supplySubject.next(data);
+    // });
 
-    return supplySubject;
+    return this.getList<ItemSupply>('', query);
   }
 
 

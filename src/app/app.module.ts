@@ -13,6 +13,7 @@ import { AppRouters } from './app.routes';
 import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
 import { AvailabilityComponent } from './availability/availability.component';
 import { AutocompleteDropdownComponent } from './comp/autocomplete-dropdown/autocomplete-dropdown.component';
+import { PhoneNumberFieldComponent, PhoneNumberInputComponent } from './comp/phonenumber/phone-number-input.component';
 import { CredentialComponent } from './credential/credential.component';
 import { DistgroupEditorComponent } from './distgroup/distgroup-editor/distgroup-editor.component';
 import { DistgroupComponent } from './distgroup/distgroup.component';
@@ -41,13 +42,13 @@ import { WelcomeComponent } from './welcome/welcome.component';
     LoginComponent,
     AvaInquiryEditorComponent,
     AutocompleteDropdownComponent,
+    PhoneNumberFieldComponent,
+    PhoneNumberInputComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    // import Angular Material modules
+    AppRoutingModule,    
     BrowserAnimationsModule,
-    MaterialModule,
     FlexLayoutModule,
     AppRouters,
     HttpClientModule,
@@ -55,7 +56,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCssljS7J3SwyWobPQ87VUmafNtZK1Wop4' //Google API key for maps
-    })
+    }),
+    // import Angular Material modules
+    MaterialModule,
   ],
   
   providers: [  

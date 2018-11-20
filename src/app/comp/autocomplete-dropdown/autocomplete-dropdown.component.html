@@ -1,8 +1,10 @@
-<input matInput [placeholder]="placeholder" [matAutocomplete]="autocomp" [(ngModel)]="modelData"
-  (ngModelChange)="doAutoCompFilter($event)" (focus)='doAutoCompFilter(modelData)'>
-  <!-- [(ngModel)]="modelData" [(ngModel)]="userInputModel"  -->
-<mat-autocomplete autoActiveFirstOption #autocomp="matAutocomplete">
-  <mat-option *ngFor="let option of filteredAutoCompOptions | async" [value]="option">
-    {{option}}
-  </mat-option>
-</mat-autocomplete>
+<mat-form-field [formGroup]="autocompleteFormGroup" >
+  <input matInput type="text" [placeholder]="placeholder" [matAutocomplete]="autocomp" formControlName="userInput" 
+    (ngModelChange)="doAutoCompFilter($event)" (focus)='doAutoCompFilter(modelData)'>
+    <!-- TODO: should avoid using the ngModelChange in the form.-->
+  <mat-autocomplete autoActiveFirstOption #autocomp="matAutocomplete">
+    <mat-option *ngFor="let option of filteredAutoCompOptions | async" [value]="option">
+      {{option}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

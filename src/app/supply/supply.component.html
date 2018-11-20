@@ -15,65 +15,56 @@
       <div fxLayout="row" fxLayoutAlign="center center" class="content">
         <mat-card class="card">
           <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
-            <h3>Supply</h3>
+            <!-- <h3>Supply</h3> -->
           </mat-card-title>
           <mat-card-content>
             <mat-accordion>
-              <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel [expanded]="expandInquiryPanel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    Supply Inquiry
+                    <h3>Supply Inquiry</h3>
                   </mat-panel-title>
                   <mat-panel-description>
-                    Search Supply for itemId, UOM, Prod.Class, and Shipnode
+                    {{getTopPanelDescription()}}
+                    <!-- Search Supply for itemId, UOM, Prod.Class, and Shipnode -->
                   </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <form [formGroup]="supplyInquiryForm">
-                  <div>
+                <!-- <form [formGroup]="supplyInquiryForm"> -->
+                <div>
 
-                    <mat-form-field>
-                      <input matInput placeholder="Item ID" formControlName="itemIdToInquire">
-                    </mat-form-field>
-                    <mat-form-field>
-                      <input matInput placeholder="UOM" formControlName="unitOfMeasureToInquire" [matAutocomplete]="uomAutoComp">
-                      <mat-autocomplete autoActiveFirstOption #uomAutoComp="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredUomOptions | async" [value]="option">
-                          {{option}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                    <mat-form-field>
-                      <input matInput placeholder="Product Class" formControlName="productClassToInquire"
-                        [matAutocomplete]="prodClassAutoComp">
-                      <mat-autocomplete autoActiveFirstOption #prodClassAutoComp="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredProdClassOptions | async" [value]="option">
-                          {{option}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                    <mat-form-field>
-                      <!-- <input matInput placeholder="Ship Node" formControlName="shipNodeToInquire"> -->
-                      <mat-select placeholder="Ship Node ID" formControlName="shipNodeToInquire">
-                        <mat-option *ngFor="let shipnode of getShipnodeList() | async" [value]="shipnode.shipNode">
-                          {{shipnode.shipNode}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
+                  <mat-form-field>
+                    <input matInput placeholder="Item ID" [(ngModel)]="supplyInquiry.itemId">
+                  </mat-form-field>&nbsp;
+
+                  <app-autocomplete-dropdown placeholder="UOM" [(ngModel)]="supplyInquiry.unitOfMeasure" [options]="uomBase">
+                  </app-autocomplete-dropdown>&nbsp;
+
+                  <app-autocomplete-dropdown placeholder="Product Class" [(ngModel)]="supplyInquiry.productClass"
+                    [options]="productClassBase">
+                  </app-autocomplete-dropdown>&nbsp;
+
+                  <app-autocomplete-dropdown placeholder="Ship Node ID" [(ngModel)]="supplyInquiry.shipNode" [options]="getShipnodeIdList()">
+                  </app-autocomplete-dropdown>
+
+                  <!-- <mat-form-field>
+                    <mat-select placeholder="Ship Node ID" [(ngModel)]="supplyInquiry.shipNode">
+                      <mat-option *ngFor="let shipnode of getShipnodeList() | async" [value]="shipnode.shipNode">
+                        {{shipnode.shipNode}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                </div>
 
 
-                  <button type="submit" mat-raised-button color="primary" (click)="querySupply()">
-                    <mat-icon>whatshot</mat-icon> Find Supply
-                  </button>
-                  &nbsp;&nbsp;
-                  <button type="button" mat-raised-button color="primary" (click)="addSupplyRow()">
-                    <mat-icon>add</mat-icon> Add New Supply
-                  </button>
-                </form>
+                <button type="submit" mat-raised-button color="primary" (click)="querySupply()">
+                  <mat-icon>whatshot</mat-icon> Find Supply
+                </button>
+                &nbsp;&nbsp;
+                <!-- </form> -->
               </mat-expansion-panel>
             </mat-accordion>
-            <div class="example-container mat-elevation-z8">
+            <!-- <div class="example-container mat-elevation-z8">
               <mat-table #table [dataSource]="getItemSupplySubject()">
                 <ng-container matColumnDef="organizationCode">
                   <mat-header-cell *matHeaderCellDef> Org. Code </mat-header-cell>
@@ -108,10 +99,14 @@
                 <ng-container matColumnDef="shipByDate">
                   <mat-header-cell *matHeaderCellDef> Ship By </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate"
-                      [readonly]="!element.isNew">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <ng-container *ngIf="element.isNew; then pickadate; else showadate"></ng-container>
+                    <ng-template #showadate>{{element.shipByDate | slice:0:10}}</ng-template>
+                    <ng-template #pickadate>
+                      <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="element.shipByDate"
+                        [readonly]="!element.isNew">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </ng-template>
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="quantity">
@@ -139,6 +134,124 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
               </mat-table>
+            </div> -->
+            <div>
+              <!-- <mat-card-content> -->
+              <mat-card class="card">
+                <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+                  Supplies
+                </mat-card-title>
+                <mat-card-content>
+                  <mat-accordion>
+                    <mat-expansion-panel *ngFor="let itemSupply of getItemSupplySubject() | async; index as i; first as isFirst"
+                      [expanded]="false">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          {{getTitleForSupplyLine(itemSupply)}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <mat-tab-group>
+                        <mat-tab label="Inv.">
+                          <!-- <mat-form-field>
+                        <input matInput placeholder="itemId" [(ngModel)]="itemSupply.itemId">
+                      </mat-form-field>
+
+                      <mat-form-field>
+                        <input matInput placeholder="productClass" [(ngModel)]="itemSupply.productClass">
+                      </mat-form-field> -->
+                          <br>
+                          <mat-form-field>
+                            <input type="number" matInput placeholder="quantity" [(ngModel)]="itemSupply.quantity">
+                          </mat-form-field>&nbsp;
+
+                          <mat-form-field *ngIf="!itemSupply.isNew else enterSupplyType">
+                            <input matInput placeholder="type" [(ngModel)]="itemSupply.type" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>&nbsp;
+
+                          <ng-template #enterSupplyType>
+                            <app-autocomplete-dropdown placeholder="Supply Type" [(ngModel)]="itemSupply.type"
+                              [options]="supplyTypeBase">
+                            </app-autocomplete-dropdown>
+                          </ng-template>
+
+                          <mat-form-field *ngIf="!itemSupply.isNew else enterSupplyEta">
+                            <input matInput placeholder="ETA" [(ngModel)]="itemSupply.eta" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>&nbsp;
+
+                          <ng-template #enterSupplyEta>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="picker" placeholder="Choose ETA" [(ngModel)]="itemSupply.eta">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </ng-template>
+
+                          <mat-form-field *ngIf="!itemSupply.isNew else enterSupplyShipByDate">
+                            <input matInput placeholder="shipByDate" [(ngModel)]="itemSupply.shipByDate" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>
+
+                          <ng-template #enterSupplyShipByDate>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="picker" placeholder="Choose Ship By" [(ngModel)]="itemSupply .shipByDate">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                          </ng-template>
+
+                        </mat-tab>
+                        <mat-tab label="Ref.">
+                          <br>
+                          <mat-form-field>
+                            <input matInput placeholder="lineReference" [(ngModel)]="itemSupply.lineReference">
+                          </mat-form-field>&nbsp;
+                          <mat-form-field>
+                            <input matInput placeholder="reference" [(ngModel)]="itemSupply.reference">
+                          </mat-form-field>&nbsp;
+                          <mat-form-field>
+                            <input matInput placeholder="referenceType" [(ngModel)]="itemSupply.referenceType">
+                          </mat-form-field>
+                        </mat-tab>
+                        <mat-tab label="Seg. & Tag">
+                          <br>
+                          <mat-form-field>
+                            <input matInput placeholder="segment" [(ngModel)]="itemSupply.segment" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>&nbsp;
+                          <mat-form-field>
+                            <input matInput placeholder="segmentType" [(ngModel)]="itemSupply.segmentType" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>&nbsp;
+                          <mat-form-field>
+                            <input matInput placeholder="tagNumber" [(ngModel)]="itemSupply.tagNumber" [readonly]="!itemSupply.isNew">
+                          </mat-form-field>
+                        </mat-tab>
+
+                      </mat-tab-group>
+
+                      <button type="button" mat-raised-button color="primary" (click)="saveSupply(itemSupply)" title="Save Change">
+                        <mat-icon>save</mat-icon>&nbsp;Save
+                      </button>
+                      &nbsp;
+                      <button type="button" mat-raised-button color="warn" (click)="deleteSupply(itemSupply)" title="Zero out this supply line">
+                        <mat-icon>delete</mat-icon>&nbsp;Delete
+                      </button>
+                      <!-- 
+                      <a title="Save Change" type="button">
+                        <mat-icon class="icon">save</mat-icon>
+                      </a>
+                      <a title="Zero out this supply line" type="button">
+                        <mat-icon class="icon">delete</mat-icon>
+                      </a> -->
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                  <button type="button" mat-raised-button color="primary" (click)="addSupplyRow()">
+                    <mat-icon>add</mat-icon> Add New Supply
+                  </button>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- </mat-card-content> -->
             </div>
           </mat-card-content>
         </mat-card>
