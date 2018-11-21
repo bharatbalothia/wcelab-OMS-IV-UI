@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { DistgroupDataService, DistributionGroup } from 'src/app/distgroup/distgroup-data.service';
 import { IvConstant } from 'src/app/iv-constant';
 import { ShipNode, ShipnodeDataService } from 'src/app/shipnode/shipnode-data.service';
-import { AvaiabilityInquiry, AvaiabilityInquiryLine } from '../availability-data.service';
+import { AvailabilityInquiry, AvaiabilityInquiryLine } from '../availability-data.service';
 
 
 
@@ -37,7 +37,7 @@ export class AvaInquiryEditorComponent implements OnInit {
   inquiryLineDisplayColumns: string[] = [
     'itemId', 'unitOfMeasure', 'productClass', 'deliveryMethod', 'delete'];
   
-  private avaInquiry: AvaiabilityInquiry;
+  private avaInquiry: AvailabilityInquiry;
 
   // getProductClassOptions(): Observable<string[]> {
 
@@ -62,7 +62,7 @@ export class AvaInquiryEditorComponent implements OnInit {
   // @Input("inquiry") avaInquiry: AvaiabilityInquiry;
   
   // Output event to query avaiability 
-  @Output() queryAvailability = new EventEmitter<AvaiabilityInquiry>();
+  @Output() queryAvailability = new EventEmitter<AvailabilityInquiry>();
 
   avaInquiryLineListSubject: BehaviorSubject<AvaiabilityInquiryLine[]>;
 
@@ -162,7 +162,7 @@ export class AvaInquiryEditorComponent implements OnInit {
 
     console.debug(`avaInquiry now: ${JSON.stringify(this.avaInquiry)}`);
 
-    let queryClone: AvaiabilityInquiry = {lines: []};
+    let queryClone: AvailabilityInquiry = {lines: []};
 
     Object.assign(queryClone, this.avaInquiry);
 

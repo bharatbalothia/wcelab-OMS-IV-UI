@@ -7,10 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppRouters } from './app.routes';
 import { AvaInquiryEditorComponent } from './availability/ava-inquiry-editor/ava-inquiry-editor.component';
+import { AvaViewerComponent } from './availability/ava-viewer/ava-viewer.component';
 import { AvailabilityComponent } from './availability/availability.component';
 import { AutocompleteDropdownComponent } from './comp/autocomplete-dropdown/autocomplete-dropdown.component';
 import { PhoneNumberFieldComponent, PhoneNumberInputComponent } from './comp/phonenumber/phone-number-input.component';
@@ -44,6 +46,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AutocompleteDropdownComponent,
     PhoneNumberFieldComponent,
     PhoneNumberInputComponent,
+    AvaViewerComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     }),
     // import Angular Material modules
     MaterialModule,
+    NgxJsonViewerModule,
   ],
   
   providers: [  

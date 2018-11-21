@@ -7,7 +7,7 @@ export interface AvaiabilityInquiryLine {
   shipNodes?: string[];
 };
 
-export interface AvaiabilityInquiry {
+export interface AvailabilityInquiry {
   distributionGroupId?: string;
   shipnodeId?: string;
   segment?: string;
@@ -15,15 +15,15 @@ export interface AvaiabilityInquiry {
   lines: AvaiabilityInquiryLine[];
 }
 
-export interface NetworkAvailability {
+// export interface NetworkAvailability {
 
-  lines: NetworkAvailabilityLine[];
-};
+//   lines: NetworkAvailabilityLine[];
+// };
 
-export interface NetworkAvailabilityLine {
-  lineId: number;
-  networkAvailabilities: NetworkAvailabilityLineDetail[];
-}
+// export interface NetworkAvailabilityLine {
+//   lineId: number;
+//   networkAvailabilities: NetworkAvailabilityLineDetail[];
+// }
 
 export interface NetworkAvailabilityLineDetail {
   alertLevel: number;
@@ -41,15 +41,15 @@ export interface NetworkAvailabilityLineDetail {
   totalAvailableQuantity: number;
 }
 
-export interface ShipnodeAvailability {
+// export interface ShipnodeAvailability {
 
-  lines: ShipnodeAvailabilityLine[];
-};
+//   lines: ShipnodeAvailabilityLine[];
+// };
 
-export interface ShipnodeAvailabilityLine {
-  lineId: number;
-  shipNodeAvailability: ShipnodeAvailabilityLineDetail[];
-}
+// export interface ShipnodeAvailabilityLine {
+//   lineId: number;
+//   shipNodeAvailability: ShipnodeAvailabilityLineDetail[];
+// }
 
 export interface ShipnodeAvailabilityLineDetail {
   earliestShipTs: string;
@@ -61,7 +61,19 @@ export interface ShipnodeAvailabilityLineDetail {
   onhandEarliestShipTs: string;
   onhandLatestShipTs: string;
   shipNode: string;
-  totalAvailableQuantity: 15.4
+  totalAvailableQuantity: number;
+}
+
+export interface AvailabilityResult {
+  inquiryHeader?: AvailabilityInquiry;
+  lines: [
+    {
+      lineId: number;
+      inquiryLine?: AvaiabilityInquiryLine;
+      shipNodeAvailability?: ShipnodeAvailabilityLineDetail[];
+      networkAvailabilities?: NetworkAvailabilityLineDetail[];
+    }
+  ];
 }
 
 

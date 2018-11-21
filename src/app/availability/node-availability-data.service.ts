@@ -9,7 +9,7 @@ import { IvServiceBase } from '../iv-service-base.service';
 import { IvConstant } from '../iv-constant';
 import { EntityUrl } from '../entity-url';
 import { IVCredent, CredentialDataService } from '../credential/credential-data.service';
-import { AvaiabilityInquiry, ShipnodeAvailability } from './availability-data.service';
+import { AvailabilityInquiry, AvailabilityResult } from './availability-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class NodeAvailabilityDataService extends IvServiceBase {
     return EntityUrl.AVAILABILITY_NODE;
   }
 
-  getNodeAvailability(inquiry: AvaiabilityInquiry): Observable<ShipnodeAvailability> {
-    return this.postObject<AvaiabilityInquiry>(inquiry);
+  getNodeAvailability(inquiry: AvailabilityInquiry): Observable<AvailabilityResult> {
+    return this.postObject<AvailabilityInquiry>(inquiry);
   }
 }
