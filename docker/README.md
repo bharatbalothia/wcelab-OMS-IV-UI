@@ -8,7 +8,7 @@ We need to build an image that include node server and Angular Cli. You can buil
 
 ## Run the Angular development container
 
-You can use ```./start-angular-dev.sh``` script to start a docker comtainer that mounts the current directory as the nodeapp directory. This start application on http://localhost:24200. The server takes some time to start the first time due to npm dependency installation. After that, the server starts quickly.
+You can use ```./start-angular-dev.sh``` script to start a docker comtainer that mounts the current directory as the nodeapp directory. This start application on http://localhost:24100. The server takes some time to start the first time due to npm dependency installation. After that, the server starts quickly.
 
 ## Development
 
