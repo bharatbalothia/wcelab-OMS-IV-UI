@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartsModule } from 'ng2-charts';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { ShipnodeComponent } from './shipnode/shipnode.component';
 import { SupplyComponent } from './supply/supply.component';
 import { ArrayListPipe } from './util/array-list.pipe';
 import { WelcomeComponent } from './welcome/welcome.component';
+
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     // import Angular Material modules
     MaterialModule,
     NgxJsonViewerModule,
+    ChartsModule,
   ],
   
   providers: [  

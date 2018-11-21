@@ -26,9 +26,10 @@
     <input matInput type="text" [(ngModel)]="avaInquiry.segmentType" placeholder="Segment Type">
   </mat-form-field>
 
-  <button type='button' mat-raised-button color="primary" (click)="addInquiryLine()">
+  <!-- Hiding the add line button because it is ugly. It should be on the last row of the inquiry line table. I just don't have time to do that. -->
+  <!-- <button type='button' mat-raised-button color="primary" (click)="addInquiryLine()">
     <mat-icon>add</mat-icon> Add Line
-  </button>
+  </button> -->
 
   <!-- <form [formGroup]="availabilityLineInquiryForm"> -->
   <mat-table #table [dataSource]="avaInquiryLineListSubject">

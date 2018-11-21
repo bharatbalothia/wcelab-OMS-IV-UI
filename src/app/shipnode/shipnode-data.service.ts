@@ -38,7 +38,13 @@ export class ShipnodeDataService extends IvServiceBase {
     return credential == null ? null : credential.tokens.configurationShipNodes; 
   }
 
-  getShipnodeList(reloadShipnode=false) : Observable<ShipNode[]> {
+  /**
+   * Get shipnode list. This is based on an AsyncSubject. So it only send one
+   * value. The Observable will not emit additional value after the first one.
+   * 
+   * @param reloadShipnode request a reloading of shipnode list from IV server
+   */
+  public getShipnodeList(reloadShipnode=false) : Observable<ShipNode[]> {
 
     if (reloadShipnode) {
       this.retriveNeeded = true;

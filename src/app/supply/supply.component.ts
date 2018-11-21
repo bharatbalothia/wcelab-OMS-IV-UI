@@ -279,13 +279,13 @@ export class SupplyComponent implements OnInit {
 
     const now = new Date();
 
-    const etaString = etaDate ? (etaDate < now) ? "Now" : formatDate(etaDate, "yyyy-MM-dd", "en-US", "UTC") : "";
+    const etaString = etaDate ? (etaDate < now) ? "Now" : "after " + formatDate(etaDate, "yyyy-MM-dd", "en-US", "UTC") : "";
 
     const shipbyDate = new Date(itemSupply.shipByDate);
 
     const shipbyString = formatDate(shipbyDate, "yyyy-MM-dd", "en-US", "UTC");
 
-    return `${itemSupply.quantity} in ${itemSupply.shipNode} from ${etaString}`;
+    return `${itemSupply.shipNode}: ${itemSupply.quantity} ${itemSupply.type} ${etaString}`;
   }
 
   getTopPanelDescription(): string {

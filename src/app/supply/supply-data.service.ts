@@ -58,6 +58,10 @@ export interface SupplyAdjustment {
   unitOfMeasure: string;
 }
 
+export interface ShipNodeSupply{
+  shipNode: string;
+  supplies: ItemSupply[];
+}
 
 @Injectable({
   providedIn: 'root'

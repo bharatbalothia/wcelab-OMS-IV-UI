@@ -1,8 +1,16 @@
 <mat-tab-group>
-  <mat-tab label="Availability Request">
-      <ngx-json-viewer [json]="request"></ngx-json-viewer>
-  </mat-tab>
-  <mat-tab label="Availability Data">
-      <ngx-json-viewer [json]="response"></ngx-json-viewer>
-  </mat-tab>
+    <mat-tab label="Availability">
+        <mat-toolbar>{{availabilityMessage | async}}</mat-toolbar>
+        <div style="display: block">
+            <canvas baseChart #baseChart="base-chart" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+        </div>
+    </mat-tab>
+    <mat-tab label="Availability Request">
+        <ngx-json-viewer [json]="request"></ngx-json-viewer>
+    </mat-tab>
+    <mat-tab label="Availability Data">
+        <ngx-json-viewer [json]="response"></ngx-json-viewer>
+    </mat-tab>
 </mat-tab-group>

@@ -73,7 +73,7 @@ export class DistgroupDataService extends IvServiceBase {
     return this.distgroupSubject;
   }
 
-  retrieveAllDistgroups(distgroupSubject: AsyncSubject<DistributionGroup[]>): void {
+  private retrieveAllDistgroups(distgroupSubject: AsyncSubject<DistributionGroup[]>): void {
     this.getList<DistributionGroup>().subscribe(data => {
       this.populateAndPublishDistgroupDetail(distgroupSubject, data);
     });
