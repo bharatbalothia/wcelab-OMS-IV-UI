@@ -1,10 +1,10 @@
-# SterlingIvPoc
+# IBM IV PoC
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.3.
 
 ## Demo Environment
 
-The demo environment is current at http://ivdemo.adidas.wcelab.com. We are currently hardcode to use the eu-api.watsoncommerce.ibm.com server due to proxy configuration. You can use your own tenantID, ClientID, and ClientSecret to access the IV. 
+The demo environment is current at http://ivdemo-dev.wcelab.com and http://ivdemo.adidas.wcelab.com. We are currently hardcode to use the eu-api.watsoncommerce.ibm.com server due to proxy configuration. You can use your own tenantID, ClientID, and ClientSecret to access the IV.
 
 ## Current Development Status
 
@@ -22,13 +22,22 @@ The demo currently spport the following use case:
    1. Create new Distribution Group
 1. Supply
    1. View Supply for ItemID, UOM, Product Class, and ShipNode
+      1. Regular Supply
+      1. Segmented Supply
    2. Update Supply (sync)
+      1. Update supply quantity
+      1. Update supply reference
    3. Add new supply
+      1. Regular Supply
+      1. Segmented Supply
+1. Availability
+   1. Get Availability both Network and Node
+      1. Node level doesn't have UI hooked up. Only see the JSON in Developer tool
+   1. View Network Availability over a 8 weeks time serie chart.
 
 ### TODO:
 
-1. Mobile version of Supply result is not readable.
-1. Get Availability
+1. Get Node Availability UI
 1. Reservation
 1. Bunch of UI beautification
 
