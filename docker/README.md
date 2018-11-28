@@ -1,6 +1,8 @@
 # Run on Docker
 
-You can run this project on an angular node server (~~ng~~). Or you can keep your laptop clean and run the development as a docker container. 
+You can run this project on an angular node server (*ng*). Or you can keep your laptop clean and run the development as a docker container. 
+
+To run docker, you run the following instruction on Linux, Mac, or Windows 10 with [Docker for Windows](https://docs.docker.com/docker-for-windows/install/). If you are brave and use Windows 10, you can also try the experimental Docker on Windows Subsystem for Linux following [my gist here](https://gist.github.com/nedzhang/58490417387bc25b80d62d28c54617a3).
 
 ## Build the Angular 
 
@@ -18,8 +20,9 @@ You can change the files in the project directory (the parent folder). The node 
 
 If you see a message like
 
-```shell
+```console
 /usr/bin/docker-current: Error response from daemon: Conflict. The name "/appdev" is already in use by container 0b13f8220501f538b8b4c737da43SOMETHINGSOMETHINGSOMETHING. You have to remove (or rename) that container to be able to reuse that name..
 See '/usr/bin/docker-current run --help'.
 ```
+
 that means that you have a hanging node server container. You can just remove it. try ```docker rm appdev``` then use ```./start-angular-dev.sh``` again.
