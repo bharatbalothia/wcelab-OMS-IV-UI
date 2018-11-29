@@ -32,7 +32,7 @@ export class AvailabilityComponent implements OnInit {
     private distGroupDataService: DistgroupDataService,
     private supplyDataService: SupplyDataService,
     private networkAvaDataService: NetworkAvailabilityDataService,
-    private nodeAvaDataService: NodeAvailabilityDataService){
+    private nodeAvaDataService: NodeAvailabilityDataService) {
 
     this._requestSubject = new Subject<AvailabilityInquiry>();
     this._responseSubject = new Subject<AvailabilityResult>();
@@ -113,7 +113,7 @@ export class AvailabilityComponent implements OnInit {
       if (inquiryLine) {
         resultLine.inquiryLine = inquiryLine;
         // Let's get the supply detail for the availability.
-        if (resultLine.networkAvailabilities){
+        if (resultLine.networkAvailabilities) {
           this.postprocessNetworkAvailability(availability, inquiryLine, resultLine);
         } else {
           this.postprocessNodeAvailability(availability, inquiryLine, resultLine);
@@ -125,10 +125,10 @@ export class AvailabilityComponent implements OnInit {
   }
 
 
-  private postprocessNetworkAvailability(availability: AvailabilityResult, inquiryLine: AvaiabilityInquiryLine, resultLine: AvailabilityResultLine){
+  private postprocessNetworkAvailability(availability: AvailabilityResult, inquiryLine: AvaiabilityInquiryLine, resultLine: AvailabilityResultLine) {
 
-    for (let avaLine of resultLine.networkAvailabilities){
-      
+    for (let avaLine of resultLine.networkAvailabilities) {
+
       this.distGroupDataService.getDistgroupList().subscribe((dglist: DistributionGroup[]) => {
         // Find the DG that we are looking for
 
@@ -136,14 +136,14 @@ export class AvailabilityComponent implements OnInit {
 
         const supplyQueryObservables: Observable<ItemSupply[]>[] = [] as Observable<ItemSupply[]>[];
 
-        for (let shipnodeInDg of distgroup.shipNodes){
+        for (let shipnodeInDg of distgroup.shipNodes) {
           let supplyInquiry: SupplyQuery = {
             itemId: inquiryLine.itemId,
             unitOfMeasure: inquiryLine.unitOfMeasure,
             productClass: inquiryLine.productClass,
             shipNode: shipnodeInDg.shipNode,
           };
-          supplyQueryObservables.push( this.supplyDataService.getSupply(supplyInquiry));
+          supplyQueryObservables.push(this.supplyDataService.getSupply(supplyInquiry));
         }
 
         const avaSupply = [];
@@ -151,10 +151,13 @@ export class AvailabilityComponent implements OnInit {
         combineLatest(supplyQueryObservables).subscribe((nodeSupplies: ItemSupply[][]) => {
           console.debug("Received all supplies for the availabilities: ", nodeSupplies);
           for (let nodeSupply of nodeSupplies) {
-            const shipnodeSupply: ShipNodeSupply = {
-              shipNode: nodeSupply[0].shipNode, 
-              supplies: nodeSupply };
-            avaSupply.push(shipnodeSupply);
+            if (nodeSupply && nodeSupply.length > 0) {
+              const shipnodeSupply: ShipNodeSupply = {
+                shipNode: nodeSupply[0].shipNode,
+                supplies: nodeSupply
+              };
+              avaSupply.push(shipnodeSupply);
+            }
           }
           avaLine.supplyDetail = avaSupply;
 
@@ -167,6 +170,6 @@ export class AvailabilityComponent implements OnInit {
     }
   }
 
-  private postprocessNodeAvailability(availability: AvailabilityResult, inquiryLine: AvaiabilityInquiryLine, resultLine: AvailabilityResultLine){
+  private postprocessNodeAvailability(availability: AvailabilityResult, inquiryLine: AvaiabilityInquiryLine, resultLine: AvailabilityResultLine) {
   }
 }
