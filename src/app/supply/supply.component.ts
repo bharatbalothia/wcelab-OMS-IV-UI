@@ -112,28 +112,28 @@ export class SupplyComponent implements OnInit {
   // });
 
 
-  doOptionFilter(optionBase: Observable<string[]>, optionFilteredName: string, userInput: string): void {
+  // doOptionFilter(optionBase: Observable<string[]>, optionFilteredName: string, userInput: string): void {
 
-    console.debug("doOptionFilter got input: %s for filter %s with observable: ", userInput, optionFilteredName, optionBase);
+  //   console.debug("doOptionFilter got input: %s for filter %s with observable: ", userInput, optionFilteredName, optionBase);
 
-    const filterValue = userInput ? userInput.toLocaleLowerCase() : null;
+  //   const filterValue = userInput ? userInput.toLocaleLowerCase() : null;
 
-    this[optionFilteredName] = optionBase.pipe(
-      startWith(''),
-      map((optionsInPipe: string[]): string[] => {
-        return this.filterOptionsInPipe(optionsInPipe, filterValue);
-      })
-    );
-  }
+  //   this[optionFilteredName] = optionBase.pipe(
+  //     startWith(''),
+  //     map((optionsInPipe: string[]): string[] => {
+  //       return this.filterOptionsInPipe(optionsInPipe, filterValue);
+  //     })
+  //   );
+  // }
 
-  private filterOptionsInPipe(optionsInPipe, filterValue: string): string[] {
-    // console.debug('About to filter %s from pipe of: ', filterValue, optionsInPipe);
-    if (filterValue == null || filterValue.length == 0) {
-      return optionsInPipe;
-    } else {
-      return optionsInPipe ? optionsInPipe.filter(option => option.toLowerCase().indexOf(filterValue) === 0) : null;
-    }
-  }
+  // private filterOptionsInPipe(optionsInPipe, filterValue: string): string[] {
+  //   // console.debug('About to filter %s from pipe of: ', filterValue, optionsInPipe);
+  //   if (filterValue == null || filterValue.length == 0) {
+  //     return optionsInPipe;
+  //   } else {
+  //     return optionsInPipe ? optionsInPipe.filter(option => option.toLowerCase().indexOf(filterValue) === 0) : null;
+  //   }
+  // }
 
   private supplyListSubjectCache: BehaviorSubject<ItemSupply[]> = new BehaviorSubject<ItemSupply[]>(null);
 
