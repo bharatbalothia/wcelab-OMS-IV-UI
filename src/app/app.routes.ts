@@ -1,22 +1,22 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {WelcomeComponent} from './welcome/welcome.component';
-import {ShipnodeComponent} from './shipnode/shipnode.component';
-import {DistgroupComponent} from './distgroup/distgroup.component';
-import {SupplyComponent} from './supply/supply.component';
-import {SettingComponent} from './setting/setting.component';
-import { LoginComponent } from './login/login.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { AvailabilityComponent } from './availability/availability.component';
+import { LoginComponent } from './login/login.component';
+import { ReservationComponent } from './reservation/reservation.component';
+import { SettingComponent } from './setting/setting.component';
+import { SupplyComponent } from './supply/supply.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
-  {path: '', component: WelcomeComponent},
+  { path: '', component: WelcomeComponent },
   // {path: 'shipnode', component: ShipnodeComponent},
   // {path: 'distgroup', component: DistgroupComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'supply', component: SupplyComponent},
-  {path: 'availability', component: AvailabilityComponent},
-  {path: 'setting', component: SettingComponent},
-  {path: '**', component: WelcomeComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'supply', component: SupplyComponent },
+  { path: 'reservation', component: ReservationComponent },
+  { path: 'availability', component: AvailabilityComponent },
+  { path: 'setting', component: SettingComponent },
+  { path: '**', component: WelcomeComponent },
 ];
 
 
@@ -24,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRouters {}
+export class AppRouters { }
