@@ -10,6 +10,8 @@ export class IvConstant {
   'PLANNED_PO', 'PLANNED_TRANSFER', 
   'WIP', 'WO_PLACED'];
 
+  public static readonly SUPPLY_TYPE_ONHAND = ['ONHAND', '???'];
+  
   public static readonly DELIVERY_METHOD_OPTIONS: string[] = [
     'SHP', 'PICK', "DEL"
   ]

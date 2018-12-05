@@ -4,12 +4,19 @@ import { formatDate } from "@angular/common";
 
 import { AvailabilityInquiry, AvailabilityResult } from "../availability-data.service";
 
-import { Observable,BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { DateUtil } from "../../util/date-util";
 import { stringify } from 'querystring';
 import { ShipNodeSupply, ItemSupply } from 'src/app/supply/supply-data.service';
 
 import { BaseChartDirective } from "ng2-charts";
+import { IvConstant } from 'src/app/iv-constant';
+
+interface PeriodSupply {
+  shipnode: string;
+  onhandSupplys: ItemSupply[];
+  futureSupplys: ItemSupply[];
+}
 
 @Component({
   selector: 'app-ava-viewer',
@@ -107,21 +114,44 @@ export class AvaViewerComponent implements OnInit {
 
     for (let avaLine of availability.lines) {
       if (avaLine.networkAvailabilities) {
-        const avaOverTime: ItemSupply[][] = [] as ItemSupply[][];
+        const avaOverTime: PeriodSupply[][] = [] as PeriodSupply[][];
         for (let netAvaLine of avaLine.networkAvailabilities) {
-          
-          const availabilityText: string = 
-          `Onhand: ${netAvaLine.onhandAvailableQuantity} Future: ${netAvaLine.futureAvailableQuantity} after ${formatDate(netAvaLine.futureEarliestShipTs, 'yyyy-MM-dd', 'en-US', 'UTC')}`;
+
+          const availabilityText: string =
+            `Onhand: ${netAvaLine.onhandAvailableQuantity} Future: ${netAvaLine.futureAvailableQuantity} after ${formatDate(netAvaLine.futureEarliestShipTs, 'yyyy-MM-dd', 'en-US', 'UTC')}`;
           this._availabilityMessage.next(availabilityText);
 
           for (let supplyDtl of netAvaLine.supplyDetail) {
-            const thisSupplyArray: ItemSupply[] = new Array<ItemSupply>(numberOfPeriod);
+            const thisSupplyArray: PeriodSupply[] = new Array<PeriodSupply>(numberOfPeriod);
+            
             for (let supplyEntry of supplyDtl.supplies) {
               let periodOfEntry = Math.floor((new Date(supplyEntry.eta).valueOf() - startingPoint.valueOf()) / periodDuration);
               if (periodOfEntry < 0) {
                 periodOfEntry = 0;
               }
-              thisSupplyArray[periodOfEntry] = supplyEntry;
+
+              if (!thisSupplyArray[periodOfEntry]) {
+                thisSupplyArray[periodOfEntry] = {
+                  shipnode: supplyDtl.shipNode,
+                  onhandSupplys: null,
+                  futureSupplys: null,
+                };
+              }
+              if (IvConstant.SUPPLY_TYPE_ONHAND.includes(supplyEntry.type)) {
+                // this is an ONHAND supply
+                if (thisSupplyArray[periodOfEntry].onhandSupplys) {
+                  thisSupplyArray[periodOfEntry].onhandSupplys.push(supplyEntry);
+                } else {
+                  thisSupplyArray[periodOfEntry].onhandSupplys = new Array(supplyEntry);
+                }
+              } else {
+                // this is future supply
+                if (thisSupplyArray[periodOfEntry].futureSupplys) {
+                  thisSupplyArray[periodOfEntry].futureSupplys.push(supplyEntry);
+                } else {
+                  thisSupplyArray[periodOfEntry].futureSupplys = new Array(supplyEntry);
+                }
+              }
             }
             avaOverTime.push(thisSupplyArray);
           }
@@ -141,7 +171,7 @@ export class AvaViewerComponent implements OnInit {
     // }
   }
 
-  private drawChart(startingPoint: Date, periodDuration: number, numberOfPeriod: number, avaOverTime: ItemSupply[][]) {
+  private drawChart(startingPoint: Date, periodDuration: number, numberOfPeriod: number, avaOverTime: PeriodSupply[][]) {
     const xlabels: string[] = [] as string[];
     const chartData: { label: string; stack: string; data: number[] }[] = [] as { label: string; stack: string; data: number[] }[];
     for (let tp = 0; tp < numberOfPeriod; tp++) {
@@ -149,29 +179,48 @@ export class AvaViewerComponent implements OnInit {
 
       for (let sn = 0; sn < avaOverTime.length; sn++) {
         // Loop through the supply lines
-        const itemSupplyAdj: number = avaOverTime[sn][tp] ? avaOverTime[sn][tp].quantity : 0;
-        const onhandAdj = (itemSupplyAdj != 0 && avaOverTime[sn][tp].type == "ONHAND") ? itemSupplyAdj : 0;
-        const futureAdj = (itemSupplyAdj != 0 && avaOverTime[sn][tp].type != "ONHAND") ? itemSupplyAdj : 0;
-        const previousOnHandSupplyLevel: number = (tp > 0) ? chartData[2*sn].data[tp - 1] : 0;
-        const previousFutureSupplyLevel: number = (tp > 0) ? chartData[2*sn+1].data[tp - 1] : 0;
-        
-        if (!chartData[2*sn]) {
+
+        let onhandAdj = 0;
+        if (avaOverTime[sn][tp]) {
+          if (avaOverTime[sn][tp].onhandSupplys) {
+            for (let supply of avaOverTime[sn][tp].onhandSupplys) {
+              onhandAdj += (supply ? supply.quantity : 0);
+            }
+          }
+        }
+
+        let futureAdj = 0;
+        if (avaOverTime[sn][tp]) {
+          if (avaOverTime[sn][tp].futureSupplys) {
+            for (let supply of avaOverTime[sn][tp].futureSupplys) {
+              futureAdj += (supply ? supply.quantity : 0);
+            }
+          }
+        }
+
+        // const itemSupplyAdj: number = avaOverTime[sn][tp] ? avaOverTime[sn][tp].quantity : 0;
+        // const onhandAdj = (itemSupplyAdj != 0 && avaOverTime[sn][tp].type == "ONHAND") ? itemSupplyAdj : 0;
+        // const futureAdj = (itemSupplyAdj != 0 && avaOverTime[sn][tp].type != "ONHAND") ? itemSupplyAdj : 0;
+        const previousOnHandSupplyLevel: number = (tp > 0) ? chartData[2 * sn].data[tp - 1] : 0;
+        const previousFutureSupplyLevel: number = (tp > 0) ? chartData[2 * sn + 1].data[tp - 1] : 0;
+
+        if (!chartData[2 * sn]) {
           const numarray0: number[] = [] as number[];
           const numarray1: number[] = [] as number[];
           // The onhand serie
-          chartData[2*sn] = { label: null, stack: null, data: numarray0 };
+          chartData[2 * sn] = { label: null, stack: null, data: numarray0 };
           // The future serie
-          chartData[2*sn+1] = { label: null, stack: null, data: numarray1 };
+          chartData[2 * sn + 1] = { label: null, stack: null, data: numarray1 };
         }
-        
-        chartData[2*sn].data[tp] = previousOnHandSupplyLevel + onhandAdj;
-        chartData[2*sn+1].data[tp] = previousFutureSupplyLevel + futureAdj;
-        
-        if (!chartData[2*sn].label && avaOverTime[sn][tp]) {
-          chartData[2*sn].label = avaOverTime[sn][tp].shipNode + " onhand";
-          chartData[2*sn].stack = sn.toString();
-          chartData[2*sn+1].label = avaOverTime[sn][tp].shipNode + " future";
-          chartData[2*sn+1].stack = sn.toString();
+
+        chartData[2 * sn].data[tp] = previousOnHandSupplyLevel + onhandAdj;
+        chartData[2 * sn + 1].data[tp] = previousFutureSupplyLevel + futureAdj;
+
+        if (!chartData[2 * sn].label && avaOverTime[sn][tp]) {
+          chartData[2 * sn].label = avaOverTime[sn][tp].shipnode + " onhand";
+          chartData[2 * sn].stack = sn.toString();
+          chartData[2 * sn + 1].label = avaOverTime[sn][tp].shipnode + " future";
+          chartData[2 * sn + 1].stack = sn.toString();
         }
       }
     }
