@@ -28,6 +28,7 @@ import { ShipnodeComponent } from './shipnode/shipnode.component';
 import { SupplyComponent } from './supply/supply.component';
 import { ArrayListPipe } from './util/array-list.pipe';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     PhoneNumberFieldComponent,
     PhoneNumberInputComponent,
     AvaViewerComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,
