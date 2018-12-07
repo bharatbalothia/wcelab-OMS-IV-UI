@@ -37,7 +37,7 @@ export abstract class IvServiceBase {
 
   private getUrl = (additionalUrl:string): string => {
     let baseUrl = this.credentialData.getIvBaseUrl();
-    return baseUrl == null ? null : `${baseUrl}/${this.getEntityUrl()}${additionalUrl}`;
+    return baseUrl ? `${baseUrl}/${this.getEntityUrl()}${additionalUrl}` : null;
   };
 
   private getHttpOptions = (httpParams? : HttpParams): {headers: HttpHeaders, params?: HttpParams} => {

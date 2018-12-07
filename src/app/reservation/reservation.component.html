@@ -34,7 +34,8 @@
                 <ng-container matColumnDef="lineId">
                   <mat-header-cell *matHeaderCellDef> Line ID </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <mat-form-field><input matInput type="text" placeholder="Line ID" [(ngModel)]="element.lineId" required>
+                    <mat-form-field><input matInput type="text" placeholder="Line ID" [(ngModel)]="element.lineId"
+                        required>
                     </mat-form-field>&nbsp;
                   </mat-cell>
                 </ng-container>
@@ -42,7 +43,8 @@
                 <ng-container matColumnDef="itemId">
                   <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <mat-form-field><input matInput type="text" placeholder="Item ID" [(ngModel)]="element.itemId" required></mat-form-field>&nbsp;
+                    <mat-form-field><input matInput type="text" placeholder="Item ID" [(ngModel)]="element.itemId"
+                        required></mat-form-field>&nbsp;
                   </mat-cell>
                 </ng-container>
 
@@ -65,7 +67,7 @@
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
                   <mat-cell *matCellDef="let element">
                     <mat-form-field>
-                      <input matInput type="number" placeholder="Quantity" [(ngModel)]="element.quantity"  required>
+                      <input matInput type="number" placeholder="Quantity" [(ngModel)]="element.quantity" required>
                     </mat-form-field>&nbsp;
                   </mat-cell>
                 </ng-container>
@@ -87,8 +89,8 @@
                     </mat-radio-group> &nbsp;&nbsp;
                     <app-autocomplete-dropdown *ngIf='element.requestMode === ReserveModeRef.DistGroup' placeholder="Dist. Group"
                       [(ngModel)]="element.distributionGroup" [options]="getDistgroupIdList()"></app-autocomplete-dropdown>
-                    <app-autocomplete-dropdown *ngIf='element.requestMode === ReserveModeRef.ShipNode' placeholder="Ship Node" [(ngModel)]="element.shipNode"
-                      [options]="getShipnodeIdList()"></app-autocomplete-dropdown>
+                    <app-autocomplete-dropdown *ngIf='element.requestMode === ReserveModeRef.ShipNode' placeholder="Ship Node"
+                      [(ngModel)]="element.shipNode" [options]="getShipnodeIdList()"></app-autocomplete-dropdown>
                   </mat-cell>
                 </ng-container>
 
@@ -155,155 +157,96 @@
               <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
               </mat-card-title>
               <mat-card-content>
-                <mat-accordion>
-                  <mat-expansion-panel>
-                    <!--[expanded]="expandInquiryPanel">-->
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>
-                        <h3>Reservation Inquiry</h3>
-                      </mat-panel-title>
-                      <mat-panel-description>
-                        {{getTopPanelDescription()}}
-                        <!-- Search reservation for itemId, UOM, Prod.Class, and Shipnode -->
-                      </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <div>
-
-                      <mat-form-field>
-                        <input matInput placeholder="Reservation ID" [(ngModel)]="reservationInquiry.id">
-                      </mat-form-field>&nbsp;
-
-
-                      <mat-form-field>
-                        <input matInput placeholder="Reference" [(ngModel)]="reservationInquiry.reference">
-                      </mat-form-field>&nbsp;
-
-                    </div>
-
-
-                    <button type="submit" mat-raised-button color="primary" (click)="queryReservation()">
-                      <mat-icon>whatshot</mat-icon> Find Reservation
-                    </button>
-                    &nbsp;&nbsp;
-
-                    <mat-card class="card">
-                      <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
-                        Reservations:
-                      </mat-card-title>
-                      <mat-card-content>
-                        <mat-accordion>
-                          <mat-expansion-panel *ngFor="let reservation of getReservationSubject() | async; index as i; first as isFirst"
-                            [expanded]="false">
-                            <mat-expansion-panel-header>
-                              <mat-panel-title>
-                                {{getTitleForReservationLine(reservation)}}
-                              </mat-panel-title>
-                              <mat-panel-description>
-                              </mat-panel-description>
-                            </mat-expansion-panel-header>
-                            <mat-tab-group>
-                              <mat-tab label="Inv.">
-                                <br>
-                                <mat-form-field>
-                                  <input type="number" matInput placeholder="quantity" [(ngModel)]="itemreservation.quantity">
-                                </mat-form-field>&nbsp;
-
-                                <mat-form-field *ngIf="!itemreservation.isNew else enterreservationType">
-                                  <input matInput placeholder="type" [(ngModel)]="itemreservation.type" [readonly]="!itemreservation.isNew">
-                                </mat-form-field>&nbsp;
-
-                                <ng-template #enterreservationType>
-                                  <app-autocomplete-dropdown placeholder="reservation Type" [(ngModel)]="itemreservation.type"
-                                    [options]="reservationTypeBase">
-                                  </app-autocomplete-dropdown>
-                                </ng-template>
-
-                                <mat-form-field *ngIf="!itemreservation.isNew else enterreservationEta">
-                                  <input matInput placeholder="ETA" [(ngModel)]="itemreservation.eta" [readonly]="!itemreservation.isNew">
-                                </mat-form-field>&nbsp;
-
-                                <ng-template #enterreservationEta>
-                                  <mat-form-field>
-                                    <input matInput [matDatepicker]="picker" placeholder="Choose ETA" [(ngModel)]="itemreservation.eta">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                  </mat-form-field>
-                                </ng-template>
-
-                                <mat-form-field *ngIf="!itemreservation.isNew else enterreservationShipByDate">
-                                  <input matInput placeholder="shipByDate" [(ngModel)]="itemreservation.shipByDate"
-                                    [readonly]="!itemreservation.isNew">
-                                </mat-form-field>
-
-                                <ng-template #enterreservationShipByDate>
-                                  <mat-form-field>
-                                    <input matInput [matDatepicker]="picker" placeholder="Choose Ship By" [(ngModel)]="itemreservation .shipByDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                  </mat-form-field>
-                                </ng-template>
-
-                              </mat-tab>
-                              <mat-tab label="Ref.">
-                                <br>
-                                <mat-form-field>
-                                  <input matInput placeholder="lineReference" [(ngModel)]="itemreservation.lineReference">
-                                </mat-form-field>&nbsp;
-                                <mat-form-field>
-                                  <input matInput placeholder="reference" [(ngModel)]="itemreservation.reference">
-                                </mat-form-field>&nbsp;
-                                <mat-form-field>
-                                  <input matInput placeholder="referenceType" [(ngModel)]="itemreservation.referenceType">
-                                </mat-form-field>
-                              </mat-tab>
-                              <mat-tab label="Seg. & Tag">
-                                <br>
-                                <mat-form-field>
-                                  <input matInput placeholder="segment" [(ngModel)]="itemreservation.segment"
-                                    [readonly]="!itemreservation.isNew">
-                                </mat-form-field>&nbsp;
-                                <mat-form-field>
-                                  <input matInput placeholder="segmentType" [(ngModel)]="itemreservation.segmentType"
-                                    [readonly]="!itemreservation.isNew">
-                                </mat-form-field>&nbsp;
-                                <mat-form-field>
-                                  <input matInput placeholder="tagNumber" [(ngModel)]="itemreservation.tagNumber"
-                                    [readonly]="!itemreservation.isNew">
-                                </mat-form-field>
-                              </mat-tab>
-
-                            </mat-tab-group>
-
-                            <button type="button" mat-raised-button color="primary" (click)="savereservation(itemreservation)"
-                              title="Save Change">
-                              <mat-icon>save</mat-icon>&nbsp;Save
-                            </button>
-                            &nbsp;
-                            <button type="button" mat-raised-button color="warn" (click)="deletereservation(itemreservation)"
-                              title="delete this reservation line">
-                              <mat-icon>delete</mat-icon>&nbsp;Delete
-                            </button>
-                            <!-- 
-                        <a title="Save Change" type="button">
-                          <mat-icon class="icon">save</mat-icon>
-                        </a>
-                        <a title="Zero out this reservation line" type="button">
-                          <mat-icon class="icon">delete</mat-icon>
-                        </a> -->
-
-                          </mat-expansion-panel>
-                        </mat-accordion>
-
-                      </mat-card-content>
-                    </mat-card>
-                  </mat-expansion-panel>
-
-                </mat-accordion>
-
+                <h3>Reservation Inquiry</h3>
                 <div>
 
+                  <mat-radio-group [(ngModel)]='reservationInquiry.queryMode'>
+                    <mat-radio-button [value]="ReservationQueryModeRef.Reference">Reference&nbsp;&nbsp;</mat-radio-button>
+                    <mat-radio-button [value]="ReservationQueryModeRef.Id">Reservation ID&nbsp;&nbsp;</mat-radio-button>
+                  </mat-radio-group> &nbsp;&nbsp;
+
+                  <mat-form-field *ngIf='reservationInquiry.queryMode === ReservationQueryModeRef.Reference'>
+                    <input matInput placeholder="Reference" [(ngModel)]="reservationInquiry.reference">
+                  </mat-form-field>
+
+
+                  <mat-form-field *ngIf='reservationInquiry.queryMode === ReservationQueryModeRef.Id'>
+                    <input matInput placeholder="Reservation ID" [(ngModel)]="reservationInquiry.id">
+                  </mat-form-field>
 
                 </div>
+
+                <button type="submit" mat-raised-button color="primary" (click)="queryReservation()">
+                  <mat-icon>whatshot</mat-icon> Find Reservation
+                </button>
+                
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="card">
+              <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+                Reservations:
+              </mat-card-title>
+              <mat-card-content>
+                <mat-table #table [dataSource]="reservationListSubject">
+
+                  <ng-container matColumnDef="expirationTs">
+                    <mat-header-cell *matHeaderCellDef> Expiration </mat-header-cell>
+                    <mat-cell *matCellDef="let element" matTooltipClass="reservationListToolTip" [matTooltip]="constructTimeStampDesc(element)">
+                      {{element.expirationTs}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> Resv. ID </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="itemId">
+                    <mat-header-cell *matHeaderCellDef> Item </mat-header-cell>
+                    <mat-cell *matCellDef="let element" matTooltipClass="reservationListToolTip" [matTooltip]="constructItemDesc(element)">
+                      {{element.itemId}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="productClass">
+                    <mat-header-cell *matHeaderCellDef> productClass </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.productClass}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="reference">
+                    <mat-header-cell *matHeaderCellDef> Resv. Ref. </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.reference}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="reservationTs">
+                    <mat-header-cell *matHeaderCellDef> Resved On </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.reservationTs}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="reservedQuantityExtn">
+                    <mat-header-cell *matHeaderCellDef> Resved </mat-header-cell>
+                    <mat-cell *matCellDef="let element" matTooltipClass="reservationListToolTip" [matTooltip]="constructQuantityDesc(element)">
+                      {{element.productClass}} {{element.reservedQuantity}} {{element.unitOfMeasure}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="reservedQuantity">
+                    <mat-header-cell *matHeaderCellDef> reservedQuantity </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.reservedQuantity}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef> status </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="unitOfMeasure">
+                    <mat-header-cell *matHeaderCellDef> unitOfMeasure </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.unitOfMeasure}} </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="resvTableColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: resvTableColumns"></mat-row>
+
+                </mat-table>
               </mat-card-content>
             </mat-card>
           </mat-tab>

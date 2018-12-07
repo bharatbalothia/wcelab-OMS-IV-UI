@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ReservationQuery, ReservationResponseLine, ReservationRequest, ReservationRequestLine, ReserveMode, ReservationDataService, ReservationRequestResultLine } from "./reservation-data.service";
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { ReservationQuery, ReservationResponseLine, ReservationRequest, ReservationRequestLine, ReserveMode, ReservationDataService, ReservationRequestResultLine, ReservationQueryMode } from "./reservation-data.service";
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { IvConstant } from '../iv-constant';
 import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
@@ -12,7 +12,8 @@ import { ObjectUtil } from '../util/object-util';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
-  styleUrls: ['./reservation.component.less']
+  styleUrls: ['./reservation.component.less'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ReservationComponent implements OnInit {
 
@@ -31,7 +32,7 @@ export class ReservationComponent implements OnInit {
 
   public get newReservationDisplayColumnsRow1(): string[] {
     return [
-      'lineId', 'itemId','quantity', 'shipNodeOrDG'];
+      'lineId', 'itemId', 'quantity', 'shipNodeOrDG'];
   }
 
   public get newReservationDisplayColumnsRow2(): string[] {
@@ -39,12 +40,12 @@ export class ReservationComponent implements OnInit {
       'unitOfMeasure', 'productClass', 'deliveryMethod', 'button'];
   }
 
-  
-  public get newReservationDisplayColumnsFooter() : string[] {
+
+  public get newReservationDisplayColumnsFooter(): string[] {
     return ['button'];
   }
-  
-  
+
+
 
   public get uomOptionObservable(): Observable<string[]> {
     return of(IvConstant.UOM_OPTIONS);
@@ -59,10 +60,10 @@ export class ReservationComponent implements OnInit {
   }
 
   private _selectorSnOrDg: string[] = [] as string[];
-  public get selectorSnOrDg() : string[] {
+  public get selectorSnOrDg(): string[] {
     return this._selectorSnOrDg;
   }
-  
+
   // Get the list of shipnode. To populate the dropdown box
   getShipnodeList(): Observable<ShipNode[]> {
 
@@ -101,19 +102,20 @@ export class ReservationComponent implements OnInit {
   }
 
   private _ReserveModeRef: typeof ReserveMode = ReserveMode;
-  public get ReserveModeRef() : typeof ReserveMode {
+  public get ReserveModeRef(): typeof ReserveMode {
     return this._ReserveModeRef;
   }
-  
+
 
   constructor(
     private reservationDataService: ReservationDataService,
-    private shipnodeDataService: ShipnodeDataService, 
+    private shipnodeDataService: ShipnodeDataService,
     private distgroupDataService: DistgroupDataService) {
 
     this._reservationInquiry = {
+      queryMode: ReservationQueryMode.Reference,
       id: null,
-      refernce: null,
+      reference: null,
     };
 
     this._newReservation = {
@@ -141,13 +143,13 @@ export class ReservationComponent implements OnInit {
   }
 
 
-  getTopPanelDescription(): string {
-    if (this.reservationInquiry == null || (this.reservationInquiry.id == null && this.reservationInquiry.refernce == null)) {
-      return null;
-    } else {
-      return `Reservatipn: [${this.reservationInquiry.id}] Refernce: [${this.reservationInquiry.refernce}]`;
-    }
-  }
+  // getTopPanelDescription(): string {
+  //   if (this.reservationInquiry == null || (this.reservationInquiry.id == null && this.reservationInquiry.reference == null)) {
+  //     return null;
+  //   } else {
+  //     return `Reservation: [${this.reservationInquiry.id}] Refernce: [${this.reservationInquiry.reference}]`;
+  //   }
+  // }
 
   addReservationLine(): void {
     const cloneOfNewReservation = JSON.parse(JSON.stringify(this.newReservation));
@@ -169,11 +171,11 @@ export class ReservationComponent implements OnInit {
   createReservation(): void {
 
     const cleanedReservation = this.cleanupShipnodeAndDistgroup(this.newReservation);
-    
+
     ObjectUtil.removeNullOrEmptyStringProperties(cleanedReservation);
 
     console.debug("Creating new reservation with input: ", cleanedReservation);
-    
+
     this.reservationDataService.createReservation(cleanedReservation).subscribe(
       (response: ReservationRequestResultLine[]) => {
         console.debug("Response of the reservation: ", response);
@@ -212,12 +214,79 @@ export class ReservationComponent implements OnInit {
       deliveryMethod: 'SHP',
       distributionGroup: null,
       itemId: null,
-      lineId: `${rowIndex+1}.1`,
+      lineId: `${rowIndex + 1}.1`,
       productClass: 'NEW',
       quantity: 1,
       shipNode: null,
       unitOfMeasure: 'EACH',
       requestMode: ReserveMode.DistGroup,
+    }
+  }
+
+  private _reservationListCache: BehaviorSubject<ReservationResponseLine[]>
+    = new BehaviorSubject<ReservationResponseLine[]>(null);
+  public get reservationListSubject(): Observable<ReservationResponseLine[]> {
+    return this._reservationListCache;
+  }
+
+  
+  public get resvTableColumns() : string[] {
+    // "productClass", "unitOfMeasure","status", "reservationTs",
+    return ["reference", "id",  "itemId",  "reservedQuantityExtn", "expirationTs"];
+  }
+  
+
+  private _ReservationQueryModeRef: typeof ReservationQueryMode = ReservationQueryMode;
+  public get ReservationQueryModeRef(): typeof ReservationQueryMode {
+    return this._ReservationQueryModeRef;
+  }
+
+  public constructItemDesc(r: ReservationResponseLine): string {
+
+    r.segment = r.segment ? r.segment.trim() : undefined;
+    r.segmentType = r.segmentType ? r.segmentType.trim() : undefined;
+     
+    return            `Item    : ${r.itemId}\n`+
+                      `P. Class: ${r.productClass}\n` +
+     (r.segmentType ? `SgmtType: ${r.segmentType}\n` : '') +
+     (r.segment ?     `Segemnt : ${r.segment}\n` : '');
+  }
+
+  public constructQuantityDesc(r: ReservationResponseLine): string {
+    return                 `Qty  : ${r.reservedQuantity}\n` +
+                           `UOM  : ${r.unitOfMeasure}\n` +
+    (r.distributionGroup ? `DstGp: ${r.distributionGroup}\n`: '') +
+    (r.shipNode ?          `ShpNd: ${r.shipNode}\n`: '');
+  }
+
+  public constructTimeStampDesc(r: ReservationResponseLine): string{
+    return          `Rsv: ${r.reservationTs}\n` +
+                    `Exp: ${r.expirationTs}\n` ;
+  }
+
+  public queryReservation(): void {
+
+    if (this.reservationInquiry && (this.reservationInquiry.id || this.reservationInquiry.reference)) {
+
+      const queryClone = JSON.parse(JSON.stringify(this.reservationInquiry));
+
+      this.cleanQueryRequest(queryClone);
+
+      // console.debug("Query Reservation: ", queryClone);
+
+      this.reservationDataService.getReservation(queryClone).subscribe(
+        (data: ReservationResponseLine[]) => {
+          this._reservationListCache.next(data);
+        }
+      )
+    }
+  }
+
+  private cleanQueryRequest(reservationInquiry: ReservationQuery): void {
+    if (reservationInquiry.queryMode === ReservationQueryMode.Reference) {
+      delete reservationInquiry.id;
+    } else if (reservationInquiry.queryMode === ReservationQueryMode.Id) {
+      delete reservationInquiry.reference;
     }
   }
 }
