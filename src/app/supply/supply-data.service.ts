@@ -100,9 +100,15 @@ export class SupplyDataService extends IvServiceBase {
    * @param suppliestoAdjust Array of supplies to sync server to
    */
   syncSupply(suppliestoAdjust: SupplyAdjustment[]): void {
-    this.putObject<{supplies:SupplyAdjustment[]}>({
-      supplies: suppliestoAdjust
-    });
+    
+    const supplySyncRequest =
+    {supplies: suppliestoAdjust};
+
+    this.putObject<{supplies:SupplyAdjustment[]}>(supplySyncRequest).subscribe(
+      result => {
+        console.debug("Synced supply %s into IV. ==== http result: ", JSON.stringify(supplySyncRequest) , result)
+      }
+    );
   }
 
 }

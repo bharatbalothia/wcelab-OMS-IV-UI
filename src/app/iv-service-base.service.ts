@@ -89,16 +89,8 @@ export abstract class IvServiceBase {
 
     let putResult = this.http.put(url, objectToPut, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
-    ); 
-    
-    // Put an empty subscriber here to avoid angular not executing put without
-    // a subscriber.
-    putResult.subscribe();
-    
-    // putResult.subscribe(
-    //   data => {console.debug(data), error => {console.error(error)}}
-    // );
-    
+    );
+        
     return putResult;
   }
   
@@ -112,11 +104,7 @@ export abstract class IvServiceBase {
 
     let postResult = this.http.post(url, objectToPut, httpOptions).pipe(
       catchError(this.handleError('putObject', []))
-    ); 
-    
-    // Put an empty subscriber here to avoid angular not executing put without
-    // a subscriber.
-    postResult.subscribe();
+    );
     
     return postResult;
   }
@@ -145,15 +133,7 @@ export abstract class IvServiceBase {
 
     let deleteResult = this.http.delete(url, httpOptions).pipe(
       catchError(this.handleError('deleteObject', []))
-    ); 
-    
-    // Put an empty subscriber here to avoid angular not executing deletion
-    // without a subscriber.
-    deleteResult.subscribe();
-    
-    // putResult.subscribe(
-    //   data => {console.debug(data), error => {console.error(error)}}
-    // );
+    );
     
     return deleteResult;
   }

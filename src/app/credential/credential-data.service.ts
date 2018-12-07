@@ -56,13 +56,7 @@ export class CredentialDataService {
 
   private getAuthHeader = ()  : {headers: HttpHeaders} => {
 
-    if (this.credential.clientID == null || this.credential.clientID.length == 0 ||
-      this.credential.clientSecret == null || this.credential.clientSecret.length == 0) {
-      console.error("No clientID or clientSecret. Cannot get tokens.");
-      return  {
-        headers: new HttpHeaders()
-      };
-    } else {
+    if (this.credential.clientID && this.credential.clientSecret) {
       return {
         headers: new HttpHeaders({
           'Content-Type':  'application/x-www-form-urlencoded',
@@ -70,19 +64,24 @@ export class CredentialDataService {
           'Authorization': `Basic ${btoa(this.credential.clientID + ":" + this.credential.clientSecret)}`
         })
       };
+    } else {
+      console.error("No clientID or clientSecret. Cannot get tokens.");
+      return  {
+        headers: new HttpHeaders()
+      };
     }
   };
 
   public getIvBaseUrl(): string {
 
-    if (this.credential == null || 
-      this.credential.baseUrl == null || this.credential.baseUrl.length == 0 ||
-      this.credential.tenantID == null || this.credential.tenantID.length == 0 ||
-      this.credential.appVersion == null || this.credential.appVersion.length == 0) {
+    if (this.credential &&  
+      this.credential.baseUrl &&
+      this.credential.tenantID &&
+      this.credential.appVersion) {
+        return `${this.credential.baseUrl}/${this.credential.tenantID}/${this.credential.appVersion}`;
+      } else {
         console.error('IV Credential is not complete. Missing baseUrl or tanantID or appVersion', this.credential);
         return null;
-      } else {
-        return `${this.credential.baseUrl}/${this.credential.tenantID}/${this.credential.appVersion}`;
       }
    
   }
@@ -220,10 +219,7 @@ export class CredentialDataService {
 
     let baseUrl = this.getIvBaseUrl();
 
-    if (baseUrl == null) {
-      console.warn("Credential is not set. can't get tokens");
-      return null;
-    } else {
+    if (baseUrl) {
       let url = `${baseUrl}/${operationType}/${EntityUrl.OATH_URL_SUFFIX}`;
 
       let httpOptions = this.getAuthHeader() ;
@@ -232,6 +228,9 @@ export class CredentialDataService {
       .pipe(
         catchError(this.handleError(`get_${operationType}`, []))
       );
+    } else {
+      console.warn("Credential is not set. can't get tokens");
+      return null;      
     }
   }
 }

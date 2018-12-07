@@ -22,7 +22,7 @@ export class NetworkAvailabilityDataService extends IvServiceBase {
 
   
    protected getBearerToken = (credential: IVCredent)  => {
-    return credential == null ? null : credential.tokens.availabilityNetwork; 
+    return credential ? credential.tokens.availabilityNetwork : null; 
   }
 
   protected getEntityUrl(): string {

@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
     const ivBaseUrl: string = this.credentialDataService.getIvBaseUrl();
     
-    if (ivBaseUrl == null) {
+    if (!ivBaseUrl) {
       this.router.navigateByUrl('/login');
     }
   }

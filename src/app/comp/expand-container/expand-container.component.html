@@ -1,0 +1,4 @@
+<ng-container>
+  <mat-slide-toggle [color]="color" [(ngModel)]="expanded" [checked]="expanded">{{label}}</mat-slide-toggle> 
+  <ng-content *ngIf="expanded"></ng-content>
+</ng-container>

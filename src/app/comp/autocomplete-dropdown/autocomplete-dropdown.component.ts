@@ -114,7 +114,7 @@ export class AutocompleteDropdownComponent implements MatFormFieldControl<string
     });
 
     // Replace the provider from above with this.
-    if (this.ngControl != null) {
+    if (this.ngControl) {
       // Setting the value accessor directly (instead of using
       // the providers) to avoid running into a circular import.
       // console.debug("Setting ngControl value accessor to this");
@@ -166,12 +166,12 @@ export class AutocompleteDropdownComponent implements MatFormFieldControl<string
     this._propagateChange(this.value);
   }
 
-  private filterOptionsInPipe(optionsInPipe, filterValue: string): string[] {
+  private filterOptionsInPipe(optionsInPipe, filterValue: string | null | undefined): string[] {
     // console.debug('About to filter %s from pipe of: ', filterValue, optionsInPipe);
-    if (filterValue == null || filterValue.length == 0) {
-      return optionsInPipe;
-    } else {
+    if (filterValue) {
       return optionsInPipe ? optionsInPipe.filter(option => option.toLowerCase().indexOf(filterValue) === 0) : null;
+    } else {
+      return optionsInPipe;
     }
   }
 
