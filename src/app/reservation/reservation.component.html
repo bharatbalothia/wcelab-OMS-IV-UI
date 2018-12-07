@@ -10,60 +10,63 @@
             <mat-card class="card">
               <br>
 
+
               <mat-form-field>
-                <input matInput type="text" [(ngModel)]="newReservation.reference" placeholder="Reference">
+                <input matInput type="text" [(ngModel)]="newReservation.reference" placeholder="Reference" required>
               </mat-form-field>
               &nbsp;
-              <mat-form-field>
-                  <input matInput type="text" [(ngModel)]="newReservation.segment" placeholder="segment">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field>
-                  <input matInput type="text" [(ngModel)]="newReservation.segmentType" placeholder="segment type">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field>
+              <!-- <mat-slide-toggle color="primary" >more</mat-slide-toggle>  -->
+              <app-expand-container color="primary" label="More Prop." expanded="false">
+                <mat-form-field>
+                  <input matInput type="text" [(ngModel)]="newReservation.segmentType" placeholder="Segment type">
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field>
+                  <input matInput type="text" [(ngModel)]="newReservation.segment" placeholder="Segment">
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field>
                   <input matInput type="number" [(ngModel)]="newReservation.timeToExpire" placeholder="Minutes to Expire">
-              </mat-form-field>
-              &nbsp;
-              <button type="button" mat-raised-button color="primary" (click)="addreservationRow()">
-                <mat-icon>add</mat-icon> Add New reservation
-              </button>
-
-
-              <mat-table #table [dataSource]="newReservation.lines">
+                </mat-form-field>
+              </app-expand-container>
+              <mat-table multiTemplateDataRows #table [dataSource]="newReservation.lines">
 
                 <ng-container matColumnDef="lineId">
                   <mat-header-cell *matHeaderCellDef> Line ID </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> <mat-form-field><input matInput type="text" placeholder="Line ID" [(ngModel)]="element.lineId"> </mat-form-field></mat-cell>
-                  
-
+                  <mat-cell *matCellDef="let element">
+                    <mat-form-field><input matInput type="text" placeholder="Line ID" [(ngModel)]="element.lineId" required>
+                    </mat-form-field>&nbsp;
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="itemId">
                   <mat-header-cell *matHeaderCellDef> Item ID </mat-header-cell>
-                  <mat-cell *matCellDef="let element"><mat-form-field><input matInput type="text" placeholder="Item ID" [(ngModel)]="element.itemId"></mat-form-field></mat-cell>
+                  <mat-cell *matCellDef="let element">
+                    <mat-form-field><input matInput type="text" placeholder="Item ID" [(ngModel)]="element.itemId" required></mat-form-field>&nbsp;
+                  </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="unitOfMeasure">
                   <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
 
                   <mat-cell *matCellDef="let element">
-                    <app-autocomplete-dropdown placeholder="UOM" [(ngModel)]="element.unitOfMeasure" [options]="uomOptionObservable"></app-autocomplete-dropdown>
+                    <app-autocomplete-dropdown placeholder="UOM" [(ngModel)]="element.unitOfMeasure" [options]="uomOptionObservable"></app-autocomplete-dropdown>&nbsp;
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="productClass">
                   <mat-header-cell *matHeaderCellDef> Prod. Class </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <app-autocomplete-dropdown placeholder="Product Class" [(ngModel)]="element.productClass" [options]="prodClassOptionObservable"></app-autocomplete-dropdown>
+                    <app-autocomplete-dropdown placeholder="Product Class" [(ngModel)]="element.productClass" [options]="prodClassOptionObservable"></app-autocomplete-dropdown>&nbsp;
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="quantity">
                   <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <input matInput type="number" placeholder="Quantity" [(ngModel)]="element.quantity">
+                    <mat-form-field>
+                      <input matInput type="number" placeholder="Quantity" [(ngModel)]="element.quantity"  required>
+                    </mat-form-field>&nbsp;
                   </mat-cell>
                 </ng-container>
 
@@ -71,15 +74,29 @@
                   <mat-header-cell *matHeaderCellDef> Delivery Method </mat-header-cell>
                   <mat-cell *matCellDef="let element">
                     <app-autocomplete-dropdown placeholder="Delivery Method" [(ngModel)]="element.deliveryMethod"
-                      [options]="deliveryMethodOptionObservable"></app-autocomplete-dropdown>
+                      [options]="deliveryMethodOptionObservable"></app-autocomplete-dropdown>&nbsp;
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="shipNodeOrDG">
+                  <mat-header-cell *matHeaderCellDef> Ship Node or DG </mat-header-cell>
+                  <mat-cell *matCellDef="let element; let i=dataIndex;">
+                    <mat-radio-group [(ngModel)]='element.requestMode'>
+                      <mat-radio-button [value]="ReserveModeRef.DistGroup">Dist. Group</mat-radio-button>
+                      <mat-radio-button [value]="ReserveModeRef.ShipNode">Shipnode</mat-radio-button>
+                    </mat-radio-group> &nbsp;&nbsp;
+                    <app-autocomplete-dropdown *ngIf='element.requestMode === ReserveModeRef.DistGroup' placeholder="Dist. Group"
+                      [(ngModel)]="element.distributionGroup" [options]="getDistgroupIdList()"></app-autocomplete-dropdown>
+                    <app-autocomplete-dropdown *ngIf='element.requestMode === ReserveModeRef.ShipNode' placeholder="Ship Node" [(ngModel)]="element.shipNode"
+                      [options]="getShipnodeIdList()"></app-autocomplete-dropdown>
                   </mat-cell>
                 </ng-container>
 
 
-                <ng-container matColumnDef="shipNode">
+                <!-- <ng-container matColumnDef="shipNode">
                   <mat-header-cell *matHeaderCellDef> Ship Node </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <app-autocomplete-dropdown placeholder="Ship Node" [(ngModel)]="element.shipNode" [options]="getShipnodeIdList()"></app-autocomplete-dropdown>
+                    <app-autocomplete-dropdown placeholder="Ship Node" [(ngModel)]="element.shipNode" [options]="getShipnodeIdList()"></app-autocomplete-dropdown>&nbsp;
                   </mat-cell>
                 </ng-container>
 
@@ -87,24 +104,49 @@
                   <mat-header-cell *matHeaderCellDef> Distribution Group </mat-header-cell>
                   <mat-cell *matCellDef="let element">
                     <app-autocomplete-dropdown placeholder="Dist. Group" [(ngModel)]="element.distributionGroup"
-                      [options]="getDistgroupIdList()"></app-autocomplete-dropdown>
+                      [options]="getDistgroupIdList()"></app-autocomplete-dropdown>&nbsp;
                   </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
 
+                <!-- <ng-container matColumnDef="add">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i=dataIndex; let first; let last;" (click)="$event.stopPropagation()">
+                        <button type="button" mat-raised-button color="primary" (click)="addReservationLine()">
+                            <mat-icon>add</mat-icon> Add Row
+                          </button>
+                    </mat-cell>
+                </ng-container> -->
 
-                <ng-container matColumnDef="delete">
+
+                <ng-container matColumnDef="button">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                    <button (click)="deleteSupply(element)" type="button" title="delete line">
-                      <mat-icon class="icon">delete</mat-icon>
+                  <mat-cell *matCellDef="let element; let i=dataIndex; let first; let last;" class="button-in-table"
+                    (click)="$event.stopPropagation()">
+                    <!-- <button (click)="deleteSupply(element)" type="button" title="delete line"> -->
+                    <!-- <mat-icon class="icon">delete</mat-icon> i: {{i}} first: {{i==0}} last: {{last.lineId}} -->
+                    <!-- </button> -->
+                    <button type="button" mat-raised-button color="warn" (click)="deleteReservationLine(element)">
+                      <mat-icon>delete</mat-icon> Delete
                     </button>
                   </mat-cell>
+                  <mat-footer-cell *matFooterCellDef>
+                    <button type="button" mat-raised-button color="primary" (click)="addReservationLine()">
+                      <mat-icon>add</mat-icon> Add Row
+                    </button>
+                  </mat-footer-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: newReservationDisplayColumns"></mat-row>
-              </mat-table>
 
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: newReservationDisplayColumnsRow1"></mat-row>
+                <mat-row *matRowDef="let row; columns: newReservationDisplayColumnsRow2"></mat-row>
+                <mat-row mat-footer-row *matFooterRowDef="newReservationDisplayColumnsFooter"></mat-row>
+              </mat-table>
+              <div class="createReservationButtonPanel">
+                <button type="button" mat-raised-button color="primary" (click)="createReservation()">
+                  <mat-icon>add_shopping_cart</mat-icon> Create Reservation
+                </button>
+              </div>
             </mat-card>
 
           </mat-tab>

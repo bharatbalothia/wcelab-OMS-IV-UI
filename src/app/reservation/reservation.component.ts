@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ReservationQuery, ReservationResponseLine, ReservationRequest } from "./reservation-data.service";
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ReservationQuery, ReservationResponseLine, ReservationRequest, ReservationRequestLine, ReserveMode, ReservationDataService, ReservationRequestResultLine } from "./reservation-data.service";
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { IvConstant } from '../iv-constant';
 import { ShipNode, ShipnodeDataService } from '../shipnode/shipnode-data.service';
 import { DistgroupDataService, DistributionGroup } from '../distgroup/distgroup-data.service';
 import { map } from 'rxjs/operators';
+import { ArrayUtil } from '../util/array-util';
+import { ObjectUtil } from '../util/object-util';
 
 
 @Component({
@@ -27,11 +29,22 @@ export class ReservationComponent implements OnInit {
   }
 
 
-  public get newReservationDisplayColumns(): string[] {
+  public get newReservationDisplayColumnsRow1(): string[] {
     return [
-      'lineId', 'itemId', 'unitOfMeasure', 'productClass', 'quantity', 'deliveryMethod', 'shipNode', 'distributionGroup', 'delete'];
+      'lineId', 'itemId','quantity', 'shipNodeOrDG'];
   }
 
+  public get newReservationDisplayColumnsRow2(): string[] {
+    return [
+      'unitOfMeasure', 'productClass', 'deliveryMethod', 'button'];
+  }
+
+  
+  public get newReservationDisplayColumnsFooter() : string[] {
+    return ['button'];
+  }
+  
+  
 
   public get uomOptionObservable(): Observable<string[]> {
     return of(IvConstant.UOM_OPTIONS);
@@ -45,6 +58,11 @@ export class ReservationComponent implements OnInit {
     return of(IvConstant.DELIVERY_METHOD_OPTIONS);
   }
 
+  private _selectorSnOrDg: string[] = [] as string[];
+  public get selectorSnOrDg() : string[] {
+    return this._selectorSnOrDg;
+  }
+  
   // Get the list of shipnode. To populate the dropdown box
   getShipnodeList(): Observable<ShipNode[]> {
 
@@ -82,7 +100,15 @@ export class ReservationComponent implements OnInit {
     );
   }
 
-  constructor(private shipnodeDataService: ShipnodeDataService, 
+  private _ReserveModeRef: typeof ReserveMode = ReserveMode;
+  public get ReserveModeRef() : typeof ReserveMode {
+    return this._ReserveModeRef;
+  }
+  
+
+  constructor(
+    private reservationDataService: ReservationDataService,
+    private shipnodeDataService: ShipnodeDataService, 
     private distgroupDataService: DistgroupDataService) {
 
     this._reservationInquiry = {
@@ -95,18 +121,9 @@ export class ReservationComponent implements OnInit {
       reference: null,
       segment: null,
       segmentType: null,
-      timeToExpire: 120,
+      timeToExpire: null,
       lines: [
-        {
-          deliveryMethod: null,
-          distributionGroup: null,
-          itemId: null,
-          lineId: null,
-          productClass: null,
-          quantity: 0,
-          shipNode: null,
-          unitOfMeasure: null,
-        }
+        this.createNewReservationLine(0)
       ]
     };
 
@@ -132,6 +149,75 @@ export class ReservationComponent implements OnInit {
     }
   }
 
+  addReservationLine(): void {
+    const cloneOfNewReservation = JSON.parse(JSON.stringify(this.newReservation));
 
+    cloneOfNewReservation.lines.push(
+      this.createNewReservationLine(this.newReservation.lines.length)
+    );
 
+    this._newReservation = cloneOfNewReservation;
+
+    console.debug('Updated the reservation to: ', this.newReservation);
+
+    // this.changeDetectorRefs.detectChanges();
+  }
+
+  /**
+   * Event handler for creating new reservation.
+   */
+  createReservation(): void {
+
+    const cleanedReservation = this.cleanupShipnodeAndDistgroup(this.newReservation);
+    
+    ObjectUtil.removeNullOrEmptyStringProperties(cleanedReservation);
+
+    console.debug("Creating new reservation with input: ", cleanedReservation);
+    
+    this.reservationDataService.createReservation(cleanedReservation).subscribe(
+      (response: ReservationRequestResultLine[]) => {
+        console.debug("Response of the reservation: ", response);
+      }
+    )
+  }
+
+  private cleanupShipnodeAndDistgroup(reservationToCleanup: ReservationRequest): ReservationRequest {
+    const clonOfReserv: ReservationRequest = JSON.parse(JSON.stringify(reservationToCleanup));
+    for (let resvLine of clonOfReserv.lines) {
+      if (resvLine.requestMode === ReserveMode.ShipNode) {
+        delete resvLine.distributionGroup;
+      } else if (resvLine.requestMode === ReserveMode.DistGroup) {
+        delete resvLine.shipNode;
+      }
+    }
+
+    return clonOfReserv;
+  }
+
+  private deleteReservationLine(lineToDelete: ReservationRequestLine): void {
+
+    ArrayUtil.removeObjectFromArray<ReservationRequestLine>(this.newReservation.lines, lineToDelete);
+
+    const cloneOfNewReservation = JSON.parse(JSON.stringify(this.newReservation));
+
+    this._newReservation = cloneOfNewReservation;
+  }
+
+  /**
+   * Create a new blank reservatino line
+   * @param rowIndex The 0 based index of the new reservation line. [0, 1, 2, ...]
+   */
+  private createNewReservationLine(rowIndex: number): ReservationRequestLine {
+    return {
+      deliveryMethod: 'SHP',
+      distributionGroup: null,
+      itemId: null,
+      lineId: `${rowIndex+1}.1`,
+      productClass: 'NEW',
+      quantity: 1,
+      shipNode: null,
+      unitOfMeasure: 'EACH',
+      requestMode: ReserveMode.DistGroup,
+    }
+  }
 }

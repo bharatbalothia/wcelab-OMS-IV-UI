@@ -1,24 +1,43 @@
 import { Injectable } from '@angular/core';
+import { IvServiceBase } from '../iv-service-base.service';
+import { HttpClient } from '@angular/common/http';
+import { HttpErrorHandler } from '../http-error-handler.service';
+import { CredentialDataService, IVCredent } from '../credential/credential-data.service';
+import { EntityUrl } from '../entity-url';
+import { Observable } from 'rxjs';
 
 
 export interface ReservationRequest {
-  reference:    string;
-  segment:      string;
-  segmentType:  string;
-  timeToExpire: number;
+  reference:    string | null;
+  segment?:      string | null;
+  segmentType?:  string | null;
+  timeToExpire?: number | null;
   lines: ReservationRequestLine[];
+}
+
+export enum ReserveMode{
+  DistGroup,
+  ShipNode
 }
 
 export interface ReservationRequestLine {
   deliveryMethod:    string;
-  distributionGroup: string;
-  itemId:            string;
+  distributionGroup?: string | null;
+  itemId:            string | null;
   lineId:            string;
   productClass:      string;
   quantity:          number;
-  shipNode:          string;
+  shipNode?:          string | null;
   unitOfMeasure:     string;
+  requestMode?:  ReserveMode;
 }
+
+export interface ReservationRequestResultLine {
+  lineId:           string;
+  reservationId:    string;
+  reservedQuantity: number;
+}
+
 
 
 export interface ReservationResponseLine {
@@ -42,7 +61,18 @@ export interface ReservationQuery {
 @Injectable({
   providedIn: 'root'
 })
-export class ReservationDataService {
+export class ReservationDataService extends IvServiceBase {
 
-  constructor() { }
+  constructor(http: HttpClient, httpErrorHandler: HttpErrorHandler, credentialData: CredentialDataService) {
+    super(http, httpErrorHandler, credentialData);}
+
+  protected getEntityUrl = (): string => { return EntityUrl.RESERVATIONS; }
+
+  protected getBearerToken = (credential: IVCredent): string  => {
+    return credential == null ? null : credential.tokens.reservations; 
+  }
+
+  createReservation(reservationRequest: ReservationRequest): Observable<ReservationRequestResultLine[]>{
+    return this.postObject(reservationRequest);
+  }
 }

@@ -29,6 +29,8 @@ import { SupplyComponent } from './supply/supply.component';
 import { ArrayListPipe } from './util/array-list.pipe';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { ExpandContainerComponent } from './comp/expand-container/expand-container.component';
+import { CombineInputDistgroupShipnodeComponent } from './comp/combine-input-distgroup-shipnode/combine-input-distgroup-shipnode.component';
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import { ReservationComponent } from './reservation/reservation.component';
     PhoneNumberInputComponent,
     AvaViewerComponent,
     ReservationComponent,
+    ExpandContainerComponent,
+    CombineInputDistgroupShipnodeComponent,
   ],
   imports: [
     BrowserModule,

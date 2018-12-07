@@ -22,7 +22,7 @@ import { ShipnodeDataService, ShipNode } from '../shipnode/shipnode-data.service
 // }
 
 export interface DistributionGroup {
-  distributionGroupId: string;
+  distributionGroupId: string | null;
   // description: string;
   shipNodes: ShipNode[];
 
@@ -52,7 +52,7 @@ export class DistgroupDataService extends IvServiceBase {
   protected getEntityUrl = () => { return EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS; }
 
   protected getBearerToken = (credential: IVCredent) => {
-    return credential == null ? null : credential.tokens.configurationDistributionGroups;
+    return credential ? credential.tokens.configurationDistributionGroups : null;
   }
 
 
@@ -80,11 +80,21 @@ export class DistgroupDataService extends IvServiceBase {
   }
 
   putDistgroup(distgroupToPut: DistributionGroup): void {
-    this.putObject<DistributionGroup>(distgroupToPut, '/' + encodeURIComponent(distgroupToPut.distributionGroupId));
+    this.putObject<DistributionGroup>(
+      distgroupToPut, '/' + encodeURIComponent(distgroupToPut.distributionGroupId)).subscribe(
+        result => {
+          console.debug('Update DistributionGroup %s into IV finished. ==== http result: ', 
+            JSON.stringify(distgroupToPut) , result);
+        }
+      );
   }
 
   deleteDistgroup(distgroupToDelete: DistributionGroup): void {
-    this.deleteObject('/' + encodeURIComponent(distgroupToDelete.distributionGroupId));
+    this.deleteObject('/' + encodeURIComponent(distgroupToDelete.distributionGroupId)).subscribe(
+      result => {
+        console.debug('deleted distribution group %s from IV. ==== http result: ', distgroupToDelete.distributionGroupId , result);
+      }
+    );
   }
 
 

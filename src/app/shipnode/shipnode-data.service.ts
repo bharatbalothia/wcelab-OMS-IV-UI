@@ -110,7 +110,7 @@ export class ShipnodeDataService extends IvServiceBase {
     this.deleteObject('/' + encodeURIComponent(shipnodeToDelete.shipNode))
     .subscribe(
       result => {
-        console.debug('deleted %s from IV finished. ==== http result: ', JSON.stringify(shipnodeToDelete) , result);
+        console.debug('Deleted shipnode %s from IV finished. ==== http result: ', JSON.stringify(shipnodeToDelete) , result);
       }
     );
 
