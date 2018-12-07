@@ -20,6 +20,7 @@ import {
     MatButtonToggleModule,
     MatRadioModule,
     MatSlideToggleModule,
+    MatTooltipModule,
   } from '@angular/material';
   
   @NgModule({
@@ -42,6 +43,7 @@ import {
       MatButtonToggleModule,
       MatRadioModule,
       MatSlideToggleModule,
+      MatTooltipModule,
     ],
     exports: [
       MatSidenavModule,
@@ -62,6 +64,7 @@ import {
       MatButtonToggleModule,
       MatRadioModule,
       MatSlideToggleModule,
+      MatTooltipModule,
     ]
   })
 
