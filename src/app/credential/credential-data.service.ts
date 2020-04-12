@@ -15,15 +15,16 @@ export interface IVCredent {
   clientID?: string;
   clientSecret?: string;
   tokens: {
-    availabilityNetwork?: string;
-    availabilityNode?: string;
-    configurationDistributionGroups?: string;
-    configurationSettings?: string;
-    configurationShipNodes?: string;
-    configurationThresholds?: string;
-    demands?: string;
-    reservations?: string;
-    supplies?: string;
+    // availabilityNetwork?: string;
+    // availabilityNode?: string;
+    // configurationDistributionGroups?: string;
+    // configurationSettings?: string;
+    // configurationShipNodes?: string;
+    // configurationThresholds?: string;
+    // demands?: string;
+    // reservations?: string;
+    // supplies?: string;
+    configuration?: string;
   };
 }
 
@@ -103,63 +104,69 @@ export class CredentialDataService {
     console.info('Removing store [%s]', IvConstant.STORE_IV_INFO_AND_TOKEN);
 
     localStorage.removeItem(IvConstant.STORE_IV_INFO_AND_TOKEN);
+
+    let requestConfiguratoinToken : Observable<any> = this.requestConfiguratoinToken(this.credential);
+    requestConfiguratoinToken.subscribe(
+      data => {this.credential.tokens.configuration = data.access_token}
+    );
     
-    let requestNetWorkAvailabilityToken : Observable<any> = this.requestNetWorkAvailabilityToken(this.credential);
-    requestNetWorkAvailabilityToken.subscribe(
-      data => {this.credential.tokens.availabilityNetwork = data.access_token}
-    );
+    // let requestNetWorkAvailabilityToken : Observable<any> = this.requestNetWorkAvailabilityToken(this.credential);
+    // requestNetWorkAvailabilityToken.subscribe(
+    //   data => {this.credential.tokens.availabilityNetwork = data.access_token}
+    // );
 
-    let requestNodeAvailabilityToken : Observable<any> = this.requestNodeAvailabilityToken(this.credential);
-    requestNodeAvailabilityToken.subscribe(
-      data => {this.credential.tokens.availabilityNode = data.access_token}
-    );
+    // let requestNodeAvailabilityToken : Observable<any> = this.requestNodeAvailabilityToken(this.credential);
+    // requestNodeAvailabilityToken.subscribe(
+    //   data => {this.credential.tokens.availabilityNode = data.access_token}
+    // );
 
-    let requestDistributionGroupsToken : Observable<any> = this.requestDistributionGroupsToken(this.credential);
-    requestDistributionGroupsToken.subscribe(
-      data => {this.credential.tokens.configurationDistributionGroups = data.access_token}
-    );
+    // let requestDistributionGroupsToken : Observable<any> = this.requestDistributionGroupsToken(this.credential);
+    // requestDistributionGroupsToken.subscribe(
+    //   data => {this.credential.tokens.configurationDistributionGroups = data.access_token}
+    // );
 
-    let requestSettingsToken : Observable<any> = this.requestSettingsToken(this.credential);
-    requestSettingsToken.subscribe(
-      data => {this.credential.tokens.configurationSettings = data.access_token}
-    );
+    // let requestSettingsToken : Observable<any> = this.requestSettingsToken(this.credential);
+    // requestSettingsToken.subscribe(
+    //   data => {this.credential.tokens.configurationSettings = data.access_token}
+    // );
 
-    let requestShipnodesToken : Observable<any> = this.requestShipnodesToken(this.credential);
-    requestShipnodesToken.subscribe(
-      data => {this.credential.tokens.configurationShipNodes = data.access_token}
-    );
+    // let requestShipnodesToken : Observable<any> = this.requestShipnodesToken(this.credential);
+    // requestShipnodesToken.subscribe(
+    //   data => {this.credential.tokens.configurationShipNodes = data.access_token}
+    // );
 
-    let requestThresholdsToken : Observable<any> = this.requestThresholdsToken(this.credential);
-    requestThresholdsToken.subscribe(
-      data => {this.credential.tokens.configurationThresholds = data.access_token}
-    );
+    // let requestThresholdsToken : Observable<any> = this.requestThresholdsToken(this.credential);
+    // requestThresholdsToken.subscribe(
+    //   data => {this.credential.tokens.configurationThresholds = data.access_token}
+    // );
 
-    let requestDemandsToken : Observable<any> = this.requestDemandsToken(this.credential);
-    requestDemandsToken.subscribe(
-      data => {this.credential.tokens.demands = data.access_token}
-    );
+    // let requestDemandsToken : Observable<any> = this.requestDemandsToken(this.credential);
+    // requestDemandsToken.subscribe(
+    //   data => {this.credential.tokens.demands = data.access_token}
+    // );
 
-    let requestReservationsToken : Observable<any> = this.requestReservationsToken(this.credential);
-    requestReservationsToken.subscribe(
-      data => {this.credential.tokens.reservations = data.access_token}
-    );
+    // let requestReservationsToken : Observable<any> = this.requestReservationsToken(this.credential);
+    // requestReservationsToken.subscribe(
+    //   data => {this.credential.tokens.reservations = data.access_token}
+    // );
 
-    let requestSuppliesToken : Observable<any> = this.requestSuppliesToken(this.credential);
-    requestSuppliesToken.subscribe(
-      data => {this.credential.tokens.supplies = data.access_token}
-    );
+    // let requestSuppliesToken : Observable<any> = this.requestSuppliesToken(this.credential);
+    // requestSuppliesToken.subscribe(
+    //   data => {this.credential.tokens.supplies = data.access_token}
+    // );
 
     // Use forkJoin to write to the localstorage after recevied all tokens.
     forkJoin(
-      requestDistributionGroupsToken,
-      requestSettingsToken,
-      requestShipnodesToken,
-      requestThresholdsToken,
-      requestDemandsToken,
-      requestReservationsToken,
-      requestSuppliesToken,
-      requestNodeAvailabilityToken,
-      requestNetWorkAvailabilityToken,
+      requestConfiguratoinToken,
+      // requestDistributionGroupsToken,
+      // requestSettingsToken,
+      // requestShipnodesToken,
+      // requestThresholdsToken,
+      // requestDemandsToken,
+      // requestReservationsToken,
+      // requestSuppliesToken,
+      // requestNodeAvailabilityToken,
+      // requestNetWorkAvailabilityToken,
     ).subscribe(
       data => {
         let safeCopyCredent : IVCredent = 
@@ -178,41 +185,45 @@ export class CredentialDataService {
     return copyOfCredent;
   }
   
-  private requestNetWorkAvailabilityToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.AVAILABILITY_NETWORK);
+  private requestConfiguratoinToken(credential: IVCredent) : Observable<any>{
+    return this.getToken(EntityUrl.CONFIGURATION);
   }
 
-  private requestNodeAvailabilityToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.AVAILABILITY_NODE);
-  }
+  // private requestNetWorkAvailabilityToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.AVAILABILITY_NETWORK);
+  // }
 
-  private requestDistributionGroupsToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS);
-  }
+  // private requestNodeAvailabilityToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.AVAILABILITY_NODE);
+  // }
 
-  private requestSettingsToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.CONFIGURATION_SETTINGS);
-  }
+  // private requestDistributionGroupsToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS);
+  // }
 
-  private requestShipnodesToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.CONFIGURATION_SHIPNODES);
-  }
+  // private requestSettingsToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.CONFIGURATION_SETTINGS);
+  // }
 
-  private requestThresholdsToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.CONFIGURATION_THRESHOLDS);
-  }
+  // private requestShipnodesToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.CONFIGURATION_SHIPNODES);
+  // }
 
-  private requestDemandsToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.DEMANDS);
-  }
+  // private requestThresholdsToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.CONFIGURATION_THRESHOLDS);
+  // }
 
-  private requestReservationsToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.RESERVATIONS);
-  }
+  // private requestDemandsToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.DEMANDS);
+  // }
 
-  private requestSuppliesToken(credential: IVCredent) : Observable<any>{
-    return this.getToken(EntityUrl.SUPPLIES);
-  }
+  // private requestReservationsToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.RESERVATIONS);
+  // }
+
+  // private requestSuppliesToken(credential: IVCredent) : Observable<any>{
+  //   return this.getToken(EntityUrl.SUPPLIES);
+  // }
 
 
   private getToken(operationType: string) : Observable<any> {

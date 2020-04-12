@@ -52,7 +52,7 @@ export class DistgroupDataService extends IvServiceBase {
   protected getEntityUrl = () => { return EntityUrl.CONFIGURATION_DISTRIBUTIONGROUPS; }
 
   protected getBearerToken = (credential: IVCredent) => {
-    return credential ? credential.tokens.configurationDistributionGroups : null;
+    return credential ? credential.tokens.configuration : null;
   }
 
 

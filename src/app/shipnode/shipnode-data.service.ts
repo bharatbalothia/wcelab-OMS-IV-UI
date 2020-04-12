@@ -35,7 +35,7 @@ export class ShipnodeDataService extends IvServiceBase {
   protected getEntityUrl = (): string => { return EntityUrl.CONFIGURATION_SHIPNODES; }
 
   protected getBearerToken = (credential: IVCredent): string  => {
-    return credential == null ? null : credential.tokens.configurationShipNodes; 
+    return credential == null ? null : credential.tokens.configuration; 
   }
 
   /**

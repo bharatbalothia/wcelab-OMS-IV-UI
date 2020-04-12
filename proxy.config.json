@@ -1,7 +1,7 @@
 {
     "/ivproxy": {
        "target":  {
-         "host": "eu-api.watsoncommerce.ibm.com",
+         "host": "api.watsoncommerce.ibm.com",
          "protocol": "https:",
          "port": 443
        },

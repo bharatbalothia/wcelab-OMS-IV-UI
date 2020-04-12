@@ -7,6 +7,8 @@ export class EntityUrl {
 
     public static readonly OATH_REQUEST_BODY: string = "grant_type=client_credentials";
 
+    public static readonly CONFIGURATION : string = "configuration";
+
 
     public static readonly AVAILABILITY_NETWORK : string = "availability/network";
     public static readonly AVAILABILITY_NODE : string = "availability/node";

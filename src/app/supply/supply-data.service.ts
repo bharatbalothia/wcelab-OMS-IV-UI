@@ -79,7 +79,7 @@ export class SupplyDataService extends IvServiceBase {
   protected getEntityUrl = () => { return EntityUrl.SUPPLIES; }
 
   protected getBearerToken = (credential: IVCredent)  => {
-    return credential == null ? null : credential.tokens.supplies; 
+    return credential == null ? null : credential.tokens.configuration; 
   }
 
   getSupply(query: SupplyQuery): Observable<ItemSupply[]> {

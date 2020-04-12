@@ -78,7 +78,7 @@ export class ReservationDataService extends IvServiceBase {
   protected getEntityUrl = (): string => { return EntityUrl.RESERVATIONS; }
 
   protected getBearerToken = (credential: IVCredent): string  => {
-    return credential == null ? null : credential.tokens.reservations; 
+    return credential == null ? null : credential.tokens.configuration; 
   }
 
   createReservation(reservationRequest: ReservationRequest): Observable<ReservationRequestResultLine[]>{
